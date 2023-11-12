@@ -4,7 +4,11 @@ module.exports = {
     "./components/**/*.{html,js,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        display: ["Cabin Sketch"],
+      },
+    },
   },
   plugins: [require("daisyui")],
 };

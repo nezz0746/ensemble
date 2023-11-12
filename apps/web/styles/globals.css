@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Play:wght@400;700&display=swap');
+
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  display: none !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

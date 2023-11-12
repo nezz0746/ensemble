@@ -1,3 +1,4 @@
+import { emojiAvatarForAddress } from "@/services/rainbow";
 import { ConnectButton as RainbowKitConnectButton } from "@rainbow-me/rainbowkit";
 
 const ConnectButton = () => {
@@ -30,27 +31,36 @@ const ConnectButton = () => {
                 userSelect: "none",
               },
             })}
+            className="font-display flex flex-row gap-2"
           >
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
+                  <button
+                    className="btn btn-outline rounded-none flex-grow"
+                    onClick={openConnectModal}
+                    type="button"
+                  >
                     Connect Wallet
                   </button>
                 );
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
+                  <button
+                    className="btn btn-outline rounded-none flex-grow"
+                    onClick={openChainModal}
+                    type="button"
+                  >
                     Wrong network
                   </button>
                 );
               }
               return (
-                <div style={{ display: "flex", gap: 12 }}>
+                <>
                   <button
                     onClick={openChainModal}
-                    className="btn btn-outline"
+                    className="btn btn-outline rounded-none flex-grow"
                     type="button"
                   >
                     {chain.hasIcon && (
@@ -78,14 +88,17 @@ const ConnectButton = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="btn btn-outline"
+                    className="btn btn-outline rounded-none flex-grow flex flex-row items-center gap-2"
                   >
+                    <p className="text-xl">
+                      {(emojiAvatarForAddress(account.address) ?? {}).emoji}
+                    </p>
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
                       : ""}
                   </button>
-                </div>
+                </>
               );
             })()}
           </div>

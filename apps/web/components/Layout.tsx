@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ReactElement } from "react";
-import useAnvil from "../hooks/useAnvil";
+import useAnvil from "@/hooks/useAnvil";
 import ConnectButton from "./ConnectButton";
-import useChain from "../hooks/useChain";
+import useChain from "@/hooks/useChain";
 
 const Layout = ({ children }: { children: ReactElement }) => {
   const { selfFund } = useAnvil();

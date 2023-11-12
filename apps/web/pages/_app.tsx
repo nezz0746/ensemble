@@ -1,19 +1,13 @@
 import type { AppProps } from "next/app";
-import "../styles/globals.css";
+import "@/styles/globals.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import Layout from "../components/Layout";
-import dynamic from "next/dynamic";
-
-const DappProvider = dynamic(() => import("../components/DappProvider"), {
-  ssr: false,
-});
+import DappProvider from "@/components/DappProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <DappProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </DappProvider>
   );
 }
