@@ -1,18 +1,19 @@
-import { usePosition } from "@/hooks/usePosition";
-import ConnectButton from "./ConnectButton";
-import classNames from "classnames";
+"use client";
 
-const SidePannel = () => {
+import ConnectButton from "@/components/ConnectButton";
+import { usePosition } from "@/hooks/usePosition";
+import classNames from "classnames";
+import type { NextPage } from "next";
+
+const Home: NextPage = () => {
   const { position, setPrecision } = usePosition();
 
   return (
-    <>
-      <div>
-        <p className="text-lg font-bold">
-          <ConnectButton />
-        </p>
+    <div className="h-full flex flex-col">
+      <div className="">
+        <ConnectButton />
       </div>
-      <div className="flex flex-col justify-between h-full pt-4">
+      <div className="flex flex-col flex-grow justify-between pt-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-row items-center justify-between font-display">
             <p>Geohash</p>
@@ -55,13 +56,13 @@ const SidePannel = () => {
             )}
           </div>
 
-          <button className="btn btn-outline cursor-not-allowed w-full rounded-none">
+          <button className="btn cursor-not-allowed w-full">
             <p className="font-display">Move</p>
           </button>
         </div>
-      </div>
-    </>
+      </div>{" "}
+    </div>
   );
 };
 
-export default SidePannel;
+export default Home;

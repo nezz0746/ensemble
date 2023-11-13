@@ -31,24 +31,24 @@ const ConnectButton = () => {
                 userSelect: "none",
               },
             })}
-            className="font-display flex flex-row gap-2"
+            className="flex flex-row gap-2"
           >
             {(() => {
               if (!connected) {
                 return (
                   <button
-                    className="btn btn-outline rounded-none flex-grow"
+                    className="btn flex-grow"
                     onClick={openConnectModal}
                     type="button"
                   >
-                    Connect Wallet
+                    Connect
                   </button>
                 );
               }
               if (chain.unsupported) {
                 return (
                   <button
-                    className="btn btn-outline rounded-none flex-grow"
+                    className="btn flex-grow"
                     onClick={openChainModal}
                     type="button"
                   >
@@ -57,10 +57,10 @@ const ConnectButton = () => {
                 );
               }
               return (
-                <>
+                <div className="flex flex-col-reverse md:flex-row w-full gap-2">
                   <button
                     onClick={openChainModal}
-                    className="btn btn-outline rounded-none flex-grow"
+                    className="btn flex-grow"
                     type="button"
                   >
                     {chain.hasIcon && (
@@ -88,7 +88,7 @@ const ConnectButton = () => {
                   <button
                     onClick={openAccountModal}
                     type="button"
-                    className="btn btn-outline rounded-none flex-grow flex flex-row items-center gap-2"
+                    className="btn flex-grow flex flex-row items-center gap-2"
                   >
                     <p className="text-xl">
                       {(emojiAvatarForAddress(account.address) ?? {}).emoji}
@@ -98,7 +98,7 @@ const ConnectButton = () => {
                       ? ` (${account.displayBalance})`
                       : ""}
                   </button>
-                </>
+                </div>
               );
             })()}
           </div>

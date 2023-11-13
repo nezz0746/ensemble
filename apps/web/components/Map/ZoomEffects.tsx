@@ -4,7 +4,7 @@ import { useMap } from "react-map-gl";
 
 const ZoomEffects = () => {
   const precisionToZoom: Record<number, number> = {
-    2: 4,
+    2: 3,
     3: 7,
     4: 9,
     5: 12,

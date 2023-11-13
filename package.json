@@ -13,13 +13,15 @@
     "test": "turbo run test",
     "test:force": "turbo run test --force",
     "add:web": "yarn workspace web add",
-    "add:wagmi": "yarn workspace wagmi-config add"
+    "add:wagmi": "yarn workspace wagmi-config add",
+    "prepare": "husky install"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "devDependencies": {
+    "husky": "^8.0.3",
     "turbo": "^1.10.16"
   },
   "engines": {
