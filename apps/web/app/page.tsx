@@ -31,8 +31,10 @@ const Page = () => {
           <div className="hero-content text-center">
             <div className="md:w-3/4 relative p-10">
               <div className="absolute -z-10 top-0 left-0 w-full h-full bg-white opacity-70 blur-xl rounded-full" />
-              <h1 className="mb-5 text-5xl z-20 font-bold">{content.title}</h1>
-              <p className="mb-5 ">{content.description}</p>
+              <h1 className="mb-5 text-black text-5xl z-20 font-bold">
+                {content.title}
+              </h1>
+              <p className="mb-5 text-neutral">{content.description}</p>
               <div className="flex flex-row gap-2 justify-center">
                 <Link
                   href={"https://github.com/nezz0746/ensemble"}
