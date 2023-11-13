@@ -11,7 +11,7 @@ const GeohashLayer = () => {
     type: "fill",
     paint: {
       "fill-color": "black",
-      "fill-opacity": 0.2,
+      "fill-opacity": 0.4,
       "fill-outline-color": "black",
     },
   };

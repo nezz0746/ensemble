@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { produce } from "immer";
-import { commonLocations } from "@/services/constants";
-import { Feature, Polygon, bboxPolygon } from "@turf/turf";
+import { commonLocations, globeFeature } from "@/services/constants";
+import { Feature, Polygon, bboxPolygon, difference } from "@turf/turf";
 import ngeohash from "ngeohash";
 
 export type Positon = {
@@ -26,7 +26,7 @@ export const usePosition = create<PositionStore>((set) => ({
   position: {
     latitude: commonLocations.paris.latitude,
     longitude: commonLocations.paris.longitude,
-    precision: 6,
+    precision: 2,
     geohash: "",
     feature: {
       type: "Feature",
@@ -47,7 +47,10 @@ export const usePosition = create<PositionStore>((set) => ({
         );
         state.position.geohash = new_hash;
         state.position.precision = precision;
-        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
+        state.position.feature = difference(
+          globeFeature,
+          bboxPolygon(ngeohash.decode_bbox(new_hash))
+        );
       })
     );
   },
@@ -62,7 +65,10 @@ export const usePosition = create<PositionStore>((set) => ({
         state.position.latitude = latitude;
         state.position.longitude = longitude;
         state.position.geohash = new_hash;
-        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
+        state.position.feature = difference(
+          globeFeature,
+          bboxPolygon(ngeohash.decode_bbox(new_hash))
+        );
       })
     );
   },
