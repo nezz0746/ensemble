@@ -21,7 +21,7 @@ const AppMap = () => {
         interactiveLayerIds={["data"]}
         mapStyle="mapbox://styles/nezz0746/closnc6ke00qa01nz5uvf7yad"
       >
-        <div className="bg-white flex flex-row gap-2 items-center p-2 absolute top-[6px] left-[6px] border">
+        <div className="bg-white flex flex-row gap-2 items-center p-2 absolute top-3 left-3 border">
           <p className="font-display font-bold tracking-tight text-xl">
             Ensemble
           </p>

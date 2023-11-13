@@ -12,7 +12,7 @@ const Home: NextPage = () => {
       <div className="h-full flex-grow overflow-hidden border shadow-lg">
         <AppMap />
       </div>
-      <div className="h-full flex flex-col justify-between w-96 p-2 overflow-hidden border shadow-lg">
+      <div className="h-full flex flex-col justify-between w-96 p-4 overflow-hidden border shadow-lg">
         <SidePannel />
       </div>
     </div>
