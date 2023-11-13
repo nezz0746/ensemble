@@ -71,7 +71,11 @@ const Page = () => {
             <p>Copyright © 2023 - All right reserved</p>
           </aside>
           <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-            <a href="https://github.com/nezz0746/ensemble" target="_blank">
+            <a
+              href="https://github.com/nezz0746/ensemble"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Image src="/github.png" height={24} width={24} alt="github" />
             </a>
           </nav>
