@@ -49,9 +49,8 @@ const SidePannel = () => {
           <div className="flex flex-row justify-center items-center text-center">
             {position.precision >= 5 && (
               <p className="text-sm text-warning font-display">
-                Warning: you&apos;re about to mint your location with high
-                precision. Make sure you use a public account you&apos;re
-                confortable sharing precise location with.
+                Warning: you&apos;re about to share your location with high
+                precision. Make sure you use the approriate identity.
               </p>
             )}
           </div>
