@@ -1,7 +1,7 @@
 "use client";
 
 import { content } from "@/services/content";
-import bg_image from "public/globe.png";
+import bg_image from "public/globe.jpg";
 import Link from "next/link";
 import Image from "next/image";
 import ConnectButton from "@/components/ConnectButton";
