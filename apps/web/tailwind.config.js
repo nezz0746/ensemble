@@ -1,14 +1,10 @@
 module.exports = {
   content: [
-    "./pages/**/*.{html,js,ts,tsx}",
+    "./app/**/*.{html,js,ts,tsx}",
     "./components/**/*.{html,js,ts,tsx}",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        display: ["Cabin Sketch"],
-      },
-    },
+    extend: {},
   },
   plugins: [require("daisyui")],
 };
