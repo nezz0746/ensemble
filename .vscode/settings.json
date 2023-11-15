@@ -7,5 +7,6 @@
   },
   "solidity.packageDefaultDependenciesContractsDirectory": "apps/contracts/src",
   "solidity.packageDefaultDependenciesDirectory": "apps/contracts/lib",
-  "solidity.formatter": "prettier"
+  "solidity.formatter": "prettier",
+  "solidity.compileUsingRemoteVersion": "v0.8.20+commit.a1b79de6"
 }
