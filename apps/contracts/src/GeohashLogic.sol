@@ -46,14 +46,4 @@ library GeohashLogic {
         }
         return string(c);
     }
-
-    function getBaseGeohash(
-        string memory geohash,
-        uint256 precision
-    ) internal pure returns (string memory baseGeohash) {
-        baseGeohash = geohash;
-        for (uint i = getPrecision(geohash); i > precision; i--) {
-            baseGeohash = pop(baseGeohash);
-        }
-    }
 }

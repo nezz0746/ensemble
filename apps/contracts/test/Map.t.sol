@@ -29,11 +29,6 @@ contract MapTest is MapBaseTest {
         tileAddress = map.createTile(address(verifier), "https://example.com/");
     }
 
-    function testGetBaseGeohash() public {
-        string memory baseGeohash = GeohashLogic.getBaseGeohash(geohash, 2);
-        assertEq(baseGeohash, "sb");
-    }
-
     function testMoveUnexploredMaxPrecision() public {
         string memory newGeohash = "su85hb";
 
