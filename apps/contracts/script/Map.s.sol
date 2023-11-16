@@ -5,9 +5,10 @@ import {Script, console2} from "forge-std/Script.sol";
 import {BaseScript} from "./Base.s.sol";
 import {Map} from "../src/Map.sol";
 import {RecordTileFactoryConfig} from "../src/RecordTileFactory.sol";
+import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
 
 contract MapScript is BaseScript {
-    DeployementChain[] deploymentChains;
+    DeployementChain[] internal _deploymentChains;
 
     function setUp() public {
         forks[DeployementChain.Anvil] = "local";
@@ -15,25 +16,39 @@ contract MapScript is BaseScript {
     }
 
     function deployMapLocal() public setEnvDeploy(Cycle.Local) {
-        deploymentChains.push(DeployementChain.Anvil);
+        _deploymentChains.push(DeployementChain.Anvil);
 
-        _deployERC6551Config(deploymentChains);
-        _deployMap(deploymentChains);
+        _deployMap(_deploymentChains);
     }
 
-    function deployMapTesnet() public setEnvDeploy(Cycle.Testnet) {}
+    function deployMapTestnets() public setEnvDeploy(Cycle.Testnet) {
+        _deploymentChains.push(DeployementChain.Goerli);
+
+        _deployMap(_deploymentChains);
+    }
 
     function _deployMap(
         DeployementChain[] memory targetChains
     ) internal broadcastOn(targetChains) {
-        // Map map = new Map(
-        //     RecordTileFactoryConfig(
-        //         address(registry),
-        //         address(accountProxy),
-        //         address(implementation)
-        //     ),
-        //     2,
-        //     6
-        // );
+        _deployERC6551Config();
+
+        (, address sender, ) = vm.readCallers();
+
+        console2.log("Sender: ", sender);
+        console2.log("Deploying Map contract");
+
+        NoCheckVerifier verifier = new NoCheckVerifier();
+
+        Map map = new Map(
+            RecordTileFactoryConfig(
+                address(registry),
+                address(accountProxy),
+                address(implementation)
+            ),
+            2,
+            6
+        );
+
+        map.createTile(address(verifier), "https://example.com/");
     }
 }

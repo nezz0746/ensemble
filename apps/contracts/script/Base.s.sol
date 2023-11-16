@@ -3,17 +3,22 @@ pragma solidity ^0.8.20;
 
 import {Script, console2} from "forge-std/Script.sol";
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
-import {AccountV3} from "tokenbound/AccountV3.sol";
+import {AccountV3Upgradable} from "tokenbound/AccountV3Upgradable.sol";
 import {AccountProxy} from "tokenbound/AccountProxy.sol";
 import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
 import {Multicall3} from "multicall-authenticated/Multicall3.sol";
 
 contract BaseScript is Script {
-    ERC6551Registry registry;
-    AccountProxy accountProxy;
-    AccountGuardian guardian;
-    Multicall3 forwarder;
-    AccountV3 implementation;
+    ERC6551Registry public registry =
+        ERC6551Registry(0x000000006551c19487814612e58FE06813775758);
+    AccountProxy public accountProxy =
+        AccountProxy(payable(0x55266d75D1a14E4572138116aF39863Ed6596E7F));
+    AccountV3Upgradable public implementation =
+        AccountV3Upgradable(
+            payable(0x41C8f39463A868d3A88af00cd0fe7102F30E44eC)
+        );
+    AccountGuardian internal _guardian;
+    Multicall3 internal _forwarder;
 
     enum Cycle {
         Local,
@@ -25,7 +30,7 @@ contract BaseScript is Script {
         Anvil,
         Goerli
     }
-    string internal mnemonic =
+    string internal constant TEST_MNEMONIC =
         "test test test test test test test test test test test junk";
 
     uint256 internal deployerPrivateKey;
@@ -50,8 +55,8 @@ contract BaseScript is Script {
     modifier setEnvDeploy(Cycle cycle) {
         if (cycle == Cycle.Local) {
             (, deployerPrivateKey) = deriveRememberKey({
-                mnemonic: mnemonic,
-                index: 1
+                mnemonic: TEST_MNEMONIC,
+                index: 0
             });
         } else if (cycle == Cycle.Testnet) {
             deployerPrivateKey = vm.envUint("TESTNET_PK");
@@ -84,21 +89,24 @@ contract BaseScript is Script {
         vm.writeFile(filePathWithEncodePacked, json);
     }
 
-    function _deployERC6551Config(
-        DeployementChain[] memory targetChains
-    ) internal broadcastOn(targetChains) {
+    function _deployERC6551Config() internal {
+        (, address sender, ) = vm.readCallers();
+
         registry = new ERC6551Registry();
-        guardian = new AccountGuardian(address(this));
-        forwarder = new Multicall3();
-        implementation = new AccountV3(
+
+        _guardian = new AccountGuardian(sender);
+
+        _forwarder = new Multicall3();
+
+        implementation = new AccountV3Upgradable(
             address(1),
-            address(forwarder),
+            address(_forwarder),
             address(registry),
-            address(guardian)
+            address(_guardian)
         );
 
         accountProxy = new AccountProxy(
-            address(guardian),
+            address(_guardian),
             address(implementation)
         );
     }
