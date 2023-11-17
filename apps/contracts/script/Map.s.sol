@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import {Script, console2} from "forge-std/Script.sol";
 import {BaseScript} from "./Base.s.sol";
 import {Map} from "../src/Map.sol";
+import {LocationTile} from "../src/LocationTile.sol";
 import {RecordTileFactoryConfig} from "../src/RecordTileFactory.sol";
 import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
 
@@ -30,7 +31,10 @@ contract MapScript is BaseScript {
     function _deployMap(
         DeployementChain[] memory targetChains
     ) internal broadcastOn(targetChains) {
-        _deployERC6551Config();
+        // Exception to cycle to deploy ERC6551Config on local chain
+        if (_cycle == Cycle.Local) {
+            _deployERC6551Config();
+        }
 
         (, address sender, ) = vm.readCallers();
 
@@ -49,6 +53,12 @@ contract MapScript is BaseScript {
             6
         );
 
-        map.createTile(address(verifier), "https://example.com/");
+        address tile = map.createTile(
+            address(verifier),
+            "https://example.com/"
+        );
+
+        _saveImplementations(address(map), "Map");
+        _saveImplementations(tile, "LocationTile");
     }
 }

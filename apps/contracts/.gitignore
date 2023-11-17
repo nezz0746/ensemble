@@ -8,6 +8,8 @@ out/
 /broadcast/*/5/
 /broadcast/**/dry-run/
 
+deployments/1337
+
 # Docs
 docs/
 

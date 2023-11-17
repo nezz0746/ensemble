@@ -26,6 +26,8 @@ contract BaseScript is Script {
         Mainnet
     }
 
+    Cycle internal _cycle;
+
     enum DeployementChain {
         Anvil,
         Goerli
@@ -53,6 +55,7 @@ contract BaseScript is Script {
     }
 
     modifier setEnvDeploy(Cycle cycle) {
+        _cycle = cycle;
         if (cycle == Cycle.Local) {
             (, deployerPrivateKey) = deriveRememberKey({
                 mnemonic: TEST_MNEMONIC,
@@ -109,5 +112,8 @@ contract BaseScript is Script {
             address(_guardian),
             address(implementation)
         );
+
+        _saveImplementations(address(registry), "ERC6551Registry");
+        _saveImplementations(address(accountProxy), "AccountProxy");
     }
 }
