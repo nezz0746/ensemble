@@ -40,14 +40,14 @@ contract ManagedVerifier is ILocationTileVerifier, AccessControl {
     function setAllowedAccount(
         address account,
         bool allowed
-    ) public onlyRole(LAND_MANAGER) {
+    ) public onlyRole(ACCOUNT_MANAGER) {
         allowedAccounts[account] = allowed;
     }
 
     function setVerifiedLocation(
         string memory geohash,
         bool verified
-    ) public onlyRole(ACCOUNT_MANAGER) {
+    ) public onlyRole(LAND_MANAGER) {
         verifiedLocations[GeohashLogic.geoHashToUint256(geohash)] = verified;
     }
 }
