@@ -1,6 +1,5 @@
 import { defineConfig } from "@wagmi/cli";
-import { foundry } from "@wagmi/cli/plugins";
-import { react } from "@wagmi/cli/plugins";
+import { foundry, react, erc } from "@wagmi/cli/plugins";
 import fs from "fs/promises";
 import { Address } from "wagmi";
 
@@ -42,12 +41,16 @@ export default defineConfig(async () => {
           "Map.sol/*.json",
           "ERC6551Registry.sol/*.json",
           "AccountProxy.sol/*.json",
+          "LocationTile.sol/*.json",
         ],
         deployments,
       }),
       react({
         usePrepareContractFunctionWrite: true,
         usePrepareContractWrite: true,
+      }),
+      erc({
+        721: true,
       }),
     ],
   };
