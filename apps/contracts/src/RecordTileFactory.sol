@@ -33,7 +33,8 @@ contract RecordTileFactory is ERC6551AccountCreator {
     );
     event RecordTileEntered(
         address indexed tileAddress,
-        address recipient,
+        address indexed recipient,
+        string geohash,
         address account
     );
 
@@ -43,9 +44,23 @@ contract RecordTileFactory is ERC6551AccountCreator {
     ) internal virtual returns (address record) {
         RecordTile recordTile = _getRecordTile(geohash);
 
-        record = _getAccount(address(recordTile), _tokenId(recipient));
+        (address recordAddress, bool isNew) = _getAccount(
+            address(recordTile),
+            recipient
+        );
+
+        if (isNew) {
+            emit RecordTileEntered(
+                address(recordTile),
+                recipient,
+                geohash,
+                recordAddress
+            );
+        }
 
         _mint(recordTile, recipient, _tokenId(recipient));
+
+        return recordAddress;
     }
 
     function _mint(RecordTile tile, address account, uint256 tokenId) internal {
@@ -56,14 +71,17 @@ contract RecordTileFactory is ERC6551AccountCreator {
 
     function _getAccount(
         address recordTile,
-        uint256 tokenId
-    ) internal returns (address) {
+        address recipient
+    ) internal returns (address accountAddress, bool isNew) {
+        uint256 tokenId = _tokenId(recipient);
         address account = _computeAccount(block.chainid, recordTile, tokenId);
 
         if (_isContract(account)) {
-            return account;
+            accountAddress = account;
         } else {
-            return _createAccount(block.chainid, recordTile, tokenId);
+            accountAddress = _createAccount(block.chainid, recordTile, tokenId);
+
+            isNew = true;
         }
     }
 
