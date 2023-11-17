@@ -31,10 +31,7 @@ contract MapScript is BaseScript {
     function _deployMap(
         DeployementChain[] memory targetChains
     ) internal broadcastOn(targetChains) {
-        // Exception to cycle to deploy ERC6551Config on local chain
-        if (_cycle == Cycle.Local) {
-            _deployERC6551Config();
-        }
+        _deployERC6551Config();
 
         (, address sender, ) = vm.readCallers();
 

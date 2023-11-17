@@ -95,23 +95,26 @@ contract BaseScript is Script {
     function _deployERC6551Config() internal {
         (, address sender, ) = vm.readCallers();
 
-        registry = new ERC6551Registry();
+        // Exception to cycle to deploy ERC6551Config on local chain
+        if (_cycle == Cycle.Local) {
+            registry = new ERC6551Registry();
 
-        _guardian = new AccountGuardian(sender);
+            _guardian = new AccountGuardian(sender);
 
-        _forwarder = new Multicall3();
+            _forwarder = new Multicall3();
 
-        implementation = new AccountV3Upgradable(
-            address(1),
-            address(_forwarder),
-            address(registry),
-            address(_guardian)
-        );
+            implementation = new AccountV3Upgradable(
+                address(1),
+                address(_forwarder),
+                address(registry),
+                address(_guardian)
+            );
 
-        accountProxy = new AccountProxy(
-            address(_guardian),
-            address(implementation)
-        );
+            accountProxy = new AccountProxy(
+                address(_guardian),
+                address(implementation)
+            );
+        }
 
         _saveImplementations(address(registry), "ERC6551Registry");
         _saveImplementations(address(accountProxy), "AccountProxy");
