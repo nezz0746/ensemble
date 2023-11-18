@@ -50,7 +50,7 @@ const Page = () => {
                     Github
                   </button>
                 </Link>
-                <Link href={"/move"}>
+                <Link href={"/map"}>
                   <button className="btn btn-secondary">Launch App</button>
                 </Link>
               </div>
