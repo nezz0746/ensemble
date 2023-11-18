@@ -4,6 +4,7 @@ import MoveButton from "./MoveButton";
 import { useAccount } from "wagmi";
 import useVisitedGeohashes from "@/hooks/useVisitedGeohashes";
 import useAppAddresses from "@/hooks/useAppAddresses";
+import { usePathname } from "next/navigation";
 
 const AppMapControls = () => {
   const { locationTile } = useAppAddresses();
@@ -58,4 +59,14 @@ const AppMapControls = () => {
   );
 };
 
-export default AppMapControls;
+/**
+ * NOTE: Could move to vite app, NextJS slot routing is a hellhole
+ * @returns
+ */
+const AppMapControlsRouted = () => {
+  const pathName = usePathname();
+
+  return pathName.includes("/profile") ? <AppMapControls /> : null;
+};
+
+export default AppMapControlsRouted;
