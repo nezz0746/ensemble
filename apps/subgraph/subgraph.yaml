@@ -1,0 +1,39 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Map
+    network: mainnet
+    source:
+      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F"
+      abi: Map
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RecordTileCreated
+        - RecordTileEntered
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - TileCreated
+      abis:
+        - name: Map
+          file: ./abis/Map.json
+      eventHandlers:
+        - event: RecordTileCreated(indexed address,string,address)
+          handler: handleRecordTileCreated
+        - event: RecordTileEntered(indexed address,indexed address,string,address)
+          handler: handleRecordTileEntered
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: TileCreated(indexed address,address)
+          handler: handleTileCreated
+      file: ./src/map.ts
