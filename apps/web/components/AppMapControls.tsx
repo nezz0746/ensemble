@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import useVisitedGeohashes from "@/hooks/useVisitedGeohashes";
 import useAppAddresses from "@/hooks/useAppAddresses";
 import { usePathname } from "next/navigation";
+import AccountZoomEffects from "./Map/AccountZoomEffects";
 
 const AppMapControls = () => {
   const { locationTile } = useAppAddresses();
@@ -14,6 +15,7 @@ const AppMapControls = () => {
 
   return (
     <div className="flex flex-row justify-between gap-4 items-center bg-opacity-90 p-3 bg-neutral rounded-lg">
+      <AccountZoomEffects />
       <div className="flex flex-row items-center w-full gap-2 justify-between font-display">
         <div className="border border-primary p-2 rounded-md">
           <p className="text-xl">{position.geohash}</p>

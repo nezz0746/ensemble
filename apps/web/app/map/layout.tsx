@@ -5,10 +5,8 @@ import Map, { MapProvider } from "react-map-gl";
 import { commonLocations } from "@/services/constants";
 import AccountMarker from "@/components/Map/AccountMarker";
 import FogLayer from "@/components/Map/Fog";
-import ZoomEffects from "@/components/Map/ZoomEffects";
 import AppNavigationBar from "@/components/AppNavigationBar";
 import AppMapControls from "@/components/AppMapControls";
-import { usePathname } from "next/navigation";
 
 const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
@@ -17,7 +15,6 @@ type HomeProps = {
 };
 
 const Home = ({ children }: HomeProps) => {
-  const pathName = usePathname();
   return (
     <div className="h-screen flex flex-row gap-2">
       <div className="w-2/3 relative">
@@ -38,7 +35,6 @@ const Home = ({ children }: HomeProps) => {
             </div>
             <AccountMarker />
             <FogLayer />
-            <ZoomEffects />
             <div className="absolute w-full bottom-0 p-3">
               <AppMapControls />
             </div>
