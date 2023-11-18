@@ -1,5 +1,5 @@
 export const content = {
-  title: "Geofencing framework for humans & protocols",
+  title: "Ensemble: Network State Framework",
   description:
-    "Tailor you web experience to your location. Build bridges between communities around the globe.",
+    "Launch your global community. Tailor your citizen's web experiences. Build bridges between communities around the globe.",
 };

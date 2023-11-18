@@ -1,2 +1,9 @@
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
+@openzeppelin/contracts/=lib/contracts/lib/openzeppelin-contracts/contracts
+ERC721A/=lib/ERC721A/contracts/
+erc6551/=lib/contracts/lib/erc6551/src/
+tokenbound/=lib/contracts/src/
+multicall-authenticated/=lib/contracts/lib/multicall-authenticated/src
+prb-test/=lib/prb-test/src/
+solidity-stringutils/=lib/solidity-stringutils/

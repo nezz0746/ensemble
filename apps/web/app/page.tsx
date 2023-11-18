@@ -1,7 +1,6 @@
 "use client";
 
 import { content } from "@/services/content";
-import bg_image from "public/globe.jpg";
 import Link from "next/link";
 import Image from "next/image";
 import ConnectButton from "@/components/ConnectButton";
@@ -20,21 +19,15 @@ const Page = () => {
         </nav>
       </div>
       <div className="absolute top-0 left-0 w-full">
-        <div
-          className="hero min-h-[110vh]"
-          style={{
-            backgroundImage: `url(${bg_image.src})`,
-            backgroundSize: "cover",
-          }}
-        >
+        <div className="hero min-h-[110vh]">
           <div className="hero-overlay bg-opacity-40"></div>
           <div className="hero-content text-center">
-            <div className="md:w-3/4 relative p-10">
-              <div className="absolute -z-10 top-0 left-0 w-full h-full bg-white opacity-70 blur-xl rounded-full" />
-              <h1 className="mb-5 text-black text-5xl z-20 font-bold">
+            <div className="relative p-10">
+              <div className="absolute -z-10 top-0 left-0 w-full h-full opacity-70 blur-xl rounded-full" />
+              <h1 className="mb-5 text-5xl z-20 font-bold text-white">
                 {content.title}
               </h1>
-              <p className="mb-5 text-neutral">{content.description}</p>
+              <p className="mb-5 text-white">{content.description}</p>
               <div className="flex flex-row gap-2 justify-center">
                 <Link
                   href={"https://github.com/nezz0746/ensemble"}
@@ -50,7 +43,7 @@ const Page = () => {
                     Github
                   </button>
                 </Link>
-                <Link href={"/move"}>
+                <Link href={"/map"}>
                   <button className="btn btn-secondary">Launch App</button>
                 </Link>
               </div>

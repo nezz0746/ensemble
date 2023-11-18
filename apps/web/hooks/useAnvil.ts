@@ -1,4 +1,4 @@
-import { useAccount, useBalance, useNetwork, usePublicClient } from "wagmi";
+import { useAccount, useBalance, usePublicClient } from "wagmi";
 import { toHex, parseEther } from "viem";
 
 const useAnvil = () => {
@@ -7,7 +7,7 @@ const useAnvil = () => {
   const { refetch, data } = useBalance({ address });
 
   const selfFund = () => {
-    if (!address || !data?.value) return;
+    if (!address || data?.value === undefined) return;
 
     request({
       // @ts-ignore

@@ -1,419 +1,1152 @@
 import {
   useNetwork,
   useChainId,
-  useContractRead,
-  UseContractReadConfig,
   useContractWrite,
   Address,
   UseContractWriteConfig,
   usePrepareContractWrite,
   UsePrepareContractWriteConfig,
+  useContractEvent,
+  UseContractEventConfig,
+  useContractRead,
+  UseContractReadConfig,
 } from 'wagmi'
 import {
-  ReadContractResult,
   WriteContractMode,
   PrepareWriteContractResult,
+  ReadContractResult,
 } from 'wagmi/actions'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Counter
+// AccountProxy
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export const counterABI = [
+export const accountProxyABI = [
+  {
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+    inputs: [
+      { name: '_guardian', internalType: 'address', type: 'address' },
+      {
+        name: '_initialImplementation',
+        internalType: 'address',
+        type: 'address',
+      },
+    ],
+  },
+  { type: 'error', inputs: [], name: 'AlreadyInitialized' },
+  { type: 'error', inputs: [], name: 'InvalidImplementation' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'AdminChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'beacon',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'BeaconUpgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  { stateMutability: 'payable', type: 'fallback' },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'implementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'initialize',
+    outputs: [],
+  },
+  { stateMutability: 'payable', type: 'receive' },
+] as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
+ * -
+ */
+export const accountProxyAddress = {
+  5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
+  1337: '0x638A246F0Ec8883eF68280293FFE8Cfbabe61B44',
+} as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
+ * -
+ */
+export const accountProxyConfig = {
+  address: accountProxyAddress,
+  abi: accountProxyABI,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC20
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc20ABI = [
+  {
+    type: 'event',
+    inputs: [
+      { name: 'owner', type: 'address', indexed: true },
+      { name: 'spender', type: 'address', indexed: true },
+      { name: 'value', type: 'uint256', indexed: false },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    inputs: [
+      { name: 'from', type: 'address', indexed: true },
+      { name: 'to', type: 'address', indexed: true },
+      { name: 'value', type: 'uint256', indexed: false },
+    ],
+    name: 'Transfer',
+  },
   {
     stateMutability: 'view',
     type: 'function',
-    inputs: [],
-    name: 'getNumber',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'spender', type: 'address' },
+    ],
+    name: 'allowance',
+    outputs: [{ type: 'uint256' }],
   },
   {
     stateMutability: 'nonpayable',
     type: 'function',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
     inputs: [],
-    name: 'increment',
+    name: 'decimals',
+    outputs: [{ type: 'uint8' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ type: 'string' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ type: 'string' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    name: 'transfer',
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'sender', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'addedValue', type: 'uint256' },
+    ],
+    name: 'increaseAllowance',
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'subtractedValue', type: 'uint256' },
+    ],
+    name: 'decreaseAllowance',
+    outputs: [{ type: 'bool' }],
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC6551Registry
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export const erc6551RegistryABI = [
+  { type: 'error', inputs: [], name: 'AccountCreationFailed' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'salt',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'chainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'tokenContract',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'ERC6551AccountCreated',
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'implementation', internalType: 'address', type: 'address' },
+      { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenContract', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'account',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'implementation', internalType: 'address', type: 'address' },
+      { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenContract', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'createAccount',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+] as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export const erc6551RegistryAddress = {
+  5: '0x000000006551c19487814612e58FE06813775758',
+  1337: '0x927b167526bAbB9be047421db732C663a0b77B11',
+} as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export const erc6551RegistryConfig = {
+  address: erc6551RegistryAddress,
+  abi: erc6551RegistryABI,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERC721
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const erc721ABI = [
+  {
+    type: 'event',
+    inputs: [
+      { name: 'owner', type: 'address', indexed: true },
+      { name: 'spender', type: 'address', indexed: true },
+      { name: 'tokenId', type: 'uint256', indexed: true },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    inputs: [
+      { name: 'owner', type: 'address', indexed: true },
+      { name: 'operator', type: 'address', indexed: true },
+      { name: 'approved', type: 'bool', indexed: false },
+    ],
+    name: 'ApprovalForAll',
+  },
+  {
+    type: 'event',
+    inputs: [
+      { name: 'from', type: 'address', indexed: true },
+      { name: 'to', type: 'address', indexed: true },
+      { name: 'tokenId', type: 'uint256', indexed: true },
+    ],
+    name: 'Transfer',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'function',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'tokenId', type: 'uint256' },
+    ],
+    name: 'approve',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'account', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'tokenId', type: 'uint256' }],
+    name: 'getApproved',
+    outputs: [{ type: 'address' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'operator', type: 'address' },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [{ type: 'bool' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ type: 'string' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'tokenId', type: 'uint256' }],
+    name: 'ownerOf',
+    outputs: [{ name: 'owner', type: 'address' }],
+  },
+  {
+    stateMutability: 'payable',
+    type: 'function',
+    inputs: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'tokenId', type: 'uint256' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'from', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'id', type: 'uint256' },
+      { name: 'data', type: 'bytes' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'operator', type: 'address' },
+      { name: 'approved', type: 'bool' },
+    ],
+    name: 'setApprovalForAll',
     outputs: [],
   },
   {
     stateMutability: 'view',
     type: 'function',
     inputs: [],
-    name: 'number',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'symbol',
+    outputs: [{ type: 'string' }],
   },
   {
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
-    inputs: [{ name: 'newNumber', internalType: 'uint256', type: 'uint256' }],
-    name: 'setNumber',
+    inputs: [{ name: 'index', type: 'uint256' }],
+    name: 'tokenByIndex',
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'index', type: 'uint256' },
+    ],
+    name: 'tokenByIndex',
+    outputs: [{ name: 'tokenId', type: 'uint256' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'tokenId', type: 'uint256' }],
+    name: 'tokenURI',
+    outputs: [{ type: 'string' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ type: 'uint256' }],
+  },
+  {
+    stateMutability: 'payable',
+    type: 'function',
+    inputs: [
+      { name: 'sender', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'tokenId', type: 'uint256' },
+    ],
+    name: 'transferFrom',
     outputs: [],
   },
 ] as const
 
-/**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export const counterAddress = {
-  5: '0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619',
-  1337: '0x948B3c65b89DF0B4894ABE91E6D02FE579834F8F',
-} as const
-
-/**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export const counterConfig = {
-  address: counterAddress,
-  abi: counterABI,
-} as const
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// IMulticall3
+// IERC6551Registry
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const iMulticall3ABI = [
+export const ierc6551RegistryABI = [
+  { type: 'error', inputs: [], name: 'AccountCreationFailed' },
   {
-    stateMutability: 'payable',
-    type: 'function',
+    type: 'event',
+    anonymous: false,
     inputs: [
       {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'salt',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'chainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'tokenContract',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
       },
     ],
-    name: 'aggregate',
-    outputs: [
-      { name: 'blockNumber', internalType: 'uint256', type: 'uint256' },
-      { name: 'returnData', internalType: 'bytes[]', type: 'bytes[]' },
-    ],
+    name: 'ERC6551AccountCreated',
   },
   {
-    stateMutability: 'payable',
+    stateMutability: 'view',
     type: 'function',
     inputs: [
-      {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call3[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'allowFailure', internalType: 'bool', type: 'bool' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: 'implementation', internalType: 'address', type: 'address' },
+      { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenContract', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'aggregate3',
-    outputs: [
-      {
-        name: 'returnData',
-        internalType: 'struct IMulticall3.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'returnData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
+    name: 'account',
+    outputs: [{ name: 'account', internalType: 'address', type: 'address' }],
   },
   {
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
-      {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call3Value[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'allowFailure', internalType: 'bool', type: 'bool' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: 'implementation', internalType: 'address', type: 'address' },
+      { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenContract', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'aggregate3Value',
-    outputs: [
-      {
-        name: 'returnData',
-        internalType: 'struct IMulticall3.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'returnData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+    name: 'createAccount',
+    outputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LocationTile
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export const locationTileABI = [
+  {
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+    inputs: [
+      { name: '_map', internalType: 'address', type: 'address' },
+      { name: '_verifier', internalType: 'address', type: 'address' },
+      { name: '_baseURI', internalType: 'string', type: 'string' },
     ],
   },
+  { type: 'error', inputs: [], name: 'accountNotSender' },
+  { type: 'error', inputs: [], name: 'movingToSameLocation' },
+  { type: 'error', inputs: [], name: 'nonTransferable' },
   {
-    stateMutability: 'payable',
-    type: 'function',
+    type: 'event',
+    anonymous: false,
     inputs: [
       {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
       },
-    ],
-    name: 'blockAndAggregate',
-    outputs: [
-      { name: 'blockNumber', internalType: 'uint256', type: 'uint256' },
-      { name: 'blockHash', internalType: 'bytes32', type: 'bytes32' },
       {
-        name: 'returnData',
-        internalType: 'struct IMulticall3.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'returnData', internalType: 'bytes', type: 'bytes' },
-        ],
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'ApprovalForAll',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
       },
     ],
+    name: 'Move',
   },
   {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getBasefee',
-    outputs: [{ name: 'basefee', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [{ name: 'blockNumber', internalType: 'uint256', type: 'uint256' }],
-    name: 'getBlockHash',
-    outputs: [{ name: 'blockHash', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getBlockNumber',
-    outputs: [
-      { name: 'blockNumber', internalType: 'uint256', type: 'uint256' },
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'ids',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: false,
+      },
+      {
+        name: 'values',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: false,
+      },
     ],
+    name: 'TransferBatch',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TransferSingle',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'value', internalType: 'string', type: 'string', indexed: false },
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
+    ],
+    name: 'URI',
   },
   {
     stateMutability: 'view',
     type: 'function',
-    inputs: [],
-    name: 'getChainId',
-    outputs: [{ name: 'chainid', internalType: 'uint256', type: 'uint256' }],
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'accountPosition',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
   },
   {
     stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getCurrentBlockCoinbase',
-    outputs: [{ name: 'coinbase', internalType: 'address', type: 'address' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getCurrentBlockDifficulty',
-    outputs: [{ name: 'difficulty', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getCurrentBlockGasLimit',
-    outputs: [{ name: 'gaslimit', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getCurrentBlockTimestamp',
-    outputs: [{ name: 'timestamp', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [{ name: 'addr', internalType: 'address', type: 'address' }],
-    name: 'getEthBalance',
-    outputs: [{ name: 'balance', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getLastBlockHash',
-    outputs: [{ name: 'blockHash', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'payable',
     type: 'function',
     inputs: [
-      { name: 'requireSuccess', internalType: 'bool', type: 'bool' },
-      {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'tryAggregate',
-    outputs: [
-      {
-        name: 'returnData',
-        internalType: 'struct IMulticall3.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'returnData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
   },
   {
-    stateMutability: 'payable',
+    stateMutability: 'view',
     type: 'function',
     inputs: [
-      { name: 'requireSuccess', internalType: 'bool', type: 'bool' },
-      {
-        name: 'calls',
-        internalType: 'struct IMulticall3.Call[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: 'accounts', internalType: 'address[]', type: 'address[]' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
     ],
-    name: 'tryBlockAndAggregate',
+    name: 'balanceOfBatch',
+    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'operator', internalType: 'address', type: 'address' },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'map',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'geohash', internalType: 'string', type: 'string' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'move',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'safeBatchTransferFrom',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'approved', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'uri',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'verifier',
     outputs: [
-      { name: 'blockNumber', internalType: 'uint256', type: 'uint256' },
-      { name: 'blockHash', internalType: 'bytes32', type: 'bytes32' },
       {
-        name: 'returnData',
-        internalType: 'struct IMulticall3.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'returnData', internalType: 'bytes', type: 'bytes' },
-        ],
+        name: '',
+        internalType: 'contract ILocationTileVerifier',
+        type: 'address',
       },
     ],
   },
 ] as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export const locationTileAddress = {
+  5: '0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e',
+  1337: '0x6f01E7CD11EBfdCC86C675fE16b5AB789c9d3aE5',
+} as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export const locationTileConfig = {
+  address: locationTileAddress,
+  abi: locationTileABI,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Map
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export const mapABI = [
+  {
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+    inputs: [
+      {
+        name: 'recordTileConfiguration',
+        internalType: 'struct RecordTileFactoryConfig',
+        type: 'tuple',
+        components: [
+          { name: 'registry', internalType: 'address', type: 'address' },
+          { name: 'accountProxy', internalType: 'address', type: 'address' },
+          { name: 'implementation', internalType: 'address', type: 'address' },
+        ],
+      },
+      { name: 'minPrecision', internalType: 'uint256', type: 'uint256' },
+      { name: 'maxPrecision', internalType: 'uint256', type: 'uint256' },
+    ],
+  },
+  { type: 'error', inputs: [], name: 'accountNotSender' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'RecordTileCreated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'RecordTileEntered',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'previousAdminRole',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'newAdminRole',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'RoleAdminChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'RoleGranted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'RoleRevoked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'TileCreated',
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'DEFAULT_ADMIN_ROLE',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'TILE_CREATOR',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'geohash', internalType: 'string', type: 'string' },
+    ],
+    name: 'computeLocalRecord',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'geohash', internalType: 'string', type: 'string' }],
+    name: 'computeRecordTileAddress',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'verifier', internalType: 'address', type: 'address' },
+      { name: 'baseURI', internalType: 'string', type: 'string' },
+    ],
+    name: 'createTile',
+    outputs: [
+      { name: 'tileAddress', internalType: 'address', type: 'address' },
+    ],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'role', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getRoleAdmin',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'grantRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'hasRole',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'tile', internalType: 'address', type: 'address' },
+      { name: 'geohash', internalType: 'string', type: 'string' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'move',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'renounceRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'revokeRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+] as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export const mapAddress = {
+  5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
+  1337: '0xFD6F7A6a5c21A3f503EBaE7a473639974379c351',
+} as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export const mapConfig = { address: mapAddress, abi: mapABI } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link counterABI}__.
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link accountProxyABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export function useCounterRead<
-  TFunctionName extends string,
-  TSelectData = ReadContractResult<typeof counterABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>,
-    'abi' | 'address'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    ...config,
-  } as UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"getNumber"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export function useCounterGetNumber<
-  TFunctionName extends 'getNumber',
-  TSelectData = ReadContractResult<typeof counterABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'getNumber',
-    ...config,
-  } as UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"number"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export function useCounterNumber<
-  TFunctionName extends 'number',
-  TSelectData = ReadContractResult<typeof counterABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'number',
-    ...config,
-  } as UseContractReadConfig<typeof counterABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link counterABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export function useCounterWrite<
+export function useAccountProxyWrite<
   TFunctionName extends string,
   TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof counterAddress,
+  TChainId extends number = keyof typeof accountProxyAddress,
 >(
   config: TMode extends 'prepared'
     ? UseContractWriteConfig<
-        PrepareWriteContractResult<typeof counterABI, string>['request']['abi'],
+        PrepareWriteContractResult<
+          typeof accountProxyABI,
+          string
+        >['request']['abi'],
         TFunctionName,
         TMode
       > & { address?: Address; chainId?: TChainId }
-    : UseContractWriteConfig<typeof counterABI, TFunctionName, TMode> & {
+    : UseContractWriteConfig<typeof accountProxyABI, TFunctionName, TMode> & {
         abi?: never
         address?: never
         chainId?: TChainId
@@ -422,681 +1155,2977 @@ export function useCounterWrite<
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof counterABI, TFunctionName, TMode>({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
+  return useContractWrite<typeof accountProxyABI, TFunctionName, TMode>({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
     ...config,
   } as any)
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"increment"`.
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link accountProxyABI}__ and `functionName` set to `"initialize"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export function useCounterIncrement<
+export function useAccountProxyInitialize<
   TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof counterAddress,
+  TChainId extends number = keyof typeof accountProxyAddress,
 >(
   config: TMode extends 'prepared'
     ? UseContractWriteConfig<
         PrepareWriteContractResult<
-          typeof counterABI,
-          'increment'
+          typeof accountProxyABI,
+          'initialize'
         >['request']['abi'],
-        'increment',
+        'initialize',
         TMode
-      > & { address?: Address; chainId?: TChainId; functionName?: 'increment' }
-    : UseContractWriteConfig<typeof counterABI, 'increment', TMode> & {
+      > & { address?: Address; chainId?: TChainId; functionName?: 'initialize' }
+    : UseContractWriteConfig<typeof accountProxyABI, 'initialize', TMode> & {
         abi?: never
         address?: never
         chainId?: TChainId
-        functionName?: 'increment'
+        functionName?: 'initialize'
       } = {} as any,
 ) {
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof counterABI, 'increment', TMode>({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'increment',
+  return useContractWrite<typeof accountProxyABI, 'initialize', TMode>({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
+    functionName: 'initialize',
     ...config,
   } as any)
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"setNumber"`.
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link accountProxyABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export function useCounterSetNumber<
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof counterAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof counterABI,
-          'setNumber'
-        >['request']['abi'],
-        'setNumber',
-        TMode
-      > & { address?: Address; chainId?: TChainId; functionName?: 'setNumber' }
-    : UseContractWriteConfig<typeof counterABI, 'setNumber', TMode> & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'setNumber'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof counterABI, 'setNumber', TMode>({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'setNumber',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link counterABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
- * -
- */
-export function usePrepareCounterWrite<TFunctionName extends string>(
+export function usePrepareAccountProxyWrite<TFunctionName extends string>(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof counterABI, TFunctionName>,
+    UsePrepareContractWriteConfig<typeof accountProxyABI, TFunctionName>,
     'abi' | 'address'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
 ) {
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
     ...config,
-  } as UsePrepareContractWriteConfig<typeof counterABI, TFunctionName>)
+  } as UsePrepareContractWriteConfig<typeof accountProxyABI, TFunctionName>)
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"increment"`.
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link accountProxyABI}__ and `functionName` set to `"initialize"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export function usePrepareCounterIncrement(
+export function usePrepareAccountProxyInitialize(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof counterABI, 'increment'>,
+    UsePrepareContractWriteConfig<typeof accountProxyABI, 'initialize'>,
     'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
 ) {
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'increment',
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
+    functionName: 'initialize',
     ...config,
-  } as UsePrepareContractWriteConfig<typeof counterABI, 'increment'>)
+  } as UsePrepareContractWriteConfig<typeof accountProxyABI, 'initialize'>)
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link counterABI}__ and `functionName` set to `"setNumber"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link accountProxyABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x5e28e947EcC3684b6F385Dd1bB0C7Fa6f66F8619)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
  * -
  */
-export function usePrepareCounterSetNumber(
+export function useAccountProxyEvent<TEventName extends string>(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof counterABI, 'setNumber'>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof counterAddress } = {} as any,
+    UseContractEventConfig<typeof accountProxyABI, TEventName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
 ) {
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: counterABI,
-    address: counterAddress[chainId as keyof typeof counterAddress],
-    functionName: 'setNumber',
+  return useContractEvent({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
     ...config,
-  } as UsePrepareContractWriteConfig<typeof counterABI, 'setNumber'>)
+  } as UseContractEventConfig<typeof accountProxyABI, TEventName>)
 }
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link accountProxyABI}__ and `eventName` set to `"AdminChanged"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
+ * -
  */
-export function useIMulticall3Read<
+export function useAccountProxyAdminChangedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof accountProxyABI, 'AdminChanged'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
+    eventName: 'AdminChanged',
+    ...config,
+  } as UseContractEventConfig<typeof accountProxyABI, 'AdminChanged'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link accountProxyABI}__ and `eventName` set to `"BeaconUpgraded"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
+ * -
+ */
+export function useAccountProxyBeaconUpgradedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof accountProxyABI, 'BeaconUpgraded'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
+    eventName: 'BeaconUpgraded',
+    ...config,
+  } as UseContractEventConfig<typeof accountProxyABI, 'BeaconUpgraded'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link accountProxyABI}__ and `eventName` set to `"Upgraded"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x55266d75D1a14E4572138116aF39863Ed6596E7F)
+ * -
+ */
+export function useAccountProxyUpgradedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof accountProxyABI, 'Upgraded'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof accountProxyAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: accountProxyABI,
+    address: accountProxyAddress[chainId as keyof typeof accountProxyAddress],
+    eventName: 'Upgraded',
+    ...config,
+  } as UseContractEventConfig<typeof accountProxyABI, 'Upgraded'>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__.
+ */
+export function useErc20Read<
   TFunctionName extends string,
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
 >(
   config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi'
+  > = {} as any,
+) {
+  return useContractRead({ abi: erc20ABI, ...config } as UseContractReadConfig<
+    typeof erc20ABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"allowance"`.
+ */
+export function useErc20Allowance<
+  TFunctionName extends 'allowance',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'allowance',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"balanceOf"`.
+ */
+export function useErc20BalanceOf<
+  TFunctionName extends 'balanceOf',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'balanceOf',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"decimals"`.
+ */
+export function useErc20Decimals<
+  TFunctionName extends 'decimals',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'decimals',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"name"`.
+ */
+export function useErc20Name<
+  TFunctionName extends 'name',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'name',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"symbol"`.
+ */
+export function useErc20Symbol<
+  TFunctionName extends 'symbol',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'symbol',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"totalSupply"`.
+ */
+export function useErc20TotalSupply<
+  TFunctionName extends 'totalSupply',
+  TSelectData = ReadContractResult<typeof erc20ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc20ABI,
+    functionName: 'totalSupply',
+    ...config,
+  } as UseContractReadConfig<typeof erc20ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__.
+ */
+export function useErc20Write<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<typeof erc20ABI, string>['request']['abi'],
+        TFunctionName,
+        TMode
+      >
+    : UseContractWriteConfig<typeof erc20ABI, TFunctionName, TMode> & {
+        abi?: never
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, TFunctionName, TMode>({
+    abi: erc20ABI,
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"approve"`.
+ */
+export function useErc20Approve<TMode extends WriteContractMode = undefined>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc20ABI,
+          'approve'
+        >['request']['abi'],
+        'approve',
+        TMode
+      > & { functionName?: 'approve' }
+    : UseContractWriteConfig<typeof erc20ABI, 'approve', TMode> & {
+        abi?: never
+        functionName?: 'approve'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, 'approve', TMode>({
+    abi: erc20ABI,
+    functionName: 'approve',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"transfer"`.
+ */
+export function useErc20Transfer<TMode extends WriteContractMode = undefined>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc20ABI,
+          'transfer'
+        >['request']['abi'],
+        'transfer',
+        TMode
+      > & { functionName?: 'transfer' }
+    : UseContractWriteConfig<typeof erc20ABI, 'transfer', TMode> & {
+        abi?: never
+        functionName?: 'transfer'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, 'transfer', TMode>({
+    abi: erc20ABI,
+    functionName: 'transfer',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"transferFrom"`.
+ */
+export function useErc20TransferFrom<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc20ABI,
+          'transferFrom'
+        >['request']['abi'],
+        'transferFrom',
+        TMode
+      > & { functionName?: 'transferFrom' }
+    : UseContractWriteConfig<typeof erc20ABI, 'transferFrom', TMode> & {
+        abi?: never
+        functionName?: 'transferFrom'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, 'transferFrom', TMode>({
+    abi: erc20ABI,
+    functionName: 'transferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"increaseAllowance"`.
+ */
+export function useErc20IncreaseAllowance<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc20ABI,
+          'increaseAllowance'
+        >['request']['abi'],
+        'increaseAllowance',
+        TMode
+      > & { functionName?: 'increaseAllowance' }
+    : UseContractWriteConfig<typeof erc20ABI, 'increaseAllowance', TMode> & {
+        abi?: never
+        functionName?: 'increaseAllowance'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, 'increaseAllowance', TMode>({
+    abi: erc20ABI,
+    functionName: 'increaseAllowance',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"decreaseAllowance"`.
+ */
+export function useErc20DecreaseAllowance<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc20ABI,
+          'decreaseAllowance'
+        >['request']['abi'],
+        'decreaseAllowance',
+        TMode
+      > & { functionName?: 'decreaseAllowance' }
+    : UseContractWriteConfig<typeof erc20ABI, 'decreaseAllowance', TMode> & {
+        abi?: never
+        functionName?: 'decreaseAllowance'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc20ABI, 'decreaseAllowance', TMode>({
+    abi: erc20ABI,
+    functionName: 'decreaseAllowance',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__.
+ */
+export function usePrepareErc20Write<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, TFunctionName>,
+    'abi'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"approve"`.
+ */
+export function usePrepareErc20Approve(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, 'approve'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    functionName: 'approve',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, 'approve'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"transfer"`.
+ */
+export function usePrepareErc20Transfer(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, 'transfer'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    functionName: 'transfer',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, 'transfer'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"transferFrom"`.
+ */
+export function usePrepareErc20TransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, 'transferFrom'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    functionName: 'transferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, 'transferFrom'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"increaseAllowance"`.
+ */
+export function usePrepareErc20IncreaseAllowance(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, 'increaseAllowance'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    functionName: 'increaseAllowance',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, 'increaseAllowance'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc20ABI}__ and `functionName` set to `"decreaseAllowance"`.
+ */
+export function usePrepareErc20DecreaseAllowance(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc20ABI, 'decreaseAllowance'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc20ABI,
+    functionName: 'decreaseAllowance',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc20ABI, 'decreaseAllowance'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc20ABI}__.
+ */
+export function useErc20Event<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof erc20ABI, TEventName>,
+    'abi'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc20ABI,
+    ...config,
+  } as UseContractEventConfig<typeof erc20ABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc20ABI}__ and `eventName` set to `"Approval"`.
+ */
+export function useErc20ApprovalEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc20ABI, 'Approval'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc20ABI,
+    eventName: 'Approval',
+    ...config,
+  } as UseContractEventConfig<typeof erc20ABI, 'Approval'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc20ABI}__ and `eventName` set to `"Transfer"`.
+ */
+export function useErc20TransferEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc20ABI, 'Transfer'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc20ABI,
+    eventName: 'Transfer',
+    ...config,
+  } as UseContractEventConfig<typeof erc20ABI, 'Transfer'>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc6551RegistryABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryRead<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof erc6551RegistryABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<
+      typeof erc6551RegistryABI,
+      TFunctionName,
+      TSelectData
+    >,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    ...config,
+  } as UseContractReadConfig<
+    typeof erc6551RegistryABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc6551RegistryABI}__ and `functionName` set to `"account"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryAccount<
+  TFunctionName extends 'account',
+  TSelectData = ReadContractResult<typeof erc6551RegistryABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<
+      typeof erc6551RegistryABI,
+      TFunctionName,
+      TSelectData
+    >,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    functionName: 'account',
+    ...config,
+  } as UseContractReadConfig<
+    typeof erc6551RegistryABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc6551RegistryABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryWrite<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof erc6551RegistryAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc6551RegistryABI,
+          string
+        >['request']['abi'],
+        TFunctionName,
+        TMode
+      > & { address?: Address; chainId?: TChainId }
+    : UseContractWriteConfig<
+        typeof erc6551RegistryABI,
+        TFunctionName,
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof erc6551RegistryABI, TFunctionName, TMode>({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc6551RegistryABI}__ and `functionName` set to `"createAccount"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryCreateAccount<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof erc6551RegistryAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc6551RegistryABI,
+          'createAccount'
+        >['request']['abi'],
+        'createAccount',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'createAccount'
+      }
+    : UseContractWriteConfig<
+        typeof erc6551RegistryABI,
+        'createAccount',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'createAccount'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof erc6551RegistryABI, 'createAccount', TMode>({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    functionName: 'createAccount',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc6551RegistryABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function usePrepareErc6551RegistryWrite<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc6551RegistryABI, TFunctionName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc6551RegistryABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc6551RegistryABI}__ and `functionName` set to `"createAccount"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function usePrepareErc6551RegistryCreateAccount(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc6551RegistryABI, 'createAccount'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    functionName: 'createAccount',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof erc6551RegistryABI,
+    'createAccount'
+  >)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc6551RegistryABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryEvent<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof erc6551RegistryABI, TEventName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    ...config,
+  } as UseContractEventConfig<typeof erc6551RegistryABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc6551RegistryABI}__ and `eventName` set to `"ERC6551AccountCreated"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x000000006551c19487814612e58FE06813775758)
+ * -
+ */
+export function useErc6551RegistryErc6551AccountCreatedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc6551RegistryABI, 'ERC6551AccountCreated'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof erc6551RegistryAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: erc6551RegistryABI,
+    address:
+      erc6551RegistryAddress[chainId as keyof typeof erc6551RegistryAddress],
+    eventName: 'ERC6551AccountCreated',
+    ...config,
+  } as UseContractEventConfig<
+    typeof erc6551RegistryABI,
+    'ERC6551AccountCreated'
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__.
+ */
+export function useErc721Read<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi'
+  > = {} as any,
+) {
+  return useContractRead({ abi: erc721ABI, ...config } as UseContractReadConfig<
+    typeof erc721ABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"balanceOf"`.
+ */
+export function useErc721BalanceOf<
+  TFunctionName extends 'balanceOf',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'balanceOf',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"getApproved"`.
+ */
+export function useErc721GetApproved<
+  TFunctionName extends 'getApproved',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'getApproved',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"isApprovedForAll"`.
+ */
+export function useErc721IsApprovedForAll<
+  TFunctionName extends 'isApprovedForAll',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'isApprovedForAll',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"name"`.
+ */
+export function useErc721Name<
+  TFunctionName extends 'name',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'name',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"ownerOf"`.
+ */
+export function useErc721OwnerOf<
+  TFunctionName extends 'ownerOf',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'ownerOf',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"symbol"`.
+ */
+export function useErc721Symbol<
+  TFunctionName extends 'symbol',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'symbol',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"tokenByIndex"`.
+ */
+export function useErc721TokenByIndex<
+  TFunctionName extends 'tokenByIndex',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'tokenByIndex',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"tokenURI"`.
+ */
+export function useErc721TokenUri<
+  TFunctionName extends 'tokenURI',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'tokenURI',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"totalSupply"`.
+ */
+export function useErc721TotalSupply<
+  TFunctionName extends 'totalSupply',
+  TSelectData = ReadContractResult<typeof erc721ABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return useContractRead({
+    abi: erc721ABI,
+    functionName: 'totalSupply',
+    ...config,
+  } as UseContractReadConfig<typeof erc721ABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc721ABI}__.
+ */
+export function useErc721Write<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<typeof erc721ABI, string>['request']['abi'],
+        TFunctionName,
+        TMode
+      >
+    : UseContractWriteConfig<typeof erc721ABI, TFunctionName, TMode> & {
+        abi?: never
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc721ABI, TFunctionName, TMode>({
+    abi: erc721ABI,
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"approve"`.
+ */
+export function useErc721Approve<TMode extends WriteContractMode = undefined>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc721ABI,
+          'approve'
+        >['request']['abi'],
+        'approve',
+        TMode
+      > & { functionName?: 'approve' }
+    : UseContractWriteConfig<typeof erc721ABI, 'approve', TMode> & {
+        abi?: never
+        functionName?: 'approve'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc721ABI, 'approve', TMode>({
+    abi: erc721ABI,
+    functionName: 'approve',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"safeTransferFrom"`.
+ */
+export function useErc721SafeTransferFrom<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc721ABI,
+          'safeTransferFrom'
+        >['request']['abi'],
+        'safeTransferFrom',
+        TMode
+      > & { functionName?: 'safeTransferFrom' }
+    : UseContractWriteConfig<typeof erc721ABI, 'safeTransferFrom', TMode> & {
+        abi?: never
+        functionName?: 'safeTransferFrom'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc721ABI, 'safeTransferFrom', TMode>({
+    abi: erc721ABI,
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"setApprovalForAll"`.
+ */
+export function useErc721SetApprovalForAll<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc721ABI,
+          'setApprovalForAll'
+        >['request']['abi'],
+        'setApprovalForAll',
+        TMode
+      > & { functionName?: 'setApprovalForAll' }
+    : UseContractWriteConfig<typeof erc721ABI, 'setApprovalForAll', TMode> & {
+        abi?: never
+        functionName?: 'setApprovalForAll'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc721ABI, 'setApprovalForAll', TMode>({
+    abi: erc721ABI,
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"transferFrom"`.
+ */
+export function useErc721TransferFrom<
+  TMode extends WriteContractMode = undefined,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof erc721ABI,
+          'transferFrom'
+        >['request']['abi'],
+        'transferFrom',
+        TMode
+      > & { functionName?: 'transferFrom' }
+    : UseContractWriteConfig<typeof erc721ABI, 'transferFrom', TMode> & {
+        abi?: never
+        functionName?: 'transferFrom'
+      } = {} as any,
+) {
+  return useContractWrite<typeof erc721ABI, 'transferFrom', TMode>({
+    abi: erc721ABI,
+    functionName: 'transferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc721ABI}__.
+ */
+export function usePrepareErc721Write<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc721ABI, TFunctionName>,
+    'abi'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc721ABI,
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc721ABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"approve"`.
+ */
+export function usePrepareErc721Approve(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc721ABI, 'approve'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc721ABI,
+    functionName: 'approve',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc721ABI, 'approve'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"safeTransferFrom"`.
+ */
+export function usePrepareErc721SafeTransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc721ABI, 'safeTransferFrom'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc721ABI,
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc721ABI, 'safeTransferFrom'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"setApprovalForAll"`.
+ */
+export function usePrepareErc721SetApprovalForAll(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc721ABI, 'setApprovalForAll'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc721ABI,
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc721ABI, 'setApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link erc721ABI}__ and `functionName` set to `"transferFrom"`.
+ */
+export function usePrepareErc721TransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof erc721ABI, 'transferFrom'>,
+    'abi' | 'functionName'
+  > = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: erc721ABI,
+    functionName: 'transferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof erc721ABI, 'transferFrom'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc721ABI}__.
+ */
+export function useErc721Event<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof erc721ABI, TEventName>,
+    'abi'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc721ABI,
+    ...config,
+  } as UseContractEventConfig<typeof erc721ABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc721ABI}__ and `eventName` set to `"Approval"`.
+ */
+export function useErc721ApprovalEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc721ABI, 'Approval'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc721ABI,
+    eventName: 'Approval',
+    ...config,
+  } as UseContractEventConfig<typeof erc721ABI, 'Approval'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc721ABI}__ and `eventName` set to `"ApprovalForAll"`.
+ */
+export function useErc721ApprovalForAllEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc721ABI, 'ApprovalForAll'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc721ABI,
+    eventName: 'ApprovalForAll',
+    ...config,
+  } as UseContractEventConfig<typeof erc721ABI, 'ApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link erc721ABI}__ and `eventName` set to `"Transfer"`.
+ */
+export function useErc721TransferEvent(
+  config: Omit<
+    UseContractEventConfig<typeof erc721ABI, 'Transfer'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: erc721ABI,
+    eventName: 'Transfer',
+    ...config,
+  } as UseContractEventConfig<typeof erc721ABI, 'Transfer'>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link ierc6551RegistryABI}__.
+ */
+export function useIerc6551RegistryRead<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof ierc6551RegistryABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<
+      typeof ierc6551RegistryABI,
+      TFunctionName,
+      TSelectData
+    >,
     'abi'
   > = {} as any,
 ) {
   return useContractRead({
-    abi: iMulticall3ABI,
+    abi: ierc6551RegistryABI,
     ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
+  } as UseContractReadConfig<
+    typeof ierc6551RegistryABI,
+    TFunctionName,
+    TSelectData
+  >)
 }
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getBasefee"`.
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link ierc6551RegistryABI}__ and `functionName` set to `"account"`.
  */
-export function useIMulticall3GetBasefee<
-  TFunctionName extends 'getBasefee',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
+export function useIerc6551RegistryAccount<
+  TFunctionName extends 'account',
+  TSelectData = ReadContractResult<typeof ierc6551RegistryABI, TFunctionName>,
 >(
   config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
+    UseContractReadConfig<
+      typeof ierc6551RegistryABI,
+      TFunctionName,
+      TSelectData
+    >,
     'abi' | 'functionName'
   > = {} as any,
 ) {
   return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getBasefee',
+    abi: ierc6551RegistryABI,
+    functionName: 'account',
     ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
+  } as UseContractReadConfig<
+    typeof ierc6551RegistryABI,
+    TFunctionName,
+    TSelectData
+  >)
 }
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getBlockHash"`.
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link ierc6551RegistryABI}__.
  */
-export function useIMulticall3GetBlockHash<
-  TFunctionName extends 'getBlockHash',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getBlockHash',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getBlockNumber"`.
- */
-export function useIMulticall3GetBlockNumber<
-  TFunctionName extends 'getBlockNumber',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getBlockNumber',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getChainId"`.
- */
-export function useIMulticall3GetChainId<
-  TFunctionName extends 'getChainId',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getChainId',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getCurrentBlockCoinbase"`.
- */
-export function useIMulticall3GetCurrentBlockCoinbase<
-  TFunctionName extends 'getCurrentBlockCoinbase',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getCurrentBlockCoinbase',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getCurrentBlockDifficulty"`.
- */
-export function useIMulticall3GetCurrentBlockDifficulty<
-  TFunctionName extends 'getCurrentBlockDifficulty',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getCurrentBlockDifficulty',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getCurrentBlockGasLimit"`.
- */
-export function useIMulticall3GetCurrentBlockGasLimit<
-  TFunctionName extends 'getCurrentBlockGasLimit',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getCurrentBlockGasLimit',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getCurrentBlockTimestamp"`.
- */
-export function useIMulticall3GetCurrentBlockTimestamp<
-  TFunctionName extends 'getCurrentBlockTimestamp',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getCurrentBlockTimestamp',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getEthBalance"`.
- */
-export function useIMulticall3GetEthBalance<
-  TFunctionName extends 'getEthBalance',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getEthBalance',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"getLastBlockHash"`.
- */
-export function useIMulticall3GetLastBlockHash<
-  TFunctionName extends 'getLastBlockHash',
-  TSelectData = ReadContractResult<typeof iMulticall3ABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: iMulticall3ABI,
-    functionName: 'getLastBlockHash',
-    ...config,
-  } as UseContractReadConfig<typeof iMulticall3ABI, TFunctionName, TSelectData>)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__.
- */
-export function useIMulticall3Write<
+export function useIerc6551RegistryWrite<
   TFunctionName extends string,
   TMode extends WriteContractMode = undefined,
 >(
   config: TMode extends 'prepared'
     ? UseContractWriteConfig<
         PrepareWriteContractResult<
-          typeof iMulticall3ABI,
+          typeof ierc6551RegistryABI,
           string
         >['request']['abi'],
         TFunctionName,
         TMode
       >
-    : UseContractWriteConfig<typeof iMulticall3ABI, TFunctionName, TMode> & {
-        abi?: never
-      } = {} as any,
-) {
-  return useContractWrite<typeof iMulticall3ABI, TFunctionName, TMode>({
-    abi: iMulticall3ABI,
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate"`.
- */
-export function useIMulticall3Aggregate<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'aggregate'
-        >['request']['abi'],
-        'aggregate',
-        TMode
-      > & { functionName?: 'aggregate' }
-    : UseContractWriteConfig<typeof iMulticall3ABI, 'aggregate', TMode> & {
-        abi?: never
-        functionName?: 'aggregate'
-      } = {} as any,
-) {
-  return useContractWrite<typeof iMulticall3ABI, 'aggregate', TMode>({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate3"`.
- */
-export function useIMulticall3Aggregate3<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'aggregate3'
-        >['request']['abi'],
-        'aggregate3',
-        TMode
-      > & { functionName?: 'aggregate3' }
-    : UseContractWriteConfig<typeof iMulticall3ABI, 'aggregate3', TMode> & {
-        abi?: never
-        functionName?: 'aggregate3'
-      } = {} as any,
-) {
-  return useContractWrite<typeof iMulticall3ABI, 'aggregate3', TMode>({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate3',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate3Value"`.
- */
-export function useIMulticall3Aggregate3Value<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'aggregate3Value'
-        >['request']['abi'],
-        'aggregate3Value',
-        TMode
-      > & { functionName?: 'aggregate3Value' }
     : UseContractWriteConfig<
-        typeof iMulticall3ABI,
-        'aggregate3Value',
+        typeof ierc6551RegistryABI,
+        TFunctionName,
         TMode
       > & {
         abi?: never
-        functionName?: 'aggregate3Value'
       } = {} as any,
 ) {
-  return useContractWrite<typeof iMulticall3ABI, 'aggregate3Value', TMode>({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate3Value',
+  return useContractWrite<typeof ierc6551RegistryABI, TFunctionName, TMode>({
+    abi: ierc6551RegistryABI,
     ...config,
   } as any)
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"blockAndAggregate"`.
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link ierc6551RegistryABI}__ and `functionName` set to `"createAccount"`.
  */
-export function useIMulticall3BlockAndAggregate<
+export function useIerc6551RegistryCreateAccount<
   TMode extends WriteContractMode = undefined,
 >(
   config: TMode extends 'prepared'
     ? UseContractWriteConfig<
         PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'blockAndAggregate'
+          typeof ierc6551RegistryABI,
+          'createAccount'
         >['request']['abi'],
-        'blockAndAggregate',
+        'createAccount',
         TMode
-      > & { functionName?: 'blockAndAggregate' }
+      > & { functionName?: 'createAccount' }
     : UseContractWriteConfig<
-        typeof iMulticall3ABI,
-        'blockAndAggregate',
+        typeof ierc6551RegistryABI,
+        'createAccount',
         TMode
       > & {
         abi?: never
-        functionName?: 'blockAndAggregate'
+        functionName?: 'createAccount'
       } = {} as any,
 ) {
-  return useContractWrite<typeof iMulticall3ABI, 'blockAndAggregate', TMode>({
-    abi: iMulticall3ABI,
-    functionName: 'blockAndAggregate',
+  return useContractWrite<typeof ierc6551RegistryABI, 'createAccount', TMode>({
+    abi: ierc6551RegistryABI,
+    functionName: 'createAccount',
     ...config,
   } as any)
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"tryAggregate"`.
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link ierc6551RegistryABI}__.
  */
-export function useIMulticall3TryAggregate<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'tryAggregate'
-        >['request']['abi'],
-        'tryAggregate',
-        TMode
-      > & { functionName?: 'tryAggregate' }
-    : UseContractWriteConfig<typeof iMulticall3ABI, 'tryAggregate', TMode> & {
-        abi?: never
-        functionName?: 'tryAggregate'
-      } = {} as any,
-) {
-  return useContractWrite<typeof iMulticall3ABI, 'tryAggregate', TMode>({
-    abi: iMulticall3ABI,
-    functionName: 'tryAggregate',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"tryBlockAndAggregate"`.
- */
-export function useIMulticall3TryBlockAndAggregate<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof iMulticall3ABI,
-          'tryBlockAndAggregate'
-        >['request']['abi'],
-        'tryBlockAndAggregate',
-        TMode
-      > & { functionName?: 'tryBlockAndAggregate' }
-    : UseContractWriteConfig<
-        typeof iMulticall3ABI,
-        'tryBlockAndAggregate',
-        TMode
-      > & {
-        abi?: never
-        functionName?: 'tryBlockAndAggregate'
-      } = {} as any,
-) {
-  return useContractWrite<typeof iMulticall3ABI, 'tryBlockAndAggregate', TMode>(
-    {
-      abi: iMulticall3ABI,
-      functionName: 'tryBlockAndAggregate',
-      ...config,
-    } as any,
-  )
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__.
- */
-export function usePrepareIMulticall3Write<TFunctionName extends string>(
+export function usePrepareIerc6551RegistryWrite<TFunctionName extends string>(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, TFunctionName>,
+    UsePrepareContractWriteConfig<typeof ierc6551RegistryABI, TFunctionName>,
     'abi'
   > = {} as any,
 ) {
   return usePrepareContractWrite({
-    abi: iMulticall3ABI,
+    abi: ierc6551RegistryABI,
     ...config,
-  } as UsePrepareContractWriteConfig<typeof iMulticall3ABI, TFunctionName>)
+  } as UsePrepareContractWriteConfig<typeof ierc6551RegistryABI, TFunctionName>)
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate"`.
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link ierc6551RegistryABI}__ and `functionName` set to `"createAccount"`.
  */
-export function usePrepareIMulticall3Aggregate(
+export function usePrepareIerc6551RegistryCreateAccount(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate'>,
+    UsePrepareContractWriteConfig<typeof ierc6551RegistryABI, 'createAccount'>,
     'abi' | 'functionName'
   > = {} as any,
 ) {
   return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate',
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate'>)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate3"`.
- */
-export function usePrepareIMulticall3Aggregate3(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate3'>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate3',
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate3'>)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"aggregate3Value"`.
- */
-export function usePrepareIMulticall3Aggregate3Value(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate3Value'>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'aggregate3Value',
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'aggregate3Value'>)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"blockAndAggregate"`.
- */
-export function usePrepareIMulticall3BlockAndAggregate(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'blockAndAggregate'>,
-    'abi' | 'functionName'
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'blockAndAggregate',
+    abi: ierc6551RegistryABI,
+    functionName: 'createAccount',
     ...config,
   } as UsePrepareContractWriteConfig<
-    typeof iMulticall3ABI,
-    'blockAndAggregate'
+    typeof ierc6551RegistryABI,
+    'createAccount'
   >)
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"tryAggregate"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link ierc6551RegistryABI}__.
  */
-export function usePrepareIMulticall3TryAggregate(
+export function useIerc6551RegistryEvent<TEventName extends string>(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'tryAggregate'>,
-    'abi' | 'functionName'
+    UseContractEventConfig<typeof ierc6551RegistryABI, TEventName>,
+    'abi'
   > = {} as any,
 ) {
-  return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'tryAggregate',
+  return useContractEvent({
+    abi: ierc6551RegistryABI,
     ...config,
-  } as UsePrepareContractWriteConfig<typeof iMulticall3ABI, 'tryAggregate'>)
+  } as UseContractEventConfig<typeof ierc6551RegistryABI, TEventName>)
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link iMulticall3ABI}__ and `functionName` set to `"tryBlockAndAggregate"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link ierc6551RegistryABI}__ and `eventName` set to `"ERC6551AccountCreated"`.
  */
-export function usePrepareIMulticall3TryBlockAndAggregate(
+export function useIerc6551RegistryErc6551AccountCreatedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof ierc6551RegistryABI, 'ERC6551AccountCreated'>,
+    'abi' | 'eventName'
+  > = {} as any,
+) {
+  return useContractEvent({
+    abi: ierc6551RegistryABI,
+    eventName: 'ERC6551AccountCreated',
+    ...config,
+  } as UseContractEventConfig<
+    typeof ierc6551RegistryABI,
+    'ERC6551AccountCreated'
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileRead<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"accountPosition"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileAccountPosition<
+  TFunctionName extends 'accountPosition',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'accountPosition',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"balanceOf"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileBalanceOf<
+  TFunctionName extends 'balanceOf',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'balanceOf',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"balanceOfBatch"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileBalanceOfBatch<
+  TFunctionName extends 'balanceOfBatch',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'balanceOfBatch',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"isApprovedForAll"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileIsApprovedForAll<
+  TFunctionName extends 'isApprovedForAll',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'isApprovedForAll',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"map"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileMap<
+  TFunctionName extends 'map',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'map',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"supportsInterface"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileSupportsInterface<
+  TFunctionName extends 'supportsInterface',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'supportsInterface',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"uri"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileUri<
+  TFunctionName extends 'uri',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'uri',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"verifier"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileVerifier<
+  TFunctionName extends 'verifier',
+  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'verifier',
+    ...config,
+  } as UseContractReadConfig<
+    typeof locationTileABI,
+    TFunctionName,
+    TSelectData
+  >)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileWrite<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof locationTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof locationTileABI,
+          string
+        >['request']['abi'],
+        TFunctionName,
+        TMode
+      > & { address?: Address; chainId?: TChainId }
+    : UseContractWriteConfig<typeof locationTileABI, TFunctionName, TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof locationTileABI, TFunctionName, TMode>({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"move"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileMove<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof locationTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof locationTileABI,
+          'move'
+        >['request']['abi'],
+        'move',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'move' }
+    : UseContractWriteConfig<typeof locationTileABI, 'move', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'move'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof locationTileABI, 'move', TMode>({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'move',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileSafeBatchTransferFrom<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof locationTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof locationTileABI,
+          'safeBatchTransferFrom'
+        >['request']['abi'],
+        'safeBatchTransferFrom',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'safeBatchTransferFrom'
+      }
+    : UseContractWriteConfig<
+        typeof locationTileABI,
+        'safeBatchTransferFrom',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'safeBatchTransferFrom'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<
+    typeof locationTileABI,
+    'safeBatchTransferFrom',
+    TMode
+  >({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'safeBatchTransferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeTransferFrom"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileSafeTransferFrom<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof locationTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof locationTileABI,
+          'safeTransferFrom'
+        >['request']['abi'],
+        'safeTransferFrom',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'safeTransferFrom'
+      }
+    : UseContractWriteConfig<
+        typeof locationTileABI,
+        'safeTransferFrom',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'safeTransferFrom'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof locationTileABI, 'safeTransferFrom', TMode>({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"setApprovalForAll"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileSetApprovalForAll<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof locationTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof locationTileABI,
+          'setApprovalForAll'
+        >['request']['abi'],
+        'setApprovalForAll',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'setApprovalForAll'
+      }
+    : UseContractWriteConfig<
+        typeof locationTileABI,
+        'setApprovalForAll',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'setApprovalForAll'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof locationTileABI, 'setApprovalForAll', TMode>({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function usePrepareLocationTileWrite<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof locationTileABI, TFunctionName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof locationTileABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"move"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function usePrepareLocationTileMove(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof locationTileABI, 'move'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'move',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof locationTileABI, 'move'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function usePrepareLocationTileSafeBatchTransferFrom(
   config: Omit<
     UsePrepareContractWriteConfig<
-      typeof iMulticall3ABI,
-      'tryBlockAndAggregate'
+      typeof locationTileABI,
+      'safeBatchTransferFrom'
     >,
-    'abi' | 'functionName'
-  > = {} as any,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
-    abi: iMulticall3ABI,
-    functionName: 'tryBlockAndAggregate',
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'safeBatchTransferFrom',
     ...config,
   } as UsePrepareContractWriteConfig<
-    typeof iMulticall3ABI,
-    'tryBlockAndAggregate'
+    typeof locationTileABI,
+    'safeBatchTransferFrom'
   >)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeTransferFrom"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function usePrepareLocationTileSafeTransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof locationTileABI, 'safeTransferFrom'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof locationTileABI,
+    'safeTransferFrom'
+  >)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"setApprovalForAll"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function usePrepareLocationTileSetApprovalForAll(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof locationTileABI, 'setApprovalForAll'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof locationTileABI,
+    'setApprovalForAll'
+  >)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileEvent<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, TEventName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"ApprovalForAll"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileApprovalForAllEvent(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, 'ApprovalForAll'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    eventName: 'ApprovalForAll',
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, 'ApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"Move"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileMoveEvent(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, 'Move'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    eventName: 'Move',
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, 'Move'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"TransferBatch"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileTransferBatchEvent(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, 'TransferBatch'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    eventName: 'TransferBatch',
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, 'TransferBatch'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"TransferSingle"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileTransferSingleEvent(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, 'TransferSingle'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    eventName: 'TransferSingle',
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, 'TransferSingle'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"URI"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * -
+ */
+export function useLocationTileUriEvent(
+  config: Omit<
+    UseContractEventConfig<typeof locationTileABI, 'URI'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: locationTileABI,
+    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
+    eventName: 'URI',
+    ...config,
+  } as UseContractEventConfig<typeof locationTileABI, 'URI'>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRead<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"DEFAULT_ADMIN_ROLE"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapDefaultAdminRole<
+  TFunctionName extends 'DEFAULT_ADMIN_ROLE',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'DEFAULT_ADMIN_ROLE',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"TILE_CREATOR"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapTileCreator<
+  TFunctionName extends 'TILE_CREATOR',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'TILE_CREATOR',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"computeLocalRecord"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapComputeLocalRecord<
+  TFunctionName extends 'computeLocalRecord',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'computeLocalRecord',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"computeRecordTileAddress"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapComputeRecordTileAddress<
+  TFunctionName extends 'computeRecordTileAddress',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'computeRecordTileAddress',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"getRoleAdmin"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapGetRoleAdmin<
+  TFunctionName extends 'getRoleAdmin',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'getRoleAdmin',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"hasRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapHasRole<
+  TFunctionName extends 'hasRole',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'hasRole',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"supportsInterface"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapSupportsInterface<
+  TFunctionName extends 'supportsInterface',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'supportsInterface',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapWrite<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<typeof mapABI, string>['request']['abi'],
+        TFunctionName,
+        TMode
+      > & { address?: Address; chainId?: TChainId }
+    : UseContractWriteConfig<typeof mapABI, TFunctionName, TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, TFunctionName, TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createTile"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapCreateTile<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'createTile'
+        >['request']['abi'],
+        'createTile',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'createTile' }
+    : UseContractWriteConfig<typeof mapABI, 'createTile', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'createTile'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'createTile', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'createTile',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"grantRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapGrantRole<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'grantRole'
+        >['request']['abi'],
+        'grantRole',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'grantRole' }
+    : UseContractWriteConfig<typeof mapABI, 'grantRole', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'grantRole'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'grantRole', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'grantRole',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"move"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapMove<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<typeof mapABI, 'move'>['request']['abi'],
+        'move',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'move' }
+    : UseContractWriteConfig<typeof mapABI, 'move', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'move'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'move', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'move',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"renounceRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRenounceRole<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'renounceRole'
+        >['request']['abi'],
+        'renounceRole',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'renounceRole'
+      }
+    : UseContractWriteConfig<typeof mapABI, 'renounceRole', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'renounceRole'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'renounceRole', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'renounceRole',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"revokeRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRevokeRole<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'revokeRole'
+        >['request']['abi'],
+        'revokeRole',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'revokeRole' }
+    : UseContractWriteConfig<typeof mapABI, 'revokeRole', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'revokeRole'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'revokeRole', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'revokeRole',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapWrite<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, TFunctionName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createTile"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapCreateTile(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'createTile'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'createTile',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'createTile'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"grantRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapGrantRole(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'grantRole'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'grantRole',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'grantRole'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"move"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapMove(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'move'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'move',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'move'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"renounceRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapRenounceRole(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'renounceRole'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'renounceRole',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'renounceRole'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"revokeRole"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function usePrepareMapRevokeRole(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'revokeRole'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'revokeRole',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'revokeRole'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapEvent<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, TEventName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RecordTileCreated"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRecordTileCreatedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'RecordTileCreated'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'RecordTileCreated',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'RecordTileCreated'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RecordTileEntered"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRecordTileEnteredEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'RecordTileEntered'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'RecordTileEntered',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'RecordTileEntered'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleAdminChanged"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRoleAdminChangedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'RoleAdminChanged'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'RoleAdminChanged',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'RoleAdminChanged'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleGranted"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRoleGrantedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'RoleGranted'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'RoleGranted',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'RoleGranted'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleRevoked"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapRoleRevokedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'RoleRevoked'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'RoleRevoked',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'RoleRevoked'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"TileCreated"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export function useMapTileCreatedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'TileCreated'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'TileCreated',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'TileCreated'>)
 }

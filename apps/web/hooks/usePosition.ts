@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { produce } from "immer";
-import { commonLocations, globeFeature } from "@/services/constants";
+import { commonLocations } from "@/services/constants";
 import { Feature, Polygon, bboxPolygon, difference } from "@turf/turf";
 import ngeohash from "ngeohash";
+import { useEffect } from "react";
 
 export type Positon = {
   latitude: number;
@@ -22,7 +23,7 @@ type PositionStore = {
   setPrecision: (precision: number) => void;
 };
 
-export const usePosition = create<PositionStore>((set) => ({
+const usePositionStore = create<PositionStore>((set) => ({
   position: {
     latitude: commonLocations.paris.latitude,
     longitude: commonLocations.paris.longitude,
@@ -47,10 +48,7 @@ export const usePosition = create<PositionStore>((set) => ({
         );
         state.position.geohash = new_hash;
         state.position.precision = precision;
-        state.position.feature = difference(
-          globeFeature,
-          bboxPolygon(ngeohash.decode_bbox(new_hash))
-        );
+        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
       })
     );
   },
@@ -65,11 +63,32 @@ export const usePosition = create<PositionStore>((set) => ({
         state.position.latitude = latitude;
         state.position.longitude = longitude;
         state.position.geohash = new_hash;
-        state.position.feature = difference(
-          globeFeature,
-          bboxPolygon(ngeohash.decode_bbox(new_hash))
-        );
+        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
       })
     );
   },
 }));
+
+export const usePosition: () => PositionStore = () => {
+  const store = usePositionStore();
+
+  /**
+   * REMOVE_AFTER_INDEXING
+   * Restore position from localStorage
+   */
+  useEffect(() => {
+    if (localStorage.getItem("position") == null) return;
+
+    const previousPosition = JSON.parse(localStorage.getItem("position")!);
+
+    if (previousPosition) {
+      store.updatePosition(
+        previousPosition.latitude,
+        previousPosition.longitude
+      );
+      store.setPrecision(previousPosition.precision);
+    }
+  }, []);
+
+  return store;
+};

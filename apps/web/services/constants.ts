@@ -1,4 +1,4 @@
-import { Feature, Polygon } from "@turf/turf";
+import { Feature, MultiLineString, Polygon, Properties } from "@turf/turf";
 
 export const commonLocations = {
   toulouse: {
@@ -15,6 +15,24 @@ export const commonLocations = {
     longitude: 3.057256,
     latitude: 50.631813,
     zoom: 0,
+  },
+};
+
+export const emptyFeature = {
+  type: "Feature",
+  properties: {},
+  geometry: {
+    type: "Polygon",
+    coordinates: [],
+  },
+};
+
+export const emptyMultilineString: Feature<MultiLineString, Properties> = {
+  type: "Feature",
+  properties: {},
+  geometry: {
+    type: "MultiLineString",
+    coordinates: [],
   },
 };
 
