@@ -4,7 +4,7 @@ services:
     image: ghcr.io/foundry-rs/foundry:nightly-c948388a0768eb0017dd579b1ad1d8b4f33627c4
     ports:
       - "8545:8545"
-    command: ["anvil --chain-id 1337 --host 0.0.0.0"]
+    command: ["anvil --chain-id 1337 --host 0.0.0.0 --steps-tracing"]
   graph-node:
     image: graphprotocol/graph-node
     ports:
@@ -24,8 +24,10 @@ services:
       postgres_pass: let-me-in
       postgres_db: graph-node
       ipfs: "ipfs:5001"
-      ethereum: "mainnet:http://anvil:8545"
+      ethereum: "localhost:http://anvil:8545"
       GRAPH_LOG: info
+      ETHEREUM_REORG_THRESHOLD: 1
+      ETHEREUM_ANCESTOR_COUNT: 1
   ipfs:
     image: ipfs/kubo:v0.14.0
     ports:

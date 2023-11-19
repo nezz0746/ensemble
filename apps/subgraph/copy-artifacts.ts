@@ -1,8 +1,8 @@
-import { mapAddress } from "wagmi-config/generated";
+import { mapAddress, mapABI, locationTileABI } from "wagmi-config/generated";
 import fs from "fs/promises";
 
 const chainIdToNetwork = {
-  1337: "mainnet",
+  1337: "localhost",
   5: "goerli",
 };
 
@@ -21,6 +21,11 @@ const main = async () => {
       )
     );
   }
+  await fs.writeFile("./abis/Map.json", JSON.stringify(mapABI, null, 2));
+  await fs.writeFile(
+    "./abis/LocationTile.json",
+    JSON.stringify(locationTileABI, null, 2)
+  );
 };
 
 main();

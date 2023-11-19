@@ -42,7 +42,7 @@ const useVisitedGeohashes = () => {
 
     const filter = await client.createEventFilter({
       address: mapAddress,
-      event: getAbiItem({ abi: mapABI, name: "RecordTileEntered" }),
+      event: getAbiItem({ abi: mapABI, name: "LocalRecordDeployed" }),
       fromBlock: block < 0 ? 0n : block,
       args: {
         recipient: address,

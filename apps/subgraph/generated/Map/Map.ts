@@ -10,42 +10,16 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class RecordTileCreated extends ethereum.Event {
-  get params(): RecordTileCreated__Params {
-    return new RecordTileCreated__Params(this);
+export class LocalRecordDeployed extends ethereum.Event {
+  get params(): LocalRecordDeployed__Params {
+    return new LocalRecordDeployed__Params(this);
   }
 }
 
-export class RecordTileCreated__Params {
-  _event: RecordTileCreated;
+export class LocalRecordDeployed__Params {
+  _event: LocalRecordDeployed;
 
-  constructor(event: RecordTileCreated) {
-    this._event = event;
-  }
-
-  get tileAddress(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get geohash(): string {
-    return this._event.parameters[1].value.toString();
-  }
-
-  get creator(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class RecordTileEntered extends ethereum.Event {
-  get params(): RecordTileEntered__Params {
-    return new RecordTileEntered__Params(this);
-  }
-}
-
-export class RecordTileEntered__Params {
-  _event: RecordTileEntered;
-
-  constructor(event: RecordTileEntered) {
+  constructor(event: LocalRecordDeployed) {
     this._event = event;
   }
 
@@ -63,6 +37,32 @@ export class RecordTileEntered__Params {
 
   get account(): Address {
     return this._event.parameters[3].value.toAddress();
+  }
+}
+
+export class LocalRecordTokenDeployed extends ethereum.Event {
+  get params(): LocalRecordTokenDeployed__Params {
+    return new LocalRecordTokenDeployed__Params(this);
+  }
+}
+
+export class LocalRecordTokenDeployed__Params {
+  _event: LocalRecordTokenDeployed;
+
+  constructor(event: LocalRecordTokenDeployed) {
+    this._event = event;
+  }
+
+  get tileAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get geohash(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get creator(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -161,8 +161,16 @@ export class TileCreated__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get creator(): Address {
+  get verifier(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+
+  get creator(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get baseURI(): string {
+    return this._event.parameters[3].value.toString();
   }
 }
 

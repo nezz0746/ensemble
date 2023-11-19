@@ -1,294 +1,444 @@
 [
   {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
     "inputs": [
       {
+        "name": "recordTileConfiguration",
+        "internalType": "struct RecordTileFactoryConfig",
+        "type": "tuple",
         "components": [
-          { "internalType": "address", "name": "registry", "type": "address" },
           {
+            "name": "registry",
             "internalType": "address",
-            "name": "accountProxy",
             "type": "address"
           },
           {
+            "name": "accountProxy",
             "internalType": "address",
+            "type": "address"
+          },
+          {
             "name": "implementation",
+            "internalType": "address",
             "type": "address"
           }
-        ],
-        "internalType": "struct RecordTileFactoryConfig",
-        "name": "recordTileConfiguration",
-        "type": "tuple"
-      },
-      { "internalType": "uint256", "name": "minPrecision", "type": "uint256" },
-      { "internalType": "uint256", "name": "maxPrecision", "type": "uint256" }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  { "inputs": [], "name": "accountNotSender", "type": "error" },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "tileAddress",
-        "type": "address"
+        ]
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "geohash",
-        "type": "string"
+        "name": "minPrecision",
+        "internalType": "uint256",
+        "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
+        "name": "maxPrecision",
+        "internalType": "uint256",
+        "type": "uint256"
       }
-    ],
-    "name": "RecordTileCreated",
-    "type": "event"
+    ]
   },
   {
+    "type": "error",
+    "inputs": [],
+    "name": "accountNotSender"
+  },
+  {
+    "type": "event",
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
         "name": "tileAddress",
-        "type": "address"
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
       },
       {
-        "indexed": true,
-        "internalType": "address",
         "name": "recipient",
-        "type": "address"
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
       },
       {
-        "indexed": false,
-        "internalType": "string",
         "name": "geohash",
-        "type": "string"
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
       },
       {
-        "indexed": false,
-        "internalType": "address",
         "name": "account",
-        "type": "address"
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
       }
     ],
-    "name": "RecordTileEntered",
-    "type": "event"
+    "name": "LocalRecordDeployed"
   },
   {
+    "type": "event",
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "previousAdminRole",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "newAdminRole",
-        "type": "bytes32"
-      }
-    ],
-    "name": "RoleAdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleGranted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "role",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "RoleRevoked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
         "name": "tileAddress",
-        "type": "address"
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
       },
       {
-        "indexed": false,
-        "internalType": "address",
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
         "name": "creator",
-        "type": "address"
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
       }
     ],
-    "name": "TileCreated",
-    "type": "event"
+    "name": "LocalRecordTokenDeployed"
   },
   {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "previousAdminRole",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "newAdminRole",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      }
+    ],
+    "name": "RoleAdminChanged"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "sender",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "RoleGranted"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "sender",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "RoleRevoked"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "tileAddress",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "verifier",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "creator",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "baseURI",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      }
+    ],
+    "name": "TileCreated"
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
+    ]
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [],
     "name": "TILE_CREATOR",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
+    ]
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" },
-      { "internalType": "string", "name": "geohash", "type": "string" }
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string"
+      }
     ],
     "name": "computeLocalRecord",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "address",
+        "type": "address"
+      }
+    ]
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [
-      { "internalType": "string", "name": "geohash", "type": "string" }
+      {
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string"
+      }
     ],
     "name": "computeRecordTileAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "address",
+        "type": "address"
+      }
+    ]
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
     "inputs": [
-      { "internalType": "address", "name": "verifier", "type": "address" },
-      { "internalType": "string", "name": "baseURI", "type": "string" }
+      {
+        "name": "verifier",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "baseURI",
+        "internalType": "string",
+        "type": "string"
+      }
     ],
     "name": "createTile",
     "outputs": [
-      { "internalType": "address", "name": "tileAddress", "type": "address" }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
+      {
+        "name": "tileAddress",
+        "internalType": "address",
+        "type": "address"
+      }
+    ]
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" }
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
     ],
     "name": "getRoleAdmin",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
+    ]
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      }
     ],
     "name": "grantRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": []
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      }
     ],
     "name": "hasRole",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bool",
+        "type": "bool"
+      }
+    ]
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" },
-      { "internalType": "address", "name": "tile", "type": "address" },
-      { "internalType": "string", "name": "geohash", "type": "string" },
-      { "internalType": "bytes", "name": "data", "type": "bytes" }
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "tile",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string"
+      },
+      {
+        "name": "data",
+        "internalType": "bytes",
+        "type": "bytes"
+      }
     ],
     "name": "move",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": []
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      }
     ],
     "name": "renounceRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": []
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes32", "name": "role", "type": "bytes32" },
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      }
     ],
     "name": "revokeRole",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "outputs": []
   },
   {
+    "stateMutability": "view",
+    "type": "function",
     "inputs": [
-      { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }
+      {
+        "name": "interfaceId",
+        "internalType": "bytes4",
+        "type": "bytes4"
+      }
     ],
     "name": "supportsInterface",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bool",
+        "type": "bool"
+      }
+    ]
   }
 ]

@@ -1,3 +1,30 @@
+type Agent @entity(immutable: false) {
+  id: String! # address
+  records: [LocalRecord!]! @derivedFrom(field: "owner")
+}
+
+type LocalRecord @entity(immutable: false) {
+  id: String! # account-addess
+  owner: Agent!
+  geohash: String! # string
+  localRecordERC721: String! # address
+}
+
+type NetworkState @entity(immutable: false) {
+  id: String! # tileAddress
+  verifier: Bytes! # address
+  creator: Bytes! # address
+  baseURI: String! # string
+  travels: [NetworkStateTravel!]! @derivedFrom(field: "state")
+}
+
+type NetworkStateTravel @entity(immutable: true) {
+  id: Bytes! # tileAddress
+  state: NetworkState! # tileAddress
+  account: Bytes! # address
+  geohash: String! # string
+}
+
 type RecordTileCreated @entity(immutable: true) {
   id: Bytes!
   tileAddress: Bytes! # address
@@ -14,6 +41,17 @@ type RecordTileEntered @entity(immutable: true) {
   recipient: Bytes! # address
   geohash: String! # string
   account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TileCreated @entity(immutable: true) {
+  id: Bytes!
+  tileAddress: Bytes! # address
+  verifier: Bytes! # address
+  baseURI: String! # string
+  creator: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -44,15 +82,6 @@ type RoleRevoked @entity(immutable: true) {
   role: Bytes! # bytes32
   account: Bytes! # address
   sender: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type TileCreated @entity(immutable: true) {
-  id: Bytes!
-  tileAddress: Bytes! # address
-  creator: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
