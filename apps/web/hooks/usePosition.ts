@@ -1,10 +1,9 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { commonLocations } from "@/services/constants";
-import { Feature, Polygon, bboxPolygon } from "@turf/turf";
-import ngeohash from "ngeohash";
+import { Feature, Polygon } from "@turf/turf";
 import { useEffect } from "react";
-import { getGeohashAsBBox } from "@/services/map_utils";
+import { encodeGeohash, geohashToFeature } from "@/services/map_utils";
 
 export type Positon = {
   latitude: number;
@@ -44,21 +43,21 @@ const usePositionStore = create<PositionStore>((set) => ({
   setPrecision: (precision) => {
     set(
       produce((state) => {
-        const new_hash = ngeohash.encode(
+        const new_hash = encodeGeohash(
           state.position.latitude,
           state.position.longitude,
           precision
         );
         state.position.geohash = new_hash;
         state.position.precision = precision;
-        state.position.feature = bboxPolygon(getGeohashAsBBox(new_hash));
+        state.position.feature = geohashToFeature(new_hash);
       })
     );
   },
   updatePosition: (latitude, longitude) => {
     set(
       produce((state) => {
-        const new_hash = ngeohash.encode(
+        const new_hash = encodeGeohash(
           latitude,
           longitude,
           state.position.precision
@@ -66,7 +65,7 @@ const usePositionStore = create<PositionStore>((set) => ({
         state.position.latitude = latitude;
         state.position.longitude = longitude;
         state.position.geohash = new_hash;
-        state.position.feature = bboxPolygon(getGeohashAsBBox(new_hash));
+        state.position.feature = geohashToFeature(new_hash);
       })
     );
   },

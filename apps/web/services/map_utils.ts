@@ -1,6 +1,10 @@
 import { Feature, Polygon, bboxPolygon } from "@turf/turf";
 import ngeohash from "ngeohash";
 
+export function encodeGeohash(lat: number, lng: number, precision: number) {
+  return ngeohash.encode(lat, lng, precision);
+}
+
 export function getGeohashAsBBox(
   geohash: string
 ): ngeohash.GeographicBoundingBox {

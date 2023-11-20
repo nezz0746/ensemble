@@ -20,11 +20,6 @@ export const getLineLayerStyle = (): LineLayer => ({
   },
 });
 
-const geohashToCircleRadius = (geohash: string) => {
-  // The shorter the geohash, the bigger the circle
-  return 1 / geohash.length;
-};
-
 export const getPointLayerStyle = (
   point: Feature<Point, { geohash: string }>
 ): CircleLayer => ({
@@ -34,7 +29,7 @@ export const getPointLayerStyle = (
     // Black
     "circle-color": "#9FE88D",
     "circle-stroke-width": 0.5,
-    "circle-radius": 40 * geohashToCircleRadius(point.properties.geohash),
+    "circle-radius": 40 * (1 / point.properties.geohash.length ?? 1),
   },
 });
 
