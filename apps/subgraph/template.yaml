@@ -1,0 +1,60 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Map
+    network: {{ network }}
+    source:
+      address: "{{ mapAddress }}"
+      abi: Map
+      startBlock: {{ startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LocalRecordTokenDeployed
+        - LocalRecordDeployed
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - TileCreated
+      abis:
+        - name: Map
+          file: ./abis/Map.json
+      eventHandlers:
+        - event: LocalRecordTokenDeployed(indexed address,string,address)
+          handler: handleLocalRecordTokenDeployed
+        - event: LocalRecordDeployed(indexed address,indexed address,string,address)
+          handler: handleLocalRecordDeployed
+        - event: TileCreated(indexed address,indexed address,address,string)
+          handler: handleTileCreated
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+      file: ./src/map.ts
+templates:
+  - name: LocationTile
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: LocationTile
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/location.ts
+      entities:
+        - Agent
+        - NetworkState
+        - NetworkStateTravel
+      abis:
+        - name: LocationTile
+          file: ./abis/LocationTile.json
+      eventHandlers:
+        - event: Move(indexed address,string)
+          handler: handleNetworkStateTravel

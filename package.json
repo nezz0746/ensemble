@@ -7,15 +7,18 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "deploy:local": "yarn workspace contracts run deploy:local && yarn workspace wagmi-config run generate && yarn workspace subgraph run deploy:local",
+    "deploy:local": "yarn workspace contracts run deploy:local && yarn workspace wagmi-config run generate && yarn workspace subgraph run deploy:local && yarn workspace run codegen",
     "deploy:testnets": "yarn workspace contracts run deploy:testnets && yarn workspace wagmi-config run generate",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:force": "turbo run test --force",
+    "web:codegen": "yarn workspace web-hooks codegen",
     "add:web": "yarn workspace web add",
     "add:wagmi": "yarn workspace wagmi-config add",
     "add:subgraph": "yarn workspace subgraph add",
-    "prepare": "husky install"
+    "add:webhooks": "yarn workspace web-hooks add",
+    "prepare": "husky install",
+    "postinstall": "npx patch-package"
   },
   "workspaces": [
     "packages/*",

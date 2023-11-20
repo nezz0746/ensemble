@@ -5,7 +5,12 @@ import {LocationTile} from "./LocationTile.sol";
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 
 contract LocationTileFactory {
-    event TileCreated(address indexed tileAddress, address creator);
+    event TileCreated(
+        address indexed tileAddress,
+        address indexed verifier,
+        address creator,
+        string baseURI
+    );
 
     function _createNewTile(
         address map,
@@ -21,6 +26,6 @@ contract LocationTileFactory {
             )
         );
 
-        emit TileCreated(tileAddress, msg.sender);
+        emit TileCreated(tileAddress, verifier, msg.sender, baseURI);
     }
 }

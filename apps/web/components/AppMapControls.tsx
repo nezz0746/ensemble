@@ -2,7 +2,7 @@ import { usePosition } from "@/hooks/usePosition";
 import classNames from "classnames";
 import MoveButton from "./MoveButton";
 import { useAccount } from "wagmi";
-import useVisitedGeohashes from "@/hooks/useVisitedGeohashes";
+import useAppAgent from "@/hooks/useAppAgent";
 import useAppAddresses from "@/hooks/useAppAddresses";
 import { usePathname } from "next/navigation";
 import AccountZoomEffects from "./Map/AccountZoomEffects";
@@ -11,7 +11,7 @@ const AppMapControls = () => {
   const { locationTile } = useAppAddresses();
   const { address } = useAccount();
   const { setPrecision, position } = usePosition();
-  const { geohashes, getAccountRecords } = useVisitedGeohashes();
+  const { geohashes, refetch } = useAppAgent();
 
   return (
     <div className="flex flex-row justify-between gap-4 items-center bg-opacity-90 p-3 bg-neutral rounded-lg">
@@ -53,7 +53,7 @@ const AppMapControls = () => {
           geohash={position.geohash}
           disabled={geohashes.includes(position.geohash)}
           onMoveSuccess={() => {
-            getAccountRecords();
+            refetch();
           }}
         />
       </div>

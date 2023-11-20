@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0x638A246F0Ec8883eF68280293FFE8Cfbabe61B44',
+  1337: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x927b167526bAbB9be047421db732C663a0b77B11',
+  1337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 } as const
 
 /**
@@ -821,7 +821,7 @@ export const locationTileABI = [
  */
 export const locationTileAddress = {
   5: '0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e',
-  1337: '0x6f01E7CD11EBfdCC86C675fE16b5AB789c9d3aE5',
+  1337: '0xdc082539d87A6F539117f8aCa6512C1d8bf0C512',
 } as const
 
 /**
@@ -872,31 +872,6 @@ export const mapABI = [
         indexed: true,
       },
       {
-        name: 'geohash',
-        internalType: 'string',
-        type: 'string',
-        indexed: false,
-      },
-      {
-        name: 'creator',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'RecordTileCreated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tileAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
         name: 'recipient',
         internalType: 'address',
         type: 'address',
@@ -915,7 +890,32 @@ export const mapABI = [
         indexed: false,
       },
     ],
-    name: 'RecordTileEntered',
+    name: 'LocalRecordDeployed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'LocalRecordTokenDeployed',
   },
   {
     type: 'event',
@@ -988,9 +988,21 @@ export const mapABI = [
         indexed: true,
       },
       {
+        name: 'verifier',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
         name: 'creator',
         internalType: 'address',
         type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'baseURI',
+        internalType: 'string',
+        type: 'string',
         indexed: false,
       },
     ],
@@ -1113,7 +1125,7 @@ export const mapABI = [
  */
 export const mapAddress = {
   5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
-  1337: '0xFD6F7A6a5c21A3f503EBaE7a473639974379c351',
+  1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
 } as const
 
 /**
@@ -3993,14 +4005,14 @@ export function useMapEvent<TEventName extends string>(
 }
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RecordTileCreated"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"LocalRecordDeployed"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
  * -
  */
-export function useMapRecordTileCreatedEvent(
+export function useMapLocalRecordDeployedEvent(
   config: Omit<
-    UseContractEventConfig<typeof mapABI, 'RecordTileCreated'>,
+    UseContractEventConfig<typeof mapABI, 'LocalRecordDeployed'>,
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof mapAddress } = {} as any,
 ) {
@@ -4010,20 +4022,20 @@ export function useMapRecordTileCreatedEvent(
   return useContractEvent({
     abi: mapABI,
     address: mapAddress[chainId as keyof typeof mapAddress],
-    eventName: 'RecordTileCreated',
+    eventName: 'LocalRecordDeployed',
     ...config,
-  } as UseContractEventConfig<typeof mapABI, 'RecordTileCreated'>)
+  } as UseContractEventConfig<typeof mapABI, 'LocalRecordDeployed'>)
 }
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RecordTileEntered"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"LocalRecordTokenDeployed"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
  * -
  */
-export function useMapRecordTileEnteredEvent(
+export function useMapLocalRecordTokenDeployedEvent(
   config: Omit<
-    UseContractEventConfig<typeof mapABI, 'RecordTileEntered'>,
+    UseContractEventConfig<typeof mapABI, 'LocalRecordTokenDeployed'>,
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof mapAddress } = {} as any,
 ) {
@@ -4033,9 +4045,9 @@ export function useMapRecordTileEnteredEvent(
   return useContractEvent({
     abi: mapABI,
     address: mapAddress[chainId as keyof typeof mapAddress],
-    eventName: 'RecordTileEntered',
+    eventName: 'LocalRecordTokenDeployed',
     ...config,
-  } as UseContractEventConfig<typeof mapABI, 'RecordTileEntered'>)
+  } as UseContractEventConfig<typeof mapABI, 'LocalRecordTokenDeployed'>)
 }
 
 /**

@@ -1,5 +1,9 @@
 import { Feature, MultiLineString, Polygon, Properties } from "@turf/turf";
 
+export const subgraphUrls: Record<number, string> = {
+  1337: "http://localhost:8000/subgraphs/name/nezz0746/ns-framework",
+};
+
 export const commonLocations = {
   toulouse: {
     longitude: 1.444209,

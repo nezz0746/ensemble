@@ -26,12 +26,12 @@ contract RecordTileFactory is ERC6551AccountCreator {
         )
     {}
 
-    event RecordTileCreated(
+    event LocalRecordTokenDeployed(
         address indexed tileAddress,
         string geohash,
         address creator
     );
-    event RecordTileEntered(
+    event LocalRecordDeployed(
         address indexed tileAddress,
         address indexed recipient,
         string geohash,
@@ -50,7 +50,7 @@ contract RecordTileFactory is ERC6551AccountCreator {
         );
 
         if (isNew) {
-            emit RecordTileEntered(
+            emit LocalRecordDeployed(
                 address(recordTile),
                 recipient,
                 geohash,
@@ -103,7 +103,12 @@ contract RecordTileFactory is ERC6551AccountCreator {
                     )
                 )
             );
-            emit RecordTileCreated(address(recordTile), geohash, msg.sender);
+
+            emit LocalRecordTokenDeployed(
+                address(recordTile),
+                geohash,
+                msg.sender
+            );
         }
     }
 

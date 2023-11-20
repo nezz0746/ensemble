@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { commonLocations } from "@/services/constants";
-import { Feature, Polygon, bboxPolygon, difference } from "@turf/turf";
+import { Feature, Polygon, bboxPolygon } from "@turf/turf";
 import ngeohash from "ngeohash";
 import { useEffect } from "react";
 
@@ -33,9 +33,11 @@ const usePositionStore = create<PositionStore>((set) => ({
       type: "Feature",
       geometry: {
         type: "Polygon",
-        coordinates: [],
+        coordinates: [
+          [[commonLocations.paris.latitude, commonLocations.paris.longitude]],
+        ],
       },
-      properties: {},
+      properties: { geohash: "" },
     },
   },
   setPrecision: (precision) => {
