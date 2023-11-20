@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import {RecordTile} from "./RecordTile.sol";
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
-import {ERC6551AccountCreator} from "./ERC6551AccountCreator.sol";
+import {ERC6551AccountCreator} from "./extensions/ERC6551AccountCreator.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {GeohashLogic} from "./GeohashLogic.sol";
 import {NestedAccountExecutor} from "tokenbound/abstract/execution/NestedAccountExecutor.sol";
