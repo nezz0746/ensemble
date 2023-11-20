@@ -1,31 +1,31 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.20;
 
-import {LocationTile} from "./LocationTile.sol";
+import {StateTile} from "./StateTile.sol";
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 
-contract LocationTileFactory {
+contract StateTileFactory {
     event TileCreated(
-        address indexed tileAddress,
+        address indexed stateAddress,
         address indexed verifier,
         address creator,
         string baseURI
     );
 
-    function _createNewTile(
+    function _createNewState(
         address map,
         address verifier,
         string memory baseURI
-    ) internal returns (address tileAddress) {
-        tileAddress = Create2.deploy(
+    ) internal returns (address stateAddress) {
+        stateAddress = Create2.deploy(
             0,
             bytes32(""),
             abi.encodePacked(
-                type(LocationTile).creationCode,
+                type(StateTile).creationCode,
                 abi.encode(map, verifier, baseURI)
             )
         );
 
-        emit TileCreated(tileAddress, verifier, msg.sender, baseURI);
+        emit TileCreated(stateAddress, verifier, msg.sender, baseURI);
     }
 }

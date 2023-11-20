@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+  1337: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  1337: '0x7969c5eD335650692Bc04293B07F5BF2e7A673C0',
 } as const
 
 /**
@@ -578,14 +578,314 @@ export const ierc6551RegistryABI = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LocationTile
+// Map
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
  * -
  */
-export const locationTileABI = [
+export const mapABI = [
+  {
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+    inputs: [
+      {
+        name: 'recordTileConfiguration',
+        internalType: 'struct RecordTileFactoryConfig',
+        type: 'tuple',
+        components: [
+          { name: 'registry', internalType: 'address', type: 'address' },
+          { name: 'accountProxy', internalType: 'address', type: 'address' },
+          { name: 'implementation', internalType: 'address', type: 'address' },
+        ],
+      },
+      { name: 'minPrecision', internalType: 'uint256', type: 'uint256' },
+      { name: 'maxPrecision', internalType: 'uint256', type: 'uint256' },
+    ],
+  },
+  { type: 'error', inputs: [], name: 'accountNotSender' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'LocalRecordDeployed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'tileAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'geohash',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'LocalRecordTokenDeployed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'previousAdminRole',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'newAdminRole',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'RoleAdminChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'RoleGranted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'RoleRevoked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'stateAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'verifier',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'creator',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'baseURI',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'TileCreated',
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'DEFAULT_ADMIN_ROLE',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'TILE_CREATOR',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'geohash', internalType: 'string', type: 'string' },
+    ],
+    name: 'computeLocalRecord',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'geohash', internalType: 'string', type: 'string' }],
+    name: 'computeRecordTileAddress',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'verifier', internalType: 'address', type: 'address' },
+      { name: 'baseURI', internalType: 'string', type: 'string' },
+    ],
+    name: 'createTile',
+    outputs: [
+      { name: 'tileAddress', internalType: 'address', type: 'address' },
+    ],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'role', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getRoleAdmin',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'grantRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'hasRole',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'state', internalType: 'address', type: 'address' },
+      { name: 'geohash', internalType: 'string', type: 'string' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'move',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'renounceRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'revokeRole',
+    outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+  },
+] as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export const mapAddress = {
+  5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
+  1337: '0xB0D4afd8879eD9F52b28595d31B441D079B2Ca07',
+} as const
+
+/**
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * -
+ */
+export const mapConfig = { address: mapAddress, abi: mapABI } as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// StateTile
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *
+ */
+export const stateTileABI = [
   {
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -808,7 +1108,7 @@ export const locationTileABI = [
     outputs: [
       {
         name: '',
-        internalType: 'contract ILocationTileVerifier',
+        internalType: 'contract IStateTileVerifier',
         type: 'address',
       },
     ],
@@ -816,323 +1116,19 @@ export const locationTileABI = [
 ] as const
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
+ *
  */
-export const locationTileAddress = {
-  5: '0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e',
-  1337: '0xdc082539d87A6F539117f8aCa6512C1d8bf0C512',
+export const stateTileAddress = {
+  1337: '0x4b2Da790f25B6e802aBa730027B451AA9A7E863e',
 } as const
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
+ *
  */
-export const locationTileConfig = {
-  address: locationTileAddress,
-  abi: locationTileABI,
+export const stateTileConfig = {
+  address: stateTileAddress,
+  abi: stateTileABI,
 } as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Map
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
- * -
- */
-export const mapABI = [
-  {
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-    inputs: [
-      {
-        name: 'recordTileConfiguration',
-        internalType: 'struct RecordTileFactoryConfig',
-        type: 'tuple',
-        components: [
-          { name: 'registry', internalType: 'address', type: 'address' },
-          { name: 'accountProxy', internalType: 'address', type: 'address' },
-          { name: 'implementation', internalType: 'address', type: 'address' },
-        ],
-      },
-      { name: 'minPrecision', internalType: 'uint256', type: 'uint256' },
-      { name: 'maxPrecision', internalType: 'uint256', type: 'uint256' },
-    ],
-  },
-  { type: 'error', inputs: [], name: 'accountNotSender' },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tileAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'recipient',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'geohash',
-        internalType: 'string',
-        type: 'string',
-        indexed: false,
-      },
-      {
-        name: 'account',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'LocalRecordDeployed',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tileAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'geohash',
-        internalType: 'string',
-        type: 'string',
-        indexed: false,
-      },
-      {
-        name: 'creator',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'LocalRecordTokenDeployed',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
-      {
-        name: 'previousAdminRole',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'newAdminRole',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-    ],
-    name: 'RoleAdminChanged',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
-      {
-        name: 'account',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'sender',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'RoleGranted',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32', indexed: true },
-      {
-        name: 'account',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'sender',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'RoleRevoked',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tileAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'verifier',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'creator',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'baseURI',
-        internalType: 'string',
-        type: 'string',
-        indexed: false,
-      },
-    ],
-    name: 'TileCreated',
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'DEFAULT_ADMIN_ROLE',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'TILE_CREATOR',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'geohash', internalType: 'string', type: 'string' },
-    ],
-    name: 'computeLocalRecord',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [{ name: 'geohash', internalType: 'string', type: 'string' }],
-    name: 'computeRecordTileAddress',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      { name: 'verifier', internalType: 'address', type: 'address' },
-      { name: 'baseURI', internalType: 'string', type: 'string' },
-    ],
-    name: 'createTile',
-    outputs: [
-      { name: 'tileAddress', internalType: 'address', type: 'address' },
-    ],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [{ name: 'role', internalType: 'bytes32', type: 'bytes32' }],
-    name: 'getRoleAdmin',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'account', internalType: 'address', type: 'address' },
-    ],
-    name: 'grantRole',
-    outputs: [],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'account', internalType: 'address', type: 'address' },
-    ],
-    name: 'hasRole',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'tile', internalType: 'address', type: 'address' },
-      { name: 'geohash', internalType: 'string', type: 'string' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'move',
-    outputs: [],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'account', internalType: 'address', type: 'address' },
-    ],
-    name: 'renounceRole',
-    outputs: [],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      { name: 'role', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'account', internalType: 'address', type: 'address' },
-    ],
-    name: 'revokeRole',
-    outputs: [],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-  },
-] as const
-
-/**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
- * -
- */
-export const mapAddress = {
-  5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
-  1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
-} as const
-
-/**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
- * -
- */
-export const mapConfig = { address: mapAddress, abi: mapABI } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
@@ -2676,750 +2672,6 @@ export function useIerc6551RegistryErc6551AccountCreatedEvent(
 }
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileRead<
-  TFunctionName extends string,
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"accountPosition"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileAccountPosition<
-  TFunctionName extends 'accountPosition',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'accountPosition',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"balanceOf"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileBalanceOf<
-  TFunctionName extends 'balanceOf',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'balanceOf',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"balanceOfBatch"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileBalanceOfBatch<
-  TFunctionName extends 'balanceOfBatch',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'balanceOfBatch',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"isApprovedForAll"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileIsApprovedForAll<
-  TFunctionName extends 'isApprovedForAll',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'isApprovedForAll',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"map"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileMap<
-  TFunctionName extends 'map',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'map',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"supportsInterface"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileSupportsInterface<
-  TFunctionName extends 'supportsInterface',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'supportsInterface',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"uri"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileUri<
-  TFunctionName extends 'uri',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'uri',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"verifier"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileVerifier<
-  TFunctionName extends 'verifier',
-  TSelectData = ReadContractResult<typeof locationTileABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof locationTileABI, TFunctionName, TSelectData>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractRead({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'verifier',
-    ...config,
-  } as UseContractReadConfig<
-    typeof locationTileABI,
-    TFunctionName,
-    TSelectData
-  >)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileWrite<
-  TFunctionName extends string,
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof locationTileAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof locationTileABI,
-          string
-        >['request']['abi'],
-        TFunctionName,
-        TMode
-      > & { address?: Address; chainId?: TChainId }
-    : UseContractWriteConfig<typeof locationTileABI, TFunctionName, TMode> & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof locationTileABI, TFunctionName, TMode>({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"move"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileMove<
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof locationTileAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof locationTileABI,
-          'move'
-        >['request']['abi'],
-        'move',
-        TMode
-      > & { address?: Address; chainId?: TChainId; functionName?: 'move' }
-    : UseContractWriteConfig<typeof locationTileABI, 'move', TMode> & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'move'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof locationTileABI, 'move', TMode>({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'move',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileSafeBatchTransferFrom<
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof locationTileAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof locationTileABI,
-          'safeBatchTransferFrom'
-        >['request']['abi'],
-        'safeBatchTransferFrom',
-        TMode
-      > & {
-        address?: Address
-        chainId?: TChainId
-        functionName?: 'safeBatchTransferFrom'
-      }
-    : UseContractWriteConfig<
-        typeof locationTileABI,
-        'safeBatchTransferFrom',
-        TMode
-      > & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'safeBatchTransferFrom'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<
-    typeof locationTileABI,
-    'safeBatchTransferFrom',
-    TMode
-  >({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'safeBatchTransferFrom',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeTransferFrom"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileSafeTransferFrom<
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof locationTileAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof locationTileABI,
-          'safeTransferFrom'
-        >['request']['abi'],
-        'safeTransferFrom',
-        TMode
-      > & {
-        address?: Address
-        chainId?: TChainId
-        functionName?: 'safeTransferFrom'
-      }
-    : UseContractWriteConfig<
-        typeof locationTileABI,
-        'safeTransferFrom',
-        TMode
-      > & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'safeTransferFrom'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof locationTileABI, 'safeTransferFrom', TMode>({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'safeTransferFrom',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"setApprovalForAll"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileSetApprovalForAll<
-  TMode extends WriteContractMode = undefined,
-  TChainId extends number = keyof typeof locationTileAddress,
->(
-  config: TMode extends 'prepared'
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof locationTileABI,
-          'setApprovalForAll'
-        >['request']['abi'],
-        'setApprovalForAll',
-        TMode
-      > & {
-        address?: Address
-        chainId?: TChainId
-        functionName?: 'setApprovalForAll'
-      }
-    : UseContractWriteConfig<
-        typeof locationTileABI,
-        'setApprovalForAll',
-        TMode
-      > & {
-        abi?: never
-        address?: never
-        chainId?: TChainId
-        functionName?: 'setApprovalForAll'
-      } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof locationTileABI, 'setApprovalForAll', TMode>({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'setApprovalForAll',
-    ...config,
-  } as any)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function usePrepareLocationTileWrite<TFunctionName extends string>(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof locationTileABI, TFunctionName>,
-    'abi' | 'address'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof locationTileABI, TFunctionName>)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"move"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function usePrepareLocationTileMove(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof locationTileABI, 'move'>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'move',
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof locationTileABI, 'move'>)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function usePrepareLocationTileSafeBatchTransferFrom(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof locationTileABI,
-      'safeBatchTransferFrom'
-    >,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'safeBatchTransferFrom',
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof locationTileABI,
-    'safeBatchTransferFrom'
-  >)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"safeTransferFrom"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function usePrepareLocationTileSafeTransferFrom(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof locationTileABI, 'safeTransferFrom'>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'safeTransferFrom',
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof locationTileABI,
-    'safeTransferFrom'
-  >)
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link locationTileABI}__ and `functionName` set to `"setApprovalForAll"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function usePrepareLocationTileSetApprovalForAll(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof locationTileABI, 'setApprovalForAll'>,
-    'abi' | 'address' | 'functionName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return usePrepareContractWrite({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    functionName: 'setApprovalForAll',
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof locationTileABI,
-    'setApprovalForAll'
-  >)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileEvent<TEventName extends string>(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, TEventName>,
-    'abi' | 'address'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, TEventName>)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"ApprovalForAll"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileApprovalForAllEvent(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, 'ApprovalForAll'>,
-    'abi' | 'address' | 'eventName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    eventName: 'ApprovalForAll',
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, 'ApprovalForAll'>)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"Move"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileMoveEvent(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, 'Move'>,
-    'abi' | 'address' | 'eventName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    eventName: 'Move',
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, 'Move'>)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"TransferBatch"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileTransferBatchEvent(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, 'TransferBatch'>,
-    'abi' | 'address' | 'eventName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    eventName: 'TransferBatch',
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, 'TransferBatch'>)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"TransferSingle"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileTransferSingleEvent(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, 'TransferSingle'>,
-    'abi' | 'address' | 'eventName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    eventName: 'TransferSingle',
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, 'TransferSingle'>)
-}
-
-/**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link locationTileABI}__ and `eventName` set to `"URI"`.
- *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x0F52Ef2D24f7fB57E948d896Dec46CfbD0AbB25e)
- * -
- */
-export function useLocationTileUriEvent(
-  config: Omit<
-    UseContractEventConfig<typeof locationTileABI, 'URI'>,
-    'abi' | 'address' | 'eventName'
-  > & { chainId?: keyof typeof locationTileAddress } = {} as any,
-) {
-  const { chain } = useNetwork()
-  const defaultChainId = useChainId()
-  const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractEvent({
-    abi: locationTileABI,
-    address: locationTileAddress[chainId as keyof typeof locationTileAddress],
-    eventName: 'URI',
-    ...config,
-  } as UseContractEventConfig<typeof locationTileABI, 'URI'>)
-}
-
-/**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
@@ -4140,4 +3392,595 @@ export function useMapTileCreatedEvent(
     eventName: 'TileCreated',
     ...config,
   } as UseContractEventConfig<typeof mapABI, 'TileCreated'>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__.
+ *
+ *
+ */
+export function useStateTileRead<
+  TFunctionName extends string,
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"accountPosition"`.
+ *
+ *
+ */
+export function useStateTileAccountPosition<
+  TFunctionName extends 'accountPosition',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'accountPosition',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"balanceOf"`.
+ *
+ *
+ */
+export function useStateTileBalanceOf<
+  TFunctionName extends 'balanceOf',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'balanceOf',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"balanceOfBatch"`.
+ *
+ *
+ */
+export function useStateTileBalanceOfBatch<
+  TFunctionName extends 'balanceOfBatch',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'balanceOfBatch',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"isApprovedForAll"`.
+ *
+ *
+ */
+export function useStateTileIsApprovedForAll<
+  TFunctionName extends 'isApprovedForAll',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'isApprovedForAll',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"map"`.
+ *
+ *
+ */
+export function useStateTileMap<
+  TFunctionName extends 'map',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'map',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"supportsInterface"`.
+ *
+ *
+ */
+export function useStateTileSupportsInterface<
+  TFunctionName extends 'supportsInterface',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'supportsInterface',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"uri"`.
+ *
+ *
+ */
+export function useStateTileUri<
+  TFunctionName extends 'uri',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'uri',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"verifier"`.
+ *
+ *
+ */
+export function useStateTileVerifier<
+  TFunctionName extends 'verifier',
+  TSelectData = ReadContractResult<typeof stateTileABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractRead({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'verifier',
+    ...config,
+  } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__.
+ *
+ *
+ */
+export function useStateTileWrite<
+  TFunctionName extends string,
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          string
+        >['request']['abi'],
+        TFunctionName,
+        TMode
+      > & { address?: Address; chainId?: TChainId }
+    : UseContractWriteConfig<typeof stateTileABI, TFunctionName, TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+      } = {} as any,
+) {
+  return useContractWrite<typeof stateTileABI, TFunctionName, TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
+ *
+ *
+ */
+export function useStateTileMove<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          'move'
+        >['request']['abi'],
+        'move',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'move' }
+    : UseContractWriteConfig<typeof stateTileABI, 'move', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'move'
+      } = {} as any,
+) {
+  return useContractWrite<typeof stateTileABI, 'move', TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'move',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
+ *
+ *
+ */
+export function useStateTileSafeBatchTransferFrom<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          'safeBatchTransferFrom'
+        >['request']['abi'],
+        'safeBatchTransferFrom',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'safeBatchTransferFrom'
+      }
+    : UseContractWriteConfig<
+        typeof stateTileABI,
+        'safeBatchTransferFrom',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'safeBatchTransferFrom'
+      } = {} as any,
+) {
+  return useContractWrite<typeof stateTileABI, 'safeBatchTransferFrom', TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'safeBatchTransferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeTransferFrom"`.
+ *
+ *
+ */
+export function useStateTileSafeTransferFrom<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          'safeTransferFrom'
+        >['request']['abi'],
+        'safeTransferFrom',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'safeTransferFrom'
+      }
+    : UseContractWriteConfig<typeof stateTileABI, 'safeTransferFrom', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'safeTransferFrom'
+      } = {} as any,
+) {
+  return useContractWrite<typeof stateTileABI, 'safeTransferFrom', TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"setApprovalForAll"`.
+ *
+ *
+ */
+export function useStateTileSetApprovalForAll<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          'setApprovalForAll'
+        >['request']['abi'],
+        'setApprovalForAll',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'setApprovalForAll'
+      }
+    : UseContractWriteConfig<
+        typeof stateTileABI,
+        'setApprovalForAll',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'setApprovalForAll'
+      } = {} as any,
+) {
+  return useContractWrite<typeof stateTileABI, 'setApprovalForAll', TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__.
+ *
+ *
+ */
+export function usePrepareStateTileWrite<TFunctionName extends string>(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, TFunctionName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof stateTileABI, TFunctionName>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
+ *
+ *
+ */
+export function usePrepareStateTileMove(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, 'move'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'move',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof stateTileABI, 'move'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
+ *
+ *
+ */
+export function usePrepareStateTileSafeBatchTransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, 'safeBatchTransferFrom'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'safeBatchTransferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof stateTileABI,
+    'safeBatchTransferFrom'
+  >)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeTransferFrom"`.
+ *
+ *
+ */
+export function usePrepareStateTileSafeTransferFrom(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, 'safeTransferFrom'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'safeTransferFrom',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof stateTileABI, 'safeTransferFrom'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"setApprovalForAll"`.
+ *
+ *
+ */
+export function usePrepareStateTileSetApprovalForAll(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, 'setApprovalForAll'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    functionName: 'setApprovalForAll',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof stateTileABI, 'setApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__.
+ *
+ *
+ */
+export function useStateTileEvent<TEventName extends string>(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, TEventName>,
+    'abi' | 'address'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"ApprovalForAll"`.
+ *
+ *
+ */
+export function useStateTileApprovalForAllEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'ApprovalForAll'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    eventName: 'ApprovalForAll',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'ApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"Move"`.
+ *
+ *
+ */
+export function useStateTileMoveEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'Move'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    eventName: 'Move',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'Move'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"TransferBatch"`.
+ *
+ *
+ */
+export function useStateTileTransferBatchEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'TransferBatch'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    eventName: 'TransferBatch',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'TransferBatch'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"TransferSingle"`.
+ *
+ *
+ */
+export function useStateTileTransferSingleEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'TransferSingle'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    eventName: 'TransferSingle',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'TransferSingle'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"URI"`.
+ *
+ *
+ */
+export function useStateTileUriEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'URI'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[1337],
+    eventName: 'URI',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'URI'>)
 }

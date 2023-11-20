@@ -1,5 +1,5 @@
 import { NetworkStateTravel } from "../generated/schema";
-import { Move as MoveEvent } from "../generated/templates/LocationTile/LocationTile";
+import { Move as MoveEvent } from "../generated/templates/StateTile/StateTile";
 
 export function handleNetworkStateTravel(event: MoveEvent): void {
   const travel = new NetworkStateTravel(

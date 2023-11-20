@@ -178,7 +178,7 @@
     "anonymous": false,
     "inputs": [
       {
-        "name": "tileAddress",
+        "name": "stateAddress",
         "internalType": "address",
         "type": "address",
         "indexed": true
@@ -368,7 +368,7 @@
         "type": "address"
       },
       {
-        "name": "tile",
+        "name": "state",
         "internalType": "address",
         "type": "address"
       },

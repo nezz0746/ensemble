@@ -38,23 +38,23 @@ dataSources:
           handler: handleRoleRevoked
       file: ./src/map.ts
 templates:
-  - name: LocationTile
+  - name: StateTile
     kind: ethereum/contract
     network: {{ network }}
     source:
-      abi: LocationTile
+      abi: StateTile
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/location.ts
+      file: ./src/state.ts
       entities:
         - Agent
         - NetworkState
         - NetworkStateTravel
       abis:
-        - name: LocationTile
-          file: ./abis/LocationTile.json
+        - name: StateTile
+          file: ./abis/StateTile.json
       eventHandlers:
         - event: Move(indexed address,string)
           handler: handleNetworkStateTravel

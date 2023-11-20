@@ -3,12 +3,12 @@ pragma solidity ^0.8.20;
 
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {GeohashLogic} from "./GeohashLogic.sol";
-import {ILocationTileVerifier} from "./interfaces/ILocationTileVerifier.sol";
+import {IStateTileVerifier} from "./interfaces/IStateTileVerifier.sol";
 
-contract LocationTile is ERC1155 {
+contract StateTile is ERC1155 {
     address public map;
 
-    ILocationTileVerifier public verifier;
+    IStateTileVerifier public verifier;
 
     mapping(address => uint256) public accountPosition;
 
@@ -23,7 +23,7 @@ contract LocationTile is ERC1155 {
         address _verifier,
         string memory _baseURI
     ) ERC1155(_baseURI) {
-        verifier = ILocationTileVerifier(_verifier);
+        verifier = IStateTileVerifier(_verifier);
         map = _map;
     }
 
@@ -41,7 +41,7 @@ contract LocationTile is ERC1155 {
     ) public onlyMap {
         require(
             verifier.verifyLocation(account, geohash, data),
-            "LocationTile: invalid location"
+            "StateTile: invalid location"
         );
 
         _move(account, geohash);

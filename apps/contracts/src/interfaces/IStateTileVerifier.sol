@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-abstract contract ILocationTileVerifier {
+abstract contract IStateTileVerifier {
     function verifyLocation(
         address account,
         string memory geohash,

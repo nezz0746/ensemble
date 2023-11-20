@@ -157,7 +157,7 @@ export class TileCreated__Params {
     this._event = event;
   }
 
-  get tileAddress(): Address {
+  get stateAddress(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -505,7 +505,7 @@ export class MoveCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get tile(): Address {
+  get state(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 

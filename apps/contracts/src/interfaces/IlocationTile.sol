@@ -10,7 +10,7 @@ abstract contract IMap {
     ) public virtual;
 }
 
-abstract contract ILocationTile {
+abstract contract IStateTile {
     function move(
         address account,
         string memory fromRecord,

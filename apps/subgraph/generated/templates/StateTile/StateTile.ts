@@ -148,9 +148,9 @@ export class URI__Params {
   }
 }
 
-export class LocationTile extends ethereum.SmartContract {
-  static bind(address: Address): LocationTile {
-    return new LocationTile("LocationTile", address);
+export class StateTile extends ethereum.SmartContract {
+  static bind(address: Address): StateTile {
+    return new StateTile("StateTile", address);
   }
 
   accountPosition(param0: Address): BigInt {

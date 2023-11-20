@@ -219,6 +219,14 @@ export class NetworkState extends Entity {
   set baseURI(value: string) {
     this.set("baseURI", Value.fromString(value));
   }
+
+  get travels(): NetworkStateTravelLoader {
+    return new NetworkStateTravelLoader(
+      "NetworkState",
+      this.get("id")!.toString(),
+      "travels"
+    );
+  }
 }
 
 export class NetworkStateTravel extends Entity {
@@ -1077,5 +1085,23 @@ export class LocalRecordLoader extends Entity {
   load(): LocalRecord[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<LocalRecord[]>(value);
+  }
+}
+
+export class NetworkStateTravelLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): NetworkStateTravel[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<NetworkStateTravel[]>(value);
   }
 }

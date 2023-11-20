@@ -6,7 +6,7 @@ import {
   RoleRevoked as RoleRevokedEvent,
   TileCreated as TileCreatedEvent,
 } from "../generated/Map/Map";
-import { LocationTile as LocationTileTemplate } from "../generated/templates";
+import { StateTile as StateTileTemplate } from "../generated/templates";
 import {
   Agent,
   LocalRecord,
@@ -78,20 +78,20 @@ export function handleTileCreated(event: TileCreatedEvent): void {
   let entity = new TileCreated(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   );
-  entity.tileAddress = event.params.tileAddress;
+  entity.tileAddress = event.params.stateAddress;
   entity.creator = event.params.creator;
   entity.verifier = event.params.verifier;
   entity.baseURI = event.params.baseURI;
 
-  let n_state = NetworkState.load(event.params.tileAddress.toHexString());
+  let n_state = NetworkState.load(event.params.stateAddress.toHexString());
 
   if (n_state == null) {
-    n_state = new NetworkState(event.params.tileAddress.toHexString());
+    n_state = new NetworkState(event.params.stateAddress.toHexString());
   }
   n_state.creator = event.params.creator;
   n_state.verifier = event.params.verifier;
   n_state.baseURI = event.params.baseURI;
-  LocationTileTemplate.create(event.params.tileAddress);
+  StateTileTemplate.create(event.params.stateAddress);
   n_state.save();
 
   entity.blockNumber = event.block.number;

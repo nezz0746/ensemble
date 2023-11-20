@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import AccountZoomEffects from "./Map/AccountZoomEffects";
 
 const AppMapControls = () => {
-  const { locationTile } = useAppAddresses();
+  const { stateTile } = useAppAddresses();
   const { address } = useAccount();
   const { setPrecision, position } = usePosition();
   const { geohashes, refetch } = useAppAgent();
@@ -49,7 +49,7 @@ const AppMapControls = () => {
       <div className="w-full flex flex-row justify-end">
         <MoveButton
           address={address}
-          tile={locationTile}
+          tile={stateTile}
           geohash={position.geohash}
           disabled={geohashes.includes(position.geohash)}
           onMoveSuccess={() => {

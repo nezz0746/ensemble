@@ -6,14 +6,14 @@ import {
   DataSourceContext
 } from "@graphprotocol/graph-ts";
 
-export class LocationTile extends DataSourceTemplate {
+export class StateTile extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("LocationTile", [address.toHex()]);
+    DataSourceTemplate.create("StateTile", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
     DataSourceTemplate.createWithContext(
-      "LocationTile",
+      "StateTile",
       [address.toHex()],
       context
     );

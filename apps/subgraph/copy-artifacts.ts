@@ -1,4 +1,4 @@
-import { mapAddress, mapABI, locationTileABI } from "wagmi-config/generated";
+import { mapAddress, mapABI, stateTileABI } from "wagmi-config/generated";
 import fs from "fs/promises";
 
 const chainIdToNetwork = {
@@ -23,8 +23,8 @@ const main = async () => {
   }
   await fs.writeFile("./abis/Map.json", JSON.stringify(mapABI, null, 2));
   await fs.writeFile(
-    "./abis/LocationTile.json",
-    JSON.stringify(locationTileABI, null, 2)
+    "./abis/StateTile.json",
+    JSON.stringify(stateTileABI, null, 2)
   );
 };
 

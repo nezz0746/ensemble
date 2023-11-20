@@ -429,7 +429,7 @@
     "outputs": [
       {
         "name": "",
-        "internalType": "contract ILocationTileVerifier",
+        "internalType": "contract IStateTileVerifier",
         "type": "address"
       }
     ]
