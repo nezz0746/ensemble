@@ -4,6 +4,7 @@ import { commonLocations } from "@/services/constants";
 import { Feature, Polygon, bboxPolygon } from "@turf/turf";
 import ngeohash from "ngeohash";
 import { useEffect } from "react";
+import { getGeohashAsBBox } from "@/services/map_utils";
 
 export type Positon = {
   latitude: number;
@@ -44,13 +45,13 @@ const usePositionStore = create<PositionStore>((set) => ({
     set(
       produce((state) => {
         const new_hash = ngeohash.encode(
-          state.position.longitude,
           state.position.latitude,
+          state.position.longitude,
           precision
         );
         state.position.geohash = new_hash;
         state.position.precision = precision;
-        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
+        state.position.feature = bboxPolygon(getGeohashAsBBox(new_hash));
       })
     );
   },
@@ -58,14 +59,14 @@ const usePositionStore = create<PositionStore>((set) => ({
     set(
       produce((state) => {
         const new_hash = ngeohash.encode(
-          longitude,
           latitude,
+          longitude,
           state.position.precision
         );
         state.position.latitude = latitude;
         state.position.longitude = longitude;
         state.position.geohash = new_hash;
-        state.position.feature = bboxPolygon(ngeohash.decode_bbox(new_hash));
+        state.position.feature = bboxPolygon(getGeohashAsBBox(new_hash));
       })
     );
   },
