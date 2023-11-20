@@ -22,6 +22,7 @@ const useAppAgent = () => {
 
     return {
       refetch,
+      agent: data?.agent,
       geohashes,
       features: geohashes?.map(geohashToFeature) ?? [],
     };
