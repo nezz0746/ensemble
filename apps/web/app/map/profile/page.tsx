@@ -2,10 +2,10 @@
 
 import type { NextPage } from "next";
 
-import useVisitedGeohashes from "@/hooks/useVisitedGeohashes";
+import useAppAgent from "@/hooks/useAppAgent";
 
 const Home: NextPage = () => {
-  const { geohashes } = useVisitedGeohashes();
+  const { geohashes } = useAppAgent();
 
   return (
     <div className="h-full flex flex-col">
