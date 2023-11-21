@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "prepare:local": "yarn run codegen && npx tsx copy-artifacts.ts && mustache config/1337.json template.yaml > subgraph.yaml",
+    "prepare:local": "npx tsx copy-artifacts.ts && mustache config/1337.json template.yaml > subgraph.yaml && yarn run codegen",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ nezz0746/ns-framework",
     "create-local": "graph create --node http://localhost:8020/ nezz0746/ns-framework",
     "remove-local": "graph remove --node http://localhost:8020/ nezz0746/ns-framework",

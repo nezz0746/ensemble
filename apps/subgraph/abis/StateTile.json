@@ -65,6 +65,12 @@
     "anonymous": false,
     "inputs": [
       {
+        "name": "state",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      },
+      {
         "name": "account",
         "internalType": "address",
         "type": "address",
@@ -77,7 +83,7 @@
         "indexed": false
       }
     ],
-    "name": "Move"
+    "name": "StateMove"
   },
   {
     "type": "event",

@@ -75,14 +75,6 @@ export function handleLocalRecordDeployed(
 }
 
 export function handleTileCreated(event: TileCreatedEvent): void {
-  let entity = new TileCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
-  entity.tileAddress = event.params.stateAddress;
-  entity.creator = event.params.creator;
-  entity.verifier = event.params.verifier;
-  entity.baseURI = event.params.baseURI;
-
   let n_state = NetworkState.load(event.params.stateAddress.toHexString());
 
   if (n_state == null) {
@@ -91,8 +83,22 @@ export function handleTileCreated(event: TileCreatedEvent): void {
   n_state.creator = event.params.creator;
   n_state.verifier = event.params.verifier;
   n_state.baseURI = event.params.baseURI;
+
   StateTileTemplate.create(event.params.stateAddress);
+
   n_state.save();
+
+  /**
+   * GENERATED
+   */
+
+  let entity = new TileCreated(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  );
+  entity.tileAddress = event.params.stateAddress;
+  entity.creator = event.params.creator;
+  entity.verifier = event.params.verifier;
+  entity.baseURI = event.params.baseURI;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;

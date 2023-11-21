@@ -25,6 +25,8 @@ type NetworkStateTravel @entity(immutable: true) {
   geohash: String! # string
 }
 
+# GENERATED
+
 type RecordTileCreated @entity(immutable: true) {
   id: Bytes!
   tileAddress: Bytes! # address

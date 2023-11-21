@@ -36,25 +36,29 @@ export class ApprovalForAll__Params {
   }
 }
 
-export class Move extends ethereum.Event {
-  get params(): Move__Params {
-    return new Move__Params(this);
+export class StateMove extends ethereum.Event {
+  get params(): StateMove__Params {
+    return new StateMove__Params(this);
   }
 }
 
-export class Move__Params {
-  _event: Move;
+export class StateMove__Params {
+  _event: StateMove;
 
-  constructor(event: Move) {
+  constructor(event: StateMove) {
     this._event = event;
   }
 
-  get account(): Address {
+  get state(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
+  get account(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
   get geohash(): string {
-    return this._event.parameters[1].value.toString();
+    return this._event.parameters[2].value.toString();
   }
 }
 

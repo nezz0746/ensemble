@@ -1,12 +1,12 @@
 import { NetworkStateTravel } from "../generated/schema";
-import { Move as MoveEvent } from "../generated/templates/StateTile/StateTile";
+import { StateMove as StateMoveEvent } from "../generated/templates/StateTile/StateTile";
 
-export function handleNetworkStateTravel(event: MoveEvent): void {
+export function handleNetworkStateTravel(event: StateMoveEvent): void {
   const travel = new NetworkStateTravel(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   );
 
-  travel.state = event.transaction.from.toHexString();
+  travel.state = event.params.state.toHexString();
   travel.account = event.params.account;
   travel.geohash = event.params.geohash;
 
