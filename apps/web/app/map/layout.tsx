@@ -40,14 +40,9 @@ const Home = ({ children }: HomeProps) => {
             </div>
           </Map>
         </div>
-        <div className="w-1/3 p-4">
-          <div className="w-full h-full">
-            <div className="">
-              <ConnectButton />
-            </div>
-
-            <div className="py-3">{children}</div>
-          </div>
+        <div className="w-1/3 p-4 flex flex-col">
+          <ConnectButton />
+          <div className="py-3 overflow-scroll">{children}</div>
         </div>
       </div>
     </MapProvider>
