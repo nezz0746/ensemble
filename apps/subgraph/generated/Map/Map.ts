@@ -266,23 +266,23 @@ export class Map extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  createTile(verifier: Address, baseURI: string): Address {
+  createState(verifier: Address, baseURI: string): Address {
     let result = super.call(
-      "createTile",
-      "createTile(address,string):(address)",
+      "createState",
+      "createState(address,string):(address)",
       [ethereum.Value.fromAddress(verifier), ethereum.Value.fromString(baseURI)]
     );
 
     return result[0].toAddress();
   }
 
-  try_createTile(
+  try_createState(
     verifier: Address,
     baseURI: string
   ): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "createTile",
-      "createTile(address,string):(address)",
+      "createState",
+      "createState(address,string):(address)",
       [ethereum.Value.fromAddress(verifier), ethereum.Value.fromString(baseURI)]
     );
     if (result.reverted) {
@@ -412,20 +412,20 @@ export class ConstructorCallRecordTileConfigurationStruct extends ethereum.Tuple
   }
 }
 
-export class CreateTileCall extends ethereum.Call {
-  get inputs(): CreateTileCall__Inputs {
-    return new CreateTileCall__Inputs(this);
+export class CreateStateCall extends ethereum.Call {
+  get inputs(): CreateStateCall__Inputs {
+    return new CreateStateCall__Inputs(this);
   }
 
-  get outputs(): CreateTileCall__Outputs {
-    return new CreateTileCall__Outputs(this);
+  get outputs(): CreateStateCall__Outputs {
+    return new CreateStateCall__Outputs(this);
   }
 }
 
-export class CreateTileCall__Inputs {
-  _call: CreateTileCall;
+export class CreateStateCall__Inputs {
+  _call: CreateStateCall;
 
-  constructor(call: CreateTileCall) {
+  constructor(call: CreateStateCall) {
     this._call = call;
   }
 
@@ -438,10 +438,10 @@ export class CreateTileCall__Inputs {
   }
 }
 
-export class CreateTileCall__Outputs {
-  _call: CreateTileCall;
+export class CreateStateCall__Outputs {
+  _call: CreateStateCall;
 
-  constructor(call: CreateTileCall) {
+  constructor(call: CreateStateCall) {
     this._call = call;
   }
 

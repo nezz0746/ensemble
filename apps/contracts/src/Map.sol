@@ -54,7 +54,7 @@ contract Map is RecordTileFactory, StateTileFactory, AccessControl {
         StateTile(state).move(account, geohash, data);
     }
 
-    function createTile(
+    function createState(
         address verifier,
         string memory baseURI
     ) external onlyRole(TILE_CREATOR) returns (address tileAddress) {

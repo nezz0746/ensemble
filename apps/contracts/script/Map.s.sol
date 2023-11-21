@@ -50,7 +50,7 @@ contract MapScript is BaseScript {
             6
         );
 
-        address tile = map.createTile(
+        address tile = map.createState(
             address(verifier),
             "https://example.com/"
         );

@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc',
+  1337: '0xf4B146FbA71F41E0592668ffbF264F1D186b2Ca8',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x7969c5eD335650692Bc04293B07F5BF2e7A673C0',
+  1337: '0x36b58F5C1969B7b6591D752ea6F5486D069010AB',
 } as const
 
 /**
@@ -790,7 +790,7 @@ export const mapABI = [
       { name: 'verifier', internalType: 'address', type: 'address' },
       { name: 'baseURI', internalType: 'string', type: 'string' },
     ],
-    name: 'createTile',
+    name: 'createState',
     outputs: [
       { name: 'tileAddress', internalType: 'address', type: 'address' },
     ],
@@ -869,7 +869,7 @@ export const mapABI = [
  */
 export const mapAddress = {
   5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
-  1337: '0xB0D4afd8879eD9F52b28595d31B441D079B2Ca07',
+  1337: '0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B',
 } as const
 
 /**
@@ -1119,7 +1119,7 @@ export const stateTileABI = [
  *
  */
 export const stateTileAddress = {
-  1337: '0x4b2Da790f25B6e802aBa730027B451AA9A7E863e',
+  1337: '0x10D675d684C4696Dd86bBFa28A8843EAcb9BC19f',
 } as const
 
 /**
@@ -2912,12 +2912,12 @@ export function useMapWrite<
 }
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createTile"`.
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createState"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
  * -
  */
-export function useMapCreateTile<
+export function useMapCreateState<
   TMode extends WriteContractMode = undefined,
   TChainId extends number = keyof typeof mapAddress,
 >(
@@ -2925,25 +2925,29 @@ export function useMapCreateTile<
     ? UseContractWriteConfig<
         PrepareWriteContractResult<
           typeof mapABI,
-          'createTile'
+          'createState'
         >['request']['abi'],
-        'createTile',
+        'createState',
         TMode
-      > & { address?: Address; chainId?: TChainId; functionName?: 'createTile' }
-    : UseContractWriteConfig<typeof mapABI, 'createTile', TMode> & {
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'createState'
+      }
+    : UseContractWriteConfig<typeof mapABI, 'createState', TMode> & {
         abi?: never
         address?: never
         chainId?: TChainId
-        functionName?: 'createTile'
+        functionName?: 'createState'
       } = {} as any,
 ) {
   const { chain } = useNetwork()
   const defaultChainId = useChainId()
   const chainId = config.chainId ?? chain?.id ?? defaultChainId
-  return useContractWrite<typeof mapABI, 'createTile', TMode>({
+  return useContractWrite<typeof mapABI, 'createState', TMode>({
     abi: mapABI,
     address: mapAddress[chainId as keyof typeof mapAddress],
-    functionName: 'createTile',
+    functionName: 'createState',
     ...config,
   } as any)
 }
@@ -3120,14 +3124,14 @@ export function usePrepareMapWrite<TFunctionName extends string>(
 }
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createTile"`.
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createState"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
  * -
  */
-export function usePrepareMapCreateTile(
+export function usePrepareMapCreateState(
   config: Omit<
-    UsePrepareContractWriteConfig<typeof mapABI, 'createTile'>,
+    UsePrepareContractWriteConfig<typeof mapABI, 'createState'>,
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof mapAddress } = {} as any,
 ) {
@@ -3137,9 +3141,9 @@ export function usePrepareMapCreateTile(
   return usePrepareContractWrite({
     abi: mapABI,
     address: mapAddress[chainId as keyof typeof mapAddress],
-    functionName: 'createTile',
+    functionName: 'createState',
     ...config,
-  } as UsePrepareContractWriteConfig<typeof mapABI, 'createTile'>)
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'createState'>)
 }
 
 /**

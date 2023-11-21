@@ -11,6 +11,9 @@ import {Multicall3} from "multicall-authenticated/Multicall3.sol";
 import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
 import {Map} from "../src/Map.sol";
 import {RecordTileFactoryConfig} from "../src/RecordTileFactory.sol";
+import {StateTile} from "../src/StateTile.sol";
+import {IStateTileVerifier} from "../src/interfaces/IStateTileVerifier.sol";
+import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
 
 contract MapBaseTest is DSTestFull {
     ERC6551Registry registry;
@@ -20,6 +23,7 @@ contract MapBaseTest is DSTestFull {
     AccountV3 implementation;
     AccountV3Upgradable upgradableImplementation;
     Map map;
+    address state;
 
     constructor() {
         registry = new ERC6551Registry();
@@ -46,5 +50,9 @@ contract MapBaseTest is DSTestFull {
             2,
             6
         );
+
+        NoCheckVerifier verifier = new NoCheckVerifier();
+
+        state = map.createState(address(verifier), "");
     }
 }

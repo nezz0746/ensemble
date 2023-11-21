@@ -26,7 +26,7 @@ contract MapTest is MapBaseTest {
     function setUp() public {
         NoCheckVerifier verifier = new NoCheckVerifier();
 
-        stateAddress = map.createTile(
+        stateAddress = map.createState(
             address(verifier),
             "https://example.com/"
         );
