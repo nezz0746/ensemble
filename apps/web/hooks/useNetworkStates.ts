@@ -1,12 +1,14 @@
 import { useNetworkStatesQuery } from "@/rtk/generated";
 import { useMemo } from "react";
+import useChain from "./useChain";
 
 const useNetworkStates = () => {
-  const { data } = useNetworkStatesQuery({ variables: {} });
+  const { chainId } = useChain();
+  const { data } = useNetworkStatesQuery({ variables: {}, chainId });
 
   return useMemo(() => {
     return {
-      networkStates: data?.networkStates ?? [],
+      networkStates: data?.networkStates ?? []
     };
   }, [data?.networkStates]);
 };

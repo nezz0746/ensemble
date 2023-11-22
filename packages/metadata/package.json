@@ -1,0 +1,11 @@
+{
+  "name": "metadata",
+  "version": "0.0.1",
+  "description": "A metadata library Instate Protocol",
+  "scripts": {
+    "upload-states": "npx tsx state.ts"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0xf4B146FbA71F41E0592668ffbF264F1D186b2Ca8',
+  1337: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x36b58F5C1969B7b6591D752ea6F5486D069010AB',
+  1337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 } as const
 
 /**
@@ -582,7 +582,7 @@ export const ierc6551RegistryABI = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export const mapABI = [
@@ -864,16 +864,16 @@ export const mapABI = [
 ] as const
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export const mapAddress = {
-  5: '0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526',
-  1337: '0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B',
+  5: '0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB',
+  1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
 } as const
 
 /**
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export const mapConfig = { address: mapAddress, abi: mapABI } as const
@@ -883,7 +883,8 @@ export const mapConfig = { address: mapAddress, abi: mapABI } as const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export const stateTileABI = [
   {
@@ -923,6 +924,12 @@ export const stateTileABI = [
     anonymous: false,
     inputs: [
       {
+        name: 'state',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
         name: 'account',
         internalType: 'address',
         type: 'address',
@@ -935,7 +942,7 @@ export const stateTileABI = [
         indexed: false,
       },
     ],
-    name: 'Move',
+    name: 'StateMove',
   },
   {
     type: 'event',
@@ -1116,14 +1123,17 @@ export const stateTileABI = [
 ] as const
 
 /**
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export const stateTileAddress = {
-  1337: '0x10D675d684C4696Dd86bBFa28A8843EAcb9BC19f',
+  5: '0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47',
+  1337: '0xcF05D5292cc98955609b1dEf8b20cC90dD14111E',
 } as const
 
 /**
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export const stateTileConfig = {
   address: stateTileAddress,
@@ -2674,7 +2684,7 @@ export function useIerc6551RegistryErc6551AccountCreatedEvent(
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRead<
@@ -2699,7 +2709,7 @@ export function useMapRead<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"DEFAULT_ADMIN_ROLE"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapDefaultAdminRole<
@@ -2725,7 +2735,7 @@ export function useMapDefaultAdminRole<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"TILE_CREATOR"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapTileCreator<
@@ -2751,7 +2761,7 @@ export function useMapTileCreator<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"computeLocalRecord"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapComputeLocalRecord<
@@ -2777,7 +2787,7 @@ export function useMapComputeLocalRecord<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"computeRecordTileAddress"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapComputeRecordTileAddress<
@@ -2803,7 +2813,7 @@ export function useMapComputeRecordTileAddress<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"getRoleAdmin"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapGetRoleAdmin<
@@ -2829,7 +2839,7 @@ export function useMapGetRoleAdmin<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"hasRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapHasRole<
@@ -2855,7 +2865,7 @@ export function useMapHasRole<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"supportsInterface"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapSupportsInterface<
@@ -2881,7 +2891,7 @@ export function useMapSupportsInterface<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapWrite<
@@ -2914,7 +2924,7 @@ export function useMapWrite<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createState"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapCreateState<
@@ -2955,7 +2965,7 @@ export function useMapCreateState<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"grantRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapGrantRole<
@@ -2992,7 +3002,7 @@ export function useMapGrantRole<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"move"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapMove<
@@ -3026,7 +3036,7 @@ export function useMapMove<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"renounceRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRenounceRole<
@@ -3067,7 +3077,7 @@ export function useMapRenounceRole<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"revokeRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRevokeRole<
@@ -3104,7 +3114,7 @@ export function useMapRevokeRole<
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapWrite<TFunctionName extends string>(
@@ -3126,7 +3136,7 @@ export function usePrepareMapWrite<TFunctionName extends string>(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"createState"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapCreateState(
@@ -3149,7 +3159,7 @@ export function usePrepareMapCreateState(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"grantRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapGrantRole(
@@ -3172,7 +3182,7 @@ export function usePrepareMapGrantRole(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"move"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapMove(
@@ -3195,7 +3205,7 @@ export function usePrepareMapMove(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"renounceRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapRenounceRole(
@@ -3218,7 +3228,7 @@ export function usePrepareMapRenounceRole(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"revokeRole"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function usePrepareMapRevokeRole(
@@ -3241,7 +3251,7 @@ export function usePrepareMapRevokeRole(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapEvent<TEventName extends string>(
@@ -3263,7 +3273,7 @@ export function useMapEvent<TEventName extends string>(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"LocalRecordDeployed"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapLocalRecordDeployedEvent(
@@ -3286,7 +3296,7 @@ export function useMapLocalRecordDeployedEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"LocalRecordTokenDeployed"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapLocalRecordTokenDeployedEvent(
@@ -3309,7 +3319,7 @@ export function useMapLocalRecordTokenDeployedEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleAdminChanged"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRoleAdminChangedEvent(
@@ -3332,7 +3342,7 @@ export function useMapRoleAdminChangedEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleGranted"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRoleGrantedEvent(
@@ -3355,7 +3365,7 @@ export function useMapRoleGrantedEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"RoleRevoked"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapRoleRevokedEvent(
@@ -3378,7 +3388,7 @@ export function useMapRoleRevokedEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"TileCreated"`.
  *
- * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xd228D2D69eBaecd15b853Dc92cB42D86d96E6526)
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB)
  * -
  */
 export function useMapTileCreatedEvent(
@@ -3401,7 +3411,8 @@ export function useMapTileCreatedEvent(
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileRead<
   TFunctionName extends string,
@@ -3412,9 +3423,12 @@ export function useStateTileRead<
     'abi' | 'address'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
 }
@@ -3422,7 +3436,8 @@ export function useStateTileRead<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"accountPosition"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileAccountPosition<
   TFunctionName extends 'accountPosition',
@@ -3433,9 +3448,12 @@ export function useStateTileAccountPosition<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'accountPosition',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3444,7 +3462,8 @@ export function useStateTileAccountPosition<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"balanceOf"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileBalanceOf<
   TFunctionName extends 'balanceOf',
@@ -3455,9 +3474,12 @@ export function useStateTileBalanceOf<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'balanceOf',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3466,7 +3488,8 @@ export function useStateTileBalanceOf<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"balanceOfBatch"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileBalanceOfBatch<
   TFunctionName extends 'balanceOfBatch',
@@ -3477,9 +3500,12 @@ export function useStateTileBalanceOfBatch<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'balanceOfBatch',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3488,7 +3514,8 @@ export function useStateTileBalanceOfBatch<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"isApprovedForAll"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileIsApprovedForAll<
   TFunctionName extends 'isApprovedForAll',
@@ -3499,9 +3526,12 @@ export function useStateTileIsApprovedForAll<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'isApprovedForAll',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3510,7 +3540,8 @@ export function useStateTileIsApprovedForAll<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"map"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileMap<
   TFunctionName extends 'map',
@@ -3521,9 +3552,12 @@ export function useStateTileMap<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'map',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3532,7 +3566,8 @@ export function useStateTileMap<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"supportsInterface"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileSupportsInterface<
   TFunctionName extends 'supportsInterface',
@@ -3543,9 +3578,12 @@ export function useStateTileSupportsInterface<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'supportsInterface',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3554,7 +3592,8 @@ export function useStateTileSupportsInterface<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"uri"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileUri<
   TFunctionName extends 'uri',
@@ -3565,9 +3604,12 @@ export function useStateTileUri<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'uri',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3576,7 +3618,8 @@ export function useStateTileUri<
 /**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"verifier"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileVerifier<
   TFunctionName extends 'verifier',
@@ -3587,9 +3630,12 @@ export function useStateTileVerifier<
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractRead({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'verifier',
     ...config,
   } as UseContractReadConfig<typeof stateTileABI, TFunctionName, TSelectData>)
@@ -3598,7 +3644,8 @@ export function useStateTileVerifier<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileWrite<
   TFunctionName extends string,
@@ -3620,9 +3667,12 @@ export function useStateTileWrite<
         chainId?: TChainId
       } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractWrite<typeof stateTileABI, TFunctionName, TMode>({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     ...config,
   } as any)
 }
@@ -3630,7 +3680,8 @@ export function useStateTileWrite<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileMove<
   TMode extends WriteContractMode = undefined,
@@ -3652,9 +3703,12 @@ export function useStateTileMove<
         functionName?: 'move'
       } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractWrite<typeof stateTileABI, 'move', TMode>({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'move',
     ...config,
   } as any)
@@ -3663,7 +3717,8 @@ export function useStateTileMove<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileSafeBatchTransferFrom<
   TMode extends WriteContractMode = undefined,
@@ -3693,9 +3748,12 @@ export function useStateTileSafeBatchTransferFrom<
         functionName?: 'safeBatchTransferFrom'
       } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractWrite<typeof stateTileABI, 'safeBatchTransferFrom', TMode>({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'safeBatchTransferFrom',
     ...config,
   } as any)
@@ -3704,7 +3762,8 @@ export function useStateTileSafeBatchTransferFrom<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeTransferFrom"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileSafeTransferFrom<
   TMode extends WriteContractMode = undefined,
@@ -3730,9 +3789,12 @@ export function useStateTileSafeTransferFrom<
         functionName?: 'safeTransferFrom'
       } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractWrite<typeof stateTileABI, 'safeTransferFrom', TMode>({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'safeTransferFrom',
     ...config,
   } as any)
@@ -3741,7 +3803,8 @@ export function useStateTileSafeTransferFrom<
 /**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"setApprovalForAll"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileSetApprovalForAll<
   TMode extends WriteContractMode = undefined,
@@ -3771,9 +3834,12 @@ export function useStateTileSetApprovalForAll<
         functionName?: 'setApprovalForAll'
       } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractWrite<typeof stateTileABI, 'setApprovalForAll', TMode>({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'setApprovalForAll',
     ...config,
   } as any)
@@ -3782,7 +3848,8 @@ export function useStateTileSetApprovalForAll<
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function usePrepareStateTileWrite<TFunctionName extends string>(
   config: Omit<
@@ -3790,9 +3857,12 @@ export function usePrepareStateTileWrite<TFunctionName extends string>(
     'abi' | 'address'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     ...config,
   } as UsePrepareContractWriteConfig<typeof stateTileABI, TFunctionName>)
 }
@@ -3800,7 +3870,8 @@ export function usePrepareStateTileWrite<TFunctionName extends string>(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function usePrepareStateTileMove(
   config: Omit<
@@ -3808,9 +3879,12 @@ export function usePrepareStateTileMove(
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'move',
     ...config,
   } as UsePrepareContractWriteConfig<typeof stateTileABI, 'move'>)
@@ -3819,7 +3893,8 @@ export function usePrepareStateTileMove(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeBatchTransferFrom"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function usePrepareStateTileSafeBatchTransferFrom(
   config: Omit<
@@ -3827,9 +3902,12 @@ export function usePrepareStateTileSafeBatchTransferFrom(
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'safeBatchTransferFrom',
     ...config,
   } as UsePrepareContractWriteConfig<
@@ -3841,7 +3919,8 @@ export function usePrepareStateTileSafeBatchTransferFrom(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"safeTransferFrom"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function usePrepareStateTileSafeTransferFrom(
   config: Omit<
@@ -3849,9 +3928,12 @@ export function usePrepareStateTileSafeTransferFrom(
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'safeTransferFrom',
     ...config,
   } as UsePrepareContractWriteConfig<typeof stateTileABI, 'safeTransferFrom'>)
@@ -3860,7 +3942,8 @@ export function usePrepareStateTileSafeTransferFrom(
 /**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"setApprovalForAll"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function usePrepareStateTileSetApprovalForAll(
   config: Omit<
@@ -3868,9 +3951,12 @@ export function usePrepareStateTileSetApprovalForAll(
     'abi' | 'address' | 'functionName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return usePrepareContractWrite({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     functionName: 'setApprovalForAll',
     ...config,
   } as UsePrepareContractWriteConfig<typeof stateTileABI, 'setApprovalForAll'>)
@@ -3879,7 +3965,8 @@ export function usePrepareStateTileSetApprovalForAll(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileEvent<TEventName extends string>(
   config: Omit<
@@ -3887,9 +3974,12 @@ export function useStateTileEvent<TEventName extends string>(
     'abi' | 'address'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, TEventName>)
 }
@@ -3897,7 +3987,8 @@ export function useStateTileEvent<TEventName extends string>(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"ApprovalForAll"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileApprovalForAllEvent(
   config: Omit<
@@ -3905,37 +3996,45 @@ export function useStateTileApprovalForAllEvent(
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     eventName: 'ApprovalForAll',
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, 'ApprovalForAll'>)
 }
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"Move"`.
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"StateMove"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
-export function useStateTileMoveEvent(
+export function useStateTileStateMoveEvent(
   config: Omit<
-    UseContractEventConfig<typeof stateTileABI, 'Move'>,
+    UseContractEventConfig<typeof stateTileABI, 'StateMove'>,
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
-    eventName: 'Move',
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
+    eventName: 'StateMove',
     ...config,
-  } as UseContractEventConfig<typeof stateTileABI, 'Move'>)
+  } as UseContractEventConfig<typeof stateTileABI, 'StateMove'>)
 }
 
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"TransferBatch"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileTransferBatchEvent(
   config: Omit<
@@ -3943,9 +4042,12 @@ export function useStateTileTransferBatchEvent(
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     eventName: 'TransferBatch',
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, 'TransferBatch'>)
@@ -3954,7 +4056,8 @@ export function useStateTileTransferBatchEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"TransferSingle"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileTransferSingleEvent(
   config: Omit<
@@ -3962,9 +4065,12 @@ export function useStateTileTransferSingleEvent(
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     eventName: 'TransferSingle',
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, 'TransferSingle'>)
@@ -3973,7 +4079,8 @@ export function useStateTileTransferSingleEvent(
 /**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"URI"`.
  *
- *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47)
+ * -
  */
 export function useStateTileUriEvent(
   config: Omit<
@@ -3981,9 +4088,12 @@ export function useStateTileUriEvent(
     'abi' | 'address' | 'eventName'
   > & { chainId?: keyof typeof stateTileAddress } = {} as any,
 ) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
   return useContractEvent({
     abi: stateTileABI,
-    address: stateTileAddress[1337],
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
     eventName: 'URI',
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, 'URI'>)

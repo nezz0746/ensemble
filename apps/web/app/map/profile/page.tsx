@@ -8,10 +8,12 @@ import { useMap } from "react-map-gl";
 import { useCallback } from "react";
 import { center as centerOfFeature } from "@turf/turf";
 import { geohashToFeature } from "@/services/map_utils";
+import useAppAddresses from "@/hooks/useAppAddresses";
 
 const Home: NextPage = () => {
   const {mainMap} = useMap() 
   const { agent } = useAppAgent();
+  const {stateTile} = useAppAddresses()
 
   const zoomTo = useCallback((geohash: string) => {
     const center = centerOfFeature(geohashToFeature(geohash)).geometry.coordinates as [number, number]
@@ -27,7 +29,14 @@ const Home: NextPage = () => {
     <div className="h-full flex flex-col">
       <div className="flex flex-col flex-grow justify-between pt-4">
         <div className="flex flex-col">
+          <div>
+            <p>Current State</p>
+            {stateTile}
+          </div>
+          <div>
+            
           Local Records
+          </div>
           <div className="grid grid-cols-2 gap-2 mt-2">
             {agent?.records.map(({geohash, id}) => {
               return (
