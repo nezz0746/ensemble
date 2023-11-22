@@ -1,0 +1,90 @@
+type Agent @entity(immutable: false) {
+  id: String! # address
+  records: [LocalRecord!]! @derivedFrom(field: "owner")
+}
+
+type LocalRecord @entity(immutable: false) {
+  id: String! # account-addess
+  owner: Agent!
+  geohash: String! # string
+  localRecordERC721: String! # address
+}
+
+type NetworkState @entity(immutable: false) {
+  id: String! # tileAddress
+  verifier: Bytes! # address
+  creator: Bytes! # address
+  baseURI: String! # string
+  travels: [NetworkStateTravel!]! @derivedFrom(field: "state")
+}
+
+type NetworkStateTravel @entity(immutable: true) {
+  id: Bytes! # tileAddress
+  state: NetworkState! # tileAddress
+  account: Bytes! # address
+  geohash: String! # string
+}
+
+# GENERATED
+
+type RecordTileCreated @entity(immutable: true) {
+  id: Bytes!
+  tileAddress: Bytes! # address
+  geohash: String! # string
+  creator: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RecordTileEntered @entity(immutable: true) {
+  id: Bytes!
+  tileAddress: Bytes! # address
+  recipient: Bytes! # address
+  geohash: String! # string
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TileCreated @entity(immutable: true) {
+  id: Bytes!
+  tileAddress: Bytes! # address
+  verifier: Bytes! # address
+  baseURI: String! # string
+  creator: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleAdminChanged @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  previousAdminRole: Bytes! # bytes32
+  newAdminRole: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleGranted @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RoleRevoked @entity(immutable: true) {
+  id: Bytes!
+  role: Bytes! # bytes32
+  account: Bytes! # address
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

@@ -3,12 +3,12 @@ pragma solidity ^0.8.20;
 
 import {DSTestFull} from "./DSTestFull.sol";
 import {console2} from "forge-std/Test.sol";
-import {LocationTile} from "../src/LocationTile.sol";
-import {ILocationTileVerifier} from "../src/interfaces/ILocationTileVerifier.sol";
+import {StateTile} from "../src/StateTile.sol";
+import {IStateTileVerifier} from "../src/interfaces/IStateTileVerifier.sol";
 import {MapBaseTest} from "./MapBaseTest.t.sol";
 
-contract LocationTileTest is MapBaseTest {
-    LocationTile locationTile;
+contract StateTileTest is MapBaseTest {
+    StateTile stateTile;
     address user = label("user");
     address tileCreator = label("tileCreator");
 

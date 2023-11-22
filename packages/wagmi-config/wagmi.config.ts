@@ -41,7 +41,7 @@ export default defineConfig(async () => {
           "Map.sol/*.json",
           "ERC6551Registry.sol/*.json",
           "AccountProxy.sol/*.json",
-          "LocationTile.sol/*.json",
+          "StateTile.sol/*.json",
         ],
         deployments,
       }),

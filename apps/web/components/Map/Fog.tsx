@@ -1,50 +1,49 @@
 import { Source, Layer } from "react-map-gl";
 import { usePosition } from "@/hooks/usePosition";
 import { fogLayerStyle, getPointLayerStyle } from "@/services/mapbox";
-import { useVisitedGeohashesStore } from "@/hooks/useVisitedGeohashes";
 import { center, difference, union } from "@turf/turf";
 import { emptyFeature, globeFeature } from "@/services/constants";
 import { useMemo } from "react";
+import useAppAgent from "@/hooks/useAppAgent";
+import { usePathname } from "next/navigation";
 
 const FogLayer = () => {
+  const pathName = usePathname();
+
+  const isProfile = pathName.includes("/profile");
+
   const {
     position: { feature },
   } = usePosition();
-  const { features } = useVisitedGeohashesStore();
+  const { features } = useAppAgent();
 
-  /**
-   * FOAM
-   */
+  const agentFeatures = isProfile ? features : [];
+
+  const visibleFeatures = isProfile ? [feature, ...agentFeatures] : [feature];
+
   const fog = useMemo(() => {
-    const fs = [...features, feature];
-
     return difference(
       globeFeature,
-      fs.reduce((acc: any, feature) => {
+      visibleFeatures.reduce((acc: any, feature) => {
         const newAcc = union(acc, feature);
         return newAcc !== null ? newAcc : emptyFeature;
       }, emptyFeature)
     );
-  }, [feature, features]);
+  }, [visibleFeatures]);
 
-  /**
-   * Center of visited geohashes
-   */
   const points = useMemo(() => {
-    const centers = features.map((f) => {
+    return agentFeatures.map((f) => {
       return center(f, { properties: f.properties });
     });
-
-    return centers;
-  }, [features]);
+  }, [agentFeatures]);
 
   return (
     <>
       {points.map((point) => {
         return (
           <Source
-            key={point.properties.geohash}
-            id={point.properties.geohash}
+            key={point?.properties.geohash}
+            id={point?.properties.geohash}
             type="geojson"
             data={point}
           >

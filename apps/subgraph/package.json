@@ -1,0 +1,25 @@
+{
+  "name": "subgraph",
+  "version": "0.0.1",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "prepare:local": "npx tsx copy-artifacts.ts && mustache config/1337.json template.yaml > subgraph.yaml && yarn run codegen",
+    "prepare:testnets": "npx tsx copy-artifacts.ts && mustache config/5.json template.yaml > subgraph.yaml && yarn run codegen",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ nezz0746/ns-framework",
+    "create-local": "graph create --node http://localhost:8020/ nezz0746/ns-framework",
+    "remove-local": "graph remove --node http://localhost:8020/ nezz0746/ns-framework",
+    "deploy:local": "yarn run prepare:local && yarn run create-local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 nezz0746/ns-framework",
+    "deploy:testnets": "yarn run prepare:testnets && graph deploy --product hosted-service nezz0746/instate-goerli",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.61.0",
+    "@graphprotocol/graph-ts": "0.31.0",
+    "mustache": "^4.2.0",
+    "wagmi-config": "*"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}

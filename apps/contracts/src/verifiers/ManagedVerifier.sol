@@ -2,10 +2,10 @@
 pragma solidity ^0.8.20;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
-import {ILocationTileVerifier} from "../interfaces/ILocationTileVerifier.sol";
+import {IStateTileVerifier} from "../interfaces/IStateTileVerifier.sol";
 import {GeohashLogic} from "../GeohashLogic.sol";
 
-contract ManagedVerifier is ILocationTileVerifier, AccessControl {
+contract ManagedVerifier is IStateTileVerifier, AccessControl {
     mapping(uint256 => bool) public verifiedLocations;
 
     mapping(address => bool) public allowedAccounts;

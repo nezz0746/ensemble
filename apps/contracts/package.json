@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "forge test",
-    "dev": "anvil --chain-id 1337",
-    "deploy:local": "forge script MapScript -s 'deployMapLocal()' --broadcast",
+    "chain": "rm -rf ./data && docker-compose up",
+    "deploy:local": "forge compile --force && forge script MapScript -s 'deployMapLocal()' --broadcast",
     "deploy:testnets": "forge script MapScript -s 'deployMapTestnets()' --broadcast --verify",
     "build": "forge compile"
   }

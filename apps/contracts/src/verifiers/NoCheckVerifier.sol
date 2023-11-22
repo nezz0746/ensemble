@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import {ILocationTileVerifier} from "../interfaces/ILocationTileVerifier.sol";
+import {IStateTileVerifier} from "../interfaces/IStateTileVerifier.sol";
 
-contract NoCheckVerifier is ILocationTileVerifier {
+contract NoCheckVerifier is IStateTileVerifier {
     function verifyLocation(
         address,
         string memory,

@@ -3,11 +3,11 @@ pragma solidity ^0.8.20;
 
 import {GeohashLogic} from "./GeohashLogic.sol";
 import {RecordTileFactory, RecordTileFactoryConfig} from "./RecordTileFactory.sol";
-import {LocationTileFactory} from "./LocationTileFactory.sol";
-import {LocationTile} from "./LocationTile.sol";
+import {StateTileFactory} from "./StateTileFactory.sol";
+import {StateTile} from "./StateTile.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract Map is RecordTileFactory, LocationTileFactory, AccessControl {
+contract Map is RecordTileFactory, StateTileFactory, AccessControl {
     bytes32 public constant TILE_CREATOR = keccak256("TILE_CREATOR");
 
     uint256 internal _minPrecision;
@@ -37,7 +37,7 @@ contract Map is RecordTileFactory, LocationTileFactory, AccessControl {
 
     function move(
         address account,
-        address tile,
+        address state,
         string memory geohash,
         bytes calldata data
     ) external {
@@ -51,13 +51,13 @@ contract Map is RecordTileFactory, LocationTileFactory, AccessControl {
         _createRecord(account, geohash);
 
         // Move account to new location
-        LocationTile(tile).move(account, geohash, data);
+        StateTile(state).move(account, geohash, data);
     }
 
-    function createTile(
+    function createState(
         address verifier,
         string memory baseURI
     ) external onlyRole(TILE_CREATOR) returns (address tileAddress) {
-        return _createNewTile(address(this), verifier, baseURI);
+        return _createNewState(address(this), verifier, baseURI);
     }
 }

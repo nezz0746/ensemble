@@ -16,9 +16,9 @@ type HomeProps = {
 
 const Home = ({ children }: HomeProps) => {
   return (
-    <div className="h-screen flex flex-row gap-2">
-      <div className="w-2/3 relative">
-        <MapProvider>
+    <MapProvider>
+      <div className="h-screen flex flex-row gap-2">
+        <div className="w-2/3 relative">
           <Map
             id="mainMap"
             mapboxAccessToken={token}
@@ -39,18 +39,13 @@ const Home = ({ children }: HomeProps) => {
               <AppMapControls />
             </div>
           </Map>
-        </MapProvider>
-      </div>
-      <div className="w-1/3 p-4">
-        <div className="w-full h-full">
-          <div className="">
-            <ConnectButton />
-          </div>
-
-          <div className="py-3">{children}</div>
+        </div>
+        <div className="w-1/3 p-4 flex flex-col">
+          <ConnectButton />
+          <div className="py-3 overflow-scroll">{children}</div>
         </div>
       </div>
-    </div>
+    </MapProvider>
   );
 };
 

@@ -1,11 +1,12 @@
-import { locationTileAddress, mapAddress } from "wagmi-config";
+import { stateTileAddress, mapAddress } from "wagmi-config";
 import useChain from "./useChain";
 
 const useAppAddresses = () => {
   const { chainId } = useChain();
 
   return {
-    locationTile: locationTileAddress[chainId],
+    // @ts-ignore
+    stateTile: stateTileAddress[chainId],
     mapAddress: mapAddress[chainId],
   };
 };

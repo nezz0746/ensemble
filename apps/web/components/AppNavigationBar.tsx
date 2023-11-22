@@ -1,11 +1,11 @@
-import useLocationTiles from "@/hooks/useLocationTiles";
+import useNetworkStates from "@/hooks/useNetworkStates";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const AppNavigationBar = () => {
   const [inputFocused, setInputFocused] = useState(false);
-  const { locationTiles } = useLocationTiles();
+  const { networkStates } = useNetworkStates();
   const blurTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { push } = useRouter();
 
@@ -32,18 +32,18 @@ const AppNavigationBar = () => {
         />
         {inputFocused && (
           <div className="absolute mt-2 rounded-md border border-primary overflow-hidden bg-neutral z-20 w-full">
-            {locationTiles.map((tile) => {
+            {networkStates.map((state) => {
               return (
                 <div
-                  key={tile.args.tileAddress}
+                  key={state.id}
                   className="cursor-pointer p-2 hover:bg-neutral-600"
                   onClick={(e) => {
                     clearTimeout(blurTimeoutRef.current);
-                    push("/map/tile/" + tile.args.tileAddress);
+                    push("/map/tile/" + state.id);
                     setInputFocused(false);
                   }}
                 >
-                  Tile: {tile.args.tileAddress}
+                  Tile: {state.id}
                 </div>
               );
             })}
