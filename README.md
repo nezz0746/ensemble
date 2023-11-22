@@ -2,6 +2,6 @@
 
 # Instate
 
-Let's create network states & localised applications
+Protocol to build network states & localised applications
 
 <img src="screen.jpg">
