@@ -1,3 +1,5 @@
 # Instate
 
-Create, Join, explore Network States
+Let's create network states & localised applications
+
+<img src="screen.jpg">
