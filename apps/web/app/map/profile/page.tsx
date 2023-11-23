@@ -7,7 +7,7 @@ import { truncateAddress } from "@/services/utils";
 import { useMap } from "react-map-gl";
 import { useCallback } from "react";
 import { center as centerOfFeature } from "@turf/turf";
-import { geohashToFeature } from "@/services/map_utils";
+import { geohashToFeature, precisionToZoom } from "@/services/map_utils";
 import useAppAddresses from "@/hooks/useAppAddresses";
 
 const Home: NextPage = () => {
@@ -20,7 +20,9 @@ const Home: NextPage = () => {
     
     if(center.length === 2) {
       mainMap?.flyTo({
-        center
+        center,
+        zoom: precisionToZoom[geohash.length],
+        speed: 4
       })
     }
   }, [mainMap])
