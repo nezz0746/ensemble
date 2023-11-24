@@ -7,6 +7,8 @@ type StateHeaderProps = {
 }
 
 const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
+  if (!currentNetworkState) return null
+
   return (
     <div className="flex flex-row gap-4">
       <div className="flex-shrink-0">
