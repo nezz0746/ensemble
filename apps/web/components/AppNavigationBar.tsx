@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 const AppNavigationBar = () => {
-  const [inputFocused, setInputFocused] = useState(true)
+  const [inputFocused, setInputFocused] = useState(false)
   const { networkStates } = useNetworkStates()
   const blurTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const { push } = useRouter()
@@ -19,11 +19,11 @@ const AppNavigationBar = () => {
       </div>
       <div className="flex-grow relative">
         <input
-          onFocus={(e) => {
+          onFocus={() => {
             clearTimeout(blurTimeoutRef.current)
             setInputFocused(true)
           }}
-          onBlur={(e) => {
+          onBlur={() => {
             blurTimeoutRef.current = setTimeout(() => {
               setInputFocused(false)
             }, 200)
@@ -38,7 +38,7 @@ const AppNavigationBar = () => {
                 <div
                   key={state.id}
                   className="cursor-pointer p-2 hover:bg-neutral-600"
-                  onClick={(e) => {
+                  onClick={() => {
                     clearTimeout(blurTimeoutRef.current)
                     push('/map/tile/' + state.id)
                     setInputFocused(false)

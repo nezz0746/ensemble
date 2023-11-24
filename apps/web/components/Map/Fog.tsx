@@ -24,6 +24,7 @@ const FogLayer = () => {
   const fog = useMemo(() => {
     return difference(
       globeFeature,
+      // TODO: Fix this any & remove
       visibleFeatures.reduce((acc: any, feature) => {
         const newAcc = union(acc, feature)
         return newAcc !== null ? newAcc : emptyFeature
