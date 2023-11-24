@@ -1,28 +1,53 @@
 type Agent @entity(immutable: false) {
-  id: String! # address
+  id: Bytes! # address
   records: [LocalRecord!]! @derivedFrom(field: "owner")
+  states: [StateAgent!]! @derivedFrom(field: "agent")
 }
 
-type LocalRecord @entity(immutable: false) {
-  id: String! # account-addess
-  owner: Agent!
-  geohash: String! # string
-  localRecordERC721: String! # address
+# ---------------- NETWORK STATES -------------------
+
+type StateAgent @entity(immutable: false) {
+  id: Bytes! # address
+  state: NetworkState!
+  agent: Agent!
 }
 
 type NetworkState @entity(immutable: false) {
-  id: String! # tileAddress
+  id: Bytes! # tileAddress
   verifier: Bytes! # address
   creator: Bytes! # address
   baseURI: String! # string
+  metadata: NetworkStateMetadata
+  population: BigInt! # uint256
+  agents: [StateAgent!]! @derivedFrom(field: "state")
   travels: [NetworkStateTravel!]! @derivedFrom(field: "state")
+}
+
+type NetworkStateMetadata @entity(immutable: true) {
+  id: String! # cid
+  name: String! # string
+  description: String! # string
+  image: String! # string
+  imageGateway: String! # string
+  manifesto: String! # string
+  manifestoGateway: String! # string
 }
 
 type NetworkStateTravel @entity(immutable: true) {
   id: Bytes! # tileAddress
   state: NetworkState! # tileAddress
   account: Bytes! # address
+  previousGeohash: String! # string
+  nextGeohash: String! # string
+}
+
+# --------------------- RECORD ---------------------
+
+type LocalRecord @entity(immutable: false) {
+  id: Bytes! # account-addess
+  owner: Agent!
   geohash: String! # string
+  localRecordERC721: String! # address
 }
 
 # GENERATED

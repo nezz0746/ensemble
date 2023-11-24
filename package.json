@@ -12,7 +12,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:force": "turbo run test --force",
-    "web:codegen": "yarn workspace web-hooks codegen",
+    "web:codegen": "yarn workspace metadata upload:local && yarn workspace web-hooks codegen",
     "add:web": "yarn workspace web add",
     "add:wagmi": "yarn workspace wagmi-config add",
     "add:subgraph": "yarn workspace subgraph add",

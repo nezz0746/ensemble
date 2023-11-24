@@ -25,7 +25,9 @@ services:
       postgres_db: graph-node
       ipfs: "ipfs:5001"
       ethereum: "localhost:http://anvil:8545"
-      GRAPH_LOG: info
+      GRAPH_LOG: debug
+      GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: 1
+      GRAPH_ETHEREUM_CLEANUP_BLOCKS: 1
       ETHEREUM_REORG_THRESHOLD: 1
       ETHEREUM_ANCESTOR_COUNT: 1
   ipfs:

@@ -1,6 +1,14 @@
 import { Feature, Polygon, bboxPolygon } from "@turf/turf";
 import ngeohash from "ngeohash";
 
+export const precisionToZoom: Record<number, number> = {
+  2: 3,
+  3: 7,
+  4: 9,
+  5: 12,
+  6: 14
+};
+
 export function encodeGeohash(lat: number, lng: number, precision: number) {
   return ngeohash.encode(lat, lng, precision);
 }
@@ -17,5 +25,5 @@ export const geohashToFeature = (
 ): Feature<Polygon, { geohash: string }> =>
   ({
     ...bboxPolygon(getGeohashAsBBox(geohash as string)),
-    properties: { geohash },
+    properties: { geohash }
   } as Feature<Polygon, { geohash: string }>);

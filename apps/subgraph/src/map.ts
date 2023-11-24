@@ -17,7 +17,9 @@ import {
   RoleRevoked,
   TileCreated,
   NetworkState,
+  NetworkStateMetadata,
 } from "../generated/schema";
+import { BigInt, JSONValue, Value, ipfs } from "@graphprotocol/graph-ts";
 
 export function handleLocalRecordTokenDeployed(
   event: LocalRecordTokenDeployedEvent
@@ -47,21 +49,21 @@ export function handleLocalRecordDeployed(
   entity.geohash = event.params.geohash;
   entity.account = event.params.account;
 
-  let agent = Agent.load(event.params.recipient.toHexString());
+  let agent = Agent.load(event.params.recipient);
 
   if (agent == null) {
-    agent = new Agent(event.params.recipient.toHexString());
+    agent = new Agent(event.params.recipient);
 
     agent.save();
   }
 
-  let localRecord = LocalRecord.load(event.params.account.toHexString());
+  let localRecord = LocalRecord.load(event.params.account);
 
   if (localRecord == null) {
-    localRecord = new LocalRecord(event.params.account.toHexString());
+    localRecord = new LocalRecord(event.params.account);
   }
 
-  localRecord.owner = event.params.recipient.toHexString();
+  localRecord.owner = event.params.recipient;
   localRecord.geohash = event.params.geohash;
   localRecord.localRecordERC721 = event.params.tileAddress.toHexString();
 
@@ -75,14 +77,25 @@ export function handleLocalRecordDeployed(
 }
 
 export function handleTileCreated(event: TileCreatedEvent): void {
-  let n_state = NetworkState.load(event.params.stateAddress.toHexString());
+  let n_state = NetworkState.load(event.params.stateAddress);
 
   if (n_state == null) {
-    n_state = new NetworkState(event.params.stateAddress.toHexString());
+    n_state = new NetworkState(event.params.stateAddress);
   }
   n_state.creator = event.params.creator;
   n_state.verifier = event.params.verifier;
   n_state.baseURI = event.params.baseURI;
+  n_state.population = BigInt.fromI32(0);
+
+  let isIPFS = event.params.baseURI.startsWith("ipfs://");
+
+  if (isIPFS) {
+    let cid = event.params.baseURI.split("//")[1];
+
+    n_state.metadata = cid;
+
+    ipfs.mapJSON(cid, "processItem", Value.fromString(cid));
+  }
 
   StateTileTemplate.create(event.params.stateAddress);
 
@@ -105,6 +118,29 @@ export function handleTileCreated(event: TileCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+}
+
+export function processItem(value: JSONValue, userData: Value): void {
+  let obj = value.toObject();
+  let name = obj.get("name");
+  let description = obj.get("description");
+  let image = obj.get("image");
+  let manifesto = obj.get("manifesto");
+
+  if (name && description && image && manifesto) {
+    let ns_metadata = new NetworkStateMetadata(userData.toString());
+
+    ns_metadata.name = name.toString();
+    ns_metadata.description = description.toString();
+    ns_metadata.image = image.toString();
+    ns_metadata.imageGateway =
+      "https://" + image.toString().split("://")[1] + ".ipfs.w3s.link";
+    ns_metadata.manifesto = manifesto.toString();
+    ns_metadata.manifestoGateway =
+      "https://" + manifesto.toString().split("://")[1] + ".ipfs.w3s.link";
+
+    ns_metadata.save();
+  }
 }
 
 /**

@@ -50,12 +50,12 @@ contract MapScript is BaseScript {
             6
         );
 
-        address tile = map.createState(
+        address state = map.createState(
             address(verifier),
-            "https://example.com/"
+            "ipfs://bafkreia4evyfxkoz3vek6m4ewuof6bkpjykgt4ff5prsku2vab2xq43724"
         );
 
         _saveImplementations(address(map), "Map");
-        _saveImplementations(tile, "StateTile");
+        _saveImplementations(state, "StateTile");
     }
 }

@@ -1,6 +1,8 @@
 specVersion: 0.0.5
 schema:
   file: ./schema.graphql
+features:
+  - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum
     name: Map
@@ -56,5 +58,5 @@ templates:
         - name: StateTile
           file: ./abis/StateTile.json
       eventHandlers:
-        - event: StateMove(address,indexed address,string)
+        - event: StateMove(address,indexed address,string,string)
           handler: handleNetworkStateTravel

@@ -29,8 +29,13 @@ library GeohashLogic {
     function geoHashToUint256(
         string memory geohash
     ) internal pure returns (uint256) {
-        bytes32 hash = keccak256(abi.encodePacked(geohash));
-        return uint256(hash);
+        return uint256(bytes32(abi.encodePacked(geohash)));
+    }
+
+    function uint256ToGeohash(
+        uint256 geohash
+    ) internal pure returns (string memory) {
+        return string(abi.encodePacked(geohash));
     }
 
     function getPrecision(string memory input) internal pure returns (uint256) {
