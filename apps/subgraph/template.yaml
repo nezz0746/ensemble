@@ -58,5 +58,5 @@ templates:
         - name: StateTile
           file: ./abis/StateTile.json
       eventHandlers:
-        - event: StateMove(address,indexed address,string)
+        - event: StateMove(address,indexed address,string,string)
           handler: handleNetworkStateTravel

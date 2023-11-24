@@ -77,7 +77,13 @@
         "indexed": true
       },
       {
-        "name": "geohash",
+        "name": "previousGeohash",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "nextGeohash",
         "internalType": "string",
         "type": "string",
         "indexed": false

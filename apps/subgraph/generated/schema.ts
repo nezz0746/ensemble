@@ -12,9 +12,9 @@ import {
 } from "@graphprotocol/graph-ts";
 
 export class Agent extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -22,128 +22,131 @@ export class Agent extends Entity {
     assert(id != null, "Cannot save Agent entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type Agent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type Agent must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Agent", id.toString(), this);
+      store.set("Agent", id.toBytes().toHexString(), this);
     }
   }
 
-  static loadInBlock(id: string): Agent | null {
-    return changetype<Agent | null>(store.get_in_block("Agent", id));
+  static loadInBlock(id: Bytes): Agent | null {
+    return changetype<Agent | null>(
+      store.get_in_block("Agent", id.toHexString())
+    );
   }
 
-  static load(id: string): Agent | null {
-    return changetype<Agent | null>(store.get("Agent", id));
+  static load(id: Bytes): Agent | null {
+    return changetype<Agent | null>(store.get("Agent", id.toHexString()));
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
   get records(): LocalRecordLoader {
     return new LocalRecordLoader(
       "Agent",
-      this.get("id")!.toString(),
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
       "records"
+    );
+  }
+
+  get states(): StateAgentLoader {
+    return new StateAgentLoader(
+      "Agent",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "states"
     );
   }
 }
 
-export class LocalRecord extends Entity {
-  constructor(id: string) {
+export class StateAgent extends Entity {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LocalRecord entity without an ID");
+    assert(id != null, "Cannot save StateAgent entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type LocalRecord must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type StateAgent must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LocalRecord", id.toString(), this);
+      store.set("StateAgent", id.toBytes().toHexString(), this);
     }
   }
 
-  static loadInBlock(id: string): LocalRecord | null {
-    return changetype<LocalRecord | null>(
-      store.get_in_block("LocalRecord", id)
+  static loadInBlock(id: Bytes): StateAgent | null {
+    return changetype<StateAgent | null>(
+      store.get_in_block("StateAgent", id.toHexString())
     );
   }
 
-  static load(id: string): LocalRecord | null {
-    return changetype<LocalRecord | null>(store.get("LocalRecord", id));
+  static load(id: Bytes): StateAgent | null {
+    return changetype<StateAgent | null>(
+      store.get("StateAgent", id.toHexString())
+    );
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
-  get owner(): string {
-    let value = this.get("owner");
+  get state(): Bytes {
+    let value = this.get("state");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
+  set state(value: Bytes) {
+    this.set("state", Value.fromBytes(value));
   }
 
-  get geohash(): string {
-    let value = this.get("geohash");
+  get agent(): Bytes {
+    let value = this.get("agent");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set geohash(value: string) {
-    this.set("geohash", Value.fromString(value));
-  }
-
-  get localRecordERC721(): string {
-    let value = this.get("localRecordERC721");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toString();
-    }
-  }
-
-  set localRecordERC721(value: string) {
-    this.set("localRecordERC721", Value.fromString(value));
+  set agent(value: Bytes) {
+    this.set("agent", Value.fromBytes(value));
   }
 }
 
 export class NetworkState extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -151,34 +154,36 @@ export class NetworkState extends Entity {
     assert(id != null, "Cannot save NetworkState entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type NetworkState must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type NetworkState must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("NetworkState", id.toString(), this);
+      store.set("NetworkState", id.toBytes().toHexString(), this);
     }
   }
 
-  static loadInBlock(id: string): NetworkState | null {
+  static loadInBlock(id: Bytes): NetworkState | null {
     return changetype<NetworkState | null>(
-      store.get_in_block("NetworkState", id)
+      store.get_in_block("NetworkState", id.toHexString())
     );
   }
 
-  static load(id: string): NetworkState | null {
-    return changetype<NetworkState | null>(store.get("NetworkState", id));
+  static load(id: Bytes): NetworkState | null {
+    return changetype<NetworkState | null>(
+      store.get("NetworkState", id.toHexString())
+    );
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
   get verifier(): Bytes {
@@ -237,10 +242,35 @@ export class NetworkState extends Entity {
     }
   }
 
+  get population(): BigInt {
+    let value = this.get("population");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set population(value: BigInt) {
+    this.set("population", Value.fromBigInt(value));
+  }
+
+  get agents(): StateAgentLoader {
+    return new StateAgentLoader(
+      "NetworkState",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "agents"
+    );
+  }
+
   get travels(): NetworkStateTravelLoader {
     return new NetworkStateTravelLoader(
       "NetworkState",
-      this.get("id")!.toString(),
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
       "travels"
     );
   }
@@ -411,17 +441,17 @@ export class NetworkStateTravel extends Entity {
     this.set("id", Value.fromBytes(value));
   }
 
-  get state(): string {
+  get state(): Bytes {
     let value = this.get("state");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set state(value: string) {
-    this.set("state", Value.fromString(value));
+  set state(value: Bytes) {
+    this.set("state", Value.fromBytes(value));
   }
 
   get account(): Bytes {
@@ -437,6 +467,89 @@ export class NetworkStateTravel extends Entity {
     this.set("account", Value.fromBytes(value));
   }
 
+  get previousGeohash(): string {
+    let value = this.get("previousGeohash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set previousGeohash(value: string) {
+    this.set("previousGeohash", Value.fromString(value));
+  }
+
+  get nextGeohash(): string {
+    let value = this.get("nextGeohash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set nextGeohash(value: string) {
+    this.set("nextGeohash", Value.fromString(value));
+  }
+}
+
+export class LocalRecord extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save LocalRecord entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type LocalRecord must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("LocalRecord", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): LocalRecord | null {
+    return changetype<LocalRecord | null>(
+      store.get_in_block("LocalRecord", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): LocalRecord | null {
+    return changetype<LocalRecord | null>(
+      store.get("LocalRecord", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get owner(): Bytes {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+
   get geohash(): string {
     let value = this.get("geohash");
     if (!value || value.kind == ValueKind.NULL) {
@@ -448,6 +561,19 @@ export class NetworkStateTravel extends Entity {
 
   set geohash(value: string) {
     this.set("geohash", Value.fromString(value));
+  }
+
+  get localRecordERC721(): string {
+    let value = this.get("localRecordERC721");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set localRecordERC721(value: string) {
+    this.set("localRecordERC721", Value.fromString(value));
   }
 }
 
@@ -1224,6 +1350,24 @@ export class LocalRecordLoader extends Entity {
   load(): LocalRecord[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<LocalRecord[]>(value);
+  }
+}
+
+export class StateAgentLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): StateAgent[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<StateAgent[]>(value);
   }
 }
 

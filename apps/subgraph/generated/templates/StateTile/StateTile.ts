@@ -57,8 +57,12 @@ export class StateMove__Params {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get geohash(): string {
+  get previousGeohash(): string {
     return this._event.parameters[2].value.toString();
+  }
+
+  get nextGeohash(): string {
+    return this._event.parameters[3].value.toString();
   }
 }
 
