@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import ConnectButton from "@/components/ConnectButton";
-import Map, { MapProvider } from "react-map-gl";
-import { commonLocations } from "@/services/constants";
-import AccountMarker from "@/components/Map/AccountMarker";
-import FogLayer from "@/components/Map/Fog";
-import AppNavigationBar from "@/components/AppNavigationBar";
-import AppMapControls from "@/components/AppMapControls";
+import ConnectButton from '@/components/ConnectButton'
+import Map, { MapProvider } from 'react-map-gl'
+import { commonLocations } from '@/services/constants'
+import AccountMarker from '@/components/Map/AccountMarker'
+import FogLayer from '@/components/Map/Fog'
+import AppNavigationBar from '@/components/AppNavigationBar'
+import AppMapControls from '@/components/AppMapControls'
 
-const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
 type HomeProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const Home = ({ children }: HomeProps) => {
   return (
@@ -22,11 +22,11 @@ const Home = ({ children }: HomeProps) => {
           <Map
             id="mainMap"
             mapboxAccessToken={token}
-            projection={{ name: "globe" }}
+            projection={{ name: 'globe' }}
             initialViewState={commonLocations.paris}
             style={{
-              width: "100%",
-              height: "100%",
+              width: '100%',
+              height: '100%',
             }}
             mapStyle="mapbox://styles/nezz0746/closnc6ke00qa01nz5uvf7yad"
           >
@@ -46,7 +46,7 @@ const Home = ({ children }: HomeProps) => {
         </div>
       </div>
     </MapProvider>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

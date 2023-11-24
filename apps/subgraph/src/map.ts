@@ -17,7 +17,9 @@ import {
   RoleRevoked,
   TileCreated,
   NetworkState,
+  NetworkStateMetadata,
 } from "../generated/schema";
+import { JSONValue, Value, ipfs } from "@graphprotocol/graph-ts";
 
 export function handleLocalRecordTokenDeployed(
   event: LocalRecordTokenDeployedEvent
@@ -84,6 +86,16 @@ export function handleTileCreated(event: TileCreatedEvent): void {
   n_state.verifier = event.params.verifier;
   n_state.baseURI = event.params.baseURI;
 
+  let isIPFS = event.params.baseURI.startsWith("ipfs://");
+
+  if (isIPFS) {
+    let cid = event.params.baseURI.split("//")[1];
+
+    n_state.metadata = cid;
+
+    ipfs.mapJSON(cid, "processItem", Value.fromString(cid));
+  }
+
   StateTileTemplate.create(event.params.stateAddress);
 
   n_state.save();
@@ -105,6 +117,29 @@ export function handleTileCreated(event: TileCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+}
+
+export function processItem(value: JSONValue, userData: Value): void {
+  let obj = value.toObject();
+  let name = obj.get("name");
+  let description = obj.get("description");
+  let image = obj.get("image");
+  let manifesto = obj.get("manifesto");
+
+  if (name && description && image && manifesto) {
+    let ns_metadata = new NetworkStateMetadata(userData.toString());
+
+    ns_metadata.name = name.toString();
+    ns_metadata.description = description.toString();
+    ns_metadata.image = image.toString();
+    ns_metadata.imageGateway =
+      "https://" + image.toString().split("://")[1] + ".ipfs.w3s.link";
+    ns_metadata.manifesto = manifesto.toString();
+    ns_metadata.manifestoGateway =
+      "https://" + manifesto.toString().split("://")[1] + ".ipfs.w3s.link";
+
+    ns_metadata.save();
+  }
 }
 
 /**

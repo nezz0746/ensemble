@@ -15,7 +15,18 @@ type NetworkState @entity(immutable: false) {
   verifier: Bytes! # address
   creator: Bytes! # address
   baseURI: String! # string
+  metadata: NetworkStateMetadata
   travels: [NetworkStateTravel!]! @derivedFrom(field: "state")
+}
+
+type NetworkStateMetadata @entity(immutable: true) {
+  id: String! # cid
+  name: String! # string
+  description: String! # string
+  image: String! # string
+  imageGateway: String! # string
+  manifesto: String! # string
+  manifestoGateway: String! # string
 }
 
 type NetworkStateTravel @entity(immutable: true) {
