@@ -1,11 +1,23 @@
-"use client";
+'use client'
 
-import { NextPage } from "next";
+import StateHeader from '@/components/StateHeader'
+import useChain from '@/hooks/useChain'
+import { useNetworkStateQuery } from '@/rtk/generated'
+import { NextPage } from 'next'
 
-type TilePageProps = { params: { address: string } };
+type TilePageProps = { params: { address: string } }
 
 const TilePage: NextPage<TilePageProps> = ({ params: { address } }) => {
-  return <div>Tile Page: {address}</div>;
-};
+  const { chainId } = useChain()
+  const { data: currentNetworkState } = useNetworkStateQuery({
+    chainId,
+    variables: { id: address },
+  })
+  return (
+    <div>
+      <StateHeader currentNetworkState={currentNetworkState} />
+    </div>
+  )
+}
 
-export default TilePage;
+export default TilePage

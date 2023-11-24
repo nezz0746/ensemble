@@ -21,8 +21,9 @@ export type Scalars = {
 
 export type Agent = {
   __typename?: 'Agent';
-  id: Scalars['String']['output'];
+  id: Scalars['Bytes']['output'];
   records: Array<LocalRecord>;
+  states: Array<StateAgent>;
 };
 
 
@@ -34,37 +35,38 @@ export type AgentRecordsArgs = {
   where?: InputMaybe<LocalRecord_Filter>;
 };
 
+
+export type AgentStatesArgs = {
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StateAgent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<StateAgent_Filter>;
+};
+
 export type Agent_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Agent_Filter>>>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   or?: InputMaybe<Array<InputMaybe<Agent_Filter>>>;
   records_?: InputMaybe<LocalRecord_Filter>;
+  states_?: InputMaybe<StateAgent_Filter>;
 };
 
 export enum Agent_OrderBy {
   Id = 'id',
-  Records = 'records'
+  Records = 'records',
+  States = 'states'
 }
 
 export type BlockChangedFilter = {
@@ -80,7 +82,7 @@ export type Block_Height = {
 export type LocalRecord = {
   __typename?: 'LocalRecord';
   geohash: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['Bytes']['output'];
   localRecordERC721: Scalars['String']['output'];
   owner: Agent;
 };
@@ -109,26 +111,16 @@ export type LocalRecord_Filter = {
   geohash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   geohash_starts_with?: InputMaybe<Scalars['String']['input']>;
   geohash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   localRecordERC721?: InputMaybe<Scalars['String']['input']>;
   localRecordERC721_contains?: InputMaybe<Scalars['String']['input']>;
   localRecordERC721_contains_nocase?: InputMaybe<Scalars['String']['input']>;
@@ -183,12 +175,23 @@ export enum LocalRecord_OrderBy {
 
 export type NetworkState = {
   __typename?: 'NetworkState';
+  agents: Array<StateAgent>;
   baseURI: Scalars['String']['output'];
   creator: Scalars['Bytes']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['Bytes']['output'];
   metadata?: Maybe<NetworkStateMetadata>;
+  population: Scalars['BigInt']['output'];
   travels: Array<NetworkStateTravel>;
   verifier: Scalars['Bytes']['output'];
+};
+
+
+export type NetworkStateAgentsArgs = {
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StateAgent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<StateAgent_Filter>;
 };
 
 
@@ -371,8 +374,9 @@ export enum NetworkStateMetadata_OrderBy {
 export type NetworkStateTravel = {
   __typename?: 'NetworkStateTravel';
   account: Scalars['Bytes']['output'];
-  geohash: Scalars['String']['output'];
   id: Scalars['Bytes']['output'];
+  nextGeohash: Scalars['String']['output'];
+  previousGeohash: Scalars['String']['output'];
   state: NetworkState;
 };
 
@@ -390,26 +394,6 @@ export type NetworkStateTravel_Filter = {
   account_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   account_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   and?: InputMaybe<Array<InputMaybe<NetworkStateTravel_Filter>>>;
-  geohash?: InputMaybe<Scalars['String']['input']>;
-  geohash_contains?: InputMaybe<Scalars['String']['input']>;
-  geohash_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  geohash_ends_with?: InputMaybe<Scalars['String']['input']>;
-  geohash_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  geohash_gt?: InputMaybe<Scalars['String']['input']>;
-  geohash_gte?: InputMaybe<Scalars['String']['input']>;
-  geohash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  geohash_lt?: InputMaybe<Scalars['String']['input']>;
-  geohash_lte?: InputMaybe<Scalars['String']['input']>;
-  geohash_not?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  geohash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  geohash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  geohash_starts_with?: InputMaybe<Scalars['String']['input']>;
-  geohash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Bytes']['input']>;
   id_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -420,7 +404,47 @@ export type NetworkStateTravel_Filter = {
   id_not?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  nextGeohash?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_contains?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_gt?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_gte?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  nextGeohash_lt?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_lte?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  nextGeohash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_starts_with?: InputMaybe<Scalars['String']['input']>;
+  nextGeohash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<NetworkStateTravel_Filter>>>;
+  previousGeohash?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_contains?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_gt?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_gte?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  previousGeohash_lt?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_lte?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  previousGeohash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_starts_with?: InputMaybe<Scalars['String']['input']>;
+  previousGeohash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   state_?: InputMaybe<NetworkState_Filter>;
   state_contains?: InputMaybe<Scalars['String']['input']>;
@@ -446,18 +470,21 @@ export type NetworkStateTravel_Filter = {
 
 export enum NetworkStateTravel_OrderBy {
   Account = 'account',
-  Geohash = 'geohash',
   Id = 'id',
+  NextGeohash = 'nextGeohash',
+  PreviousGeohash = 'previousGeohash',
   State = 'state',
   StateBaseUri = 'state__baseURI',
   StateCreator = 'state__creator',
   StateId = 'state__id',
+  StatePopulation = 'state__population',
   StateVerifier = 'state__verifier'
 }
 
 export type NetworkState_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  agents_?: InputMaybe<StateAgent_Filter>;
   and?: InputMaybe<Array<InputMaybe<NetworkState_Filter>>>;
   baseURI?: InputMaybe<Scalars['String']['input']>;
   baseURI_contains?: InputMaybe<Scalars['String']['input']>;
@@ -489,26 +516,16 @@ export type NetworkState_Filter = {
   creator_not?: InputMaybe<Scalars['Bytes']['input']>;
   creator_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   creator_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with?: InputMaybe<Scalars['String']['input']>;
-  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   metadata?: InputMaybe<Scalars['String']['input']>;
   metadata_?: InputMaybe<NetworkStateMetadata_Filter>;
   metadata_contains?: InputMaybe<Scalars['String']['input']>;
@@ -531,6 +548,14 @@ export type NetworkState_Filter = {
   metadata_starts_with?: InputMaybe<Scalars['String']['input']>;
   metadata_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<NetworkState_Filter>>>;
+  population?: InputMaybe<Scalars['BigInt']['input']>;
+  population_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  population_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  population_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  population_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  population_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  population_not?: InputMaybe<Scalars['BigInt']['input']>;
+  population_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   travels_?: InputMaybe<NetworkStateTravel_Filter>;
   verifier?: InputMaybe<Scalars['Bytes']['input']>;
   verifier_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -545,6 +570,7 @@ export type NetworkState_Filter = {
 };
 
 export enum NetworkState_OrderBy {
+  Agents = 'agents',
   BaseUri = 'baseURI',
   Creator = 'creator',
   Id = 'id',
@@ -556,6 +582,7 @@ export enum NetworkState_OrderBy {
   MetadataManifesto = 'metadata__manifesto',
   MetadataManifestoGateway = 'metadata__manifestoGateway',
   MetadataName = 'metadata__name',
+  Population = 'population',
   Travels = 'travels',
   Verifier = 'verifier'
 }
@@ -589,6 +616,8 @@ export type Query = {
   roleGranteds: Array<RoleGranted>;
   roleRevoked?: Maybe<RoleRevoked>;
   roleRevokeds: Array<RoleRevoked>;
+  stateAgent?: Maybe<StateAgent>;
+  stateAgents: Array<StateAgent>;
   tileCreated?: Maybe<TileCreated>;
   tileCreateds: Array<TileCreated>;
 };
@@ -769,6 +798,24 @@ export type QueryRoleRevokedsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<RoleRevoked_Filter>;
+};
+
+
+export type QueryStateAgentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryStateAgentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StateAgent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<StateAgent_Filter>;
 };
 
 
@@ -1291,6 +1338,84 @@ export enum RoleRevoked_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type StateAgent = {
+  __typename?: 'StateAgent';
+  agent: Agent;
+  id: Scalars['Bytes']['output'];
+  state: NetworkState;
+};
+
+export type StateAgent_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  agent?: InputMaybe<Scalars['String']['input']>;
+  agent_?: InputMaybe<Agent_Filter>;
+  agent_contains?: InputMaybe<Scalars['String']['input']>;
+  agent_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agent_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agent_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agent_gt?: InputMaybe<Scalars['String']['input']>;
+  agent_gte?: InputMaybe<Scalars['String']['input']>;
+  agent_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agent_lt?: InputMaybe<Scalars['String']['input']>;
+  agent_lte?: InputMaybe<Scalars['String']['input']>;
+  agent_not?: InputMaybe<Scalars['String']['input']>;
+  agent_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agent_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agent_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agent_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agent_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agent_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agent_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agent_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agent_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  and?: InputMaybe<Array<InputMaybe<StateAgent_Filter>>>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<StateAgent_Filter>>>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  state_?: InputMaybe<NetworkState_Filter>;
+  state_contains?: InputMaybe<Scalars['String']['input']>;
+  state_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  state_ends_with?: InputMaybe<Scalars['String']['input']>;
+  state_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  state_gt?: InputMaybe<Scalars['String']['input']>;
+  state_gte?: InputMaybe<Scalars['String']['input']>;
+  state_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  state_lt?: InputMaybe<Scalars['String']['input']>;
+  state_lte?: InputMaybe<Scalars['String']['input']>;
+  state_not?: InputMaybe<Scalars['String']['input']>;
+  state_not_contains?: InputMaybe<Scalars['String']['input']>;
+  state_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  state_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  state_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  state_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  state_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  state_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  state_starts_with?: InputMaybe<Scalars['String']['input']>;
+  state_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum StateAgent_OrderBy {
+  Agent = 'agent',
+  AgentId = 'agent__id',
+  Id = 'id',
+  State = 'state',
+  StateBaseUri = 'state__baseURI',
+  StateCreator = 'state__creator',
+  StateId = 'state__id',
+  StatePopulation = 'state__population',
+  StateVerifier = 'state__verifier'
+}
+
 export type Subscription = {
   __typename?: 'Subscription';
   /** Access to subgraph metadata */
@@ -1314,6 +1439,8 @@ export type Subscription = {
   roleGranteds: Array<RoleGranted>;
   roleRevoked?: Maybe<RoleRevoked>;
   roleRevokeds: Array<RoleRevoked>;
+  stateAgent?: Maybe<StateAgent>;
+  stateAgents: Array<StateAgent>;
   tileCreated?: Maybe<TileCreated>;
   tileCreateds: Array<TileCreated>;
 };
@@ -1497,6 +1624,24 @@ export type SubscriptionRoleRevokedsArgs = {
 };
 
 
+export type SubscriptionStateAgentArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionStateAgentsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StateAgent_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<StateAgent_Filter>;
+};
+
+
 export type SubscriptionTileCreatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -1672,10 +1817,20 @@ export type AgentQueryVariables = Exact<{
   agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
   agent_records_orderDirection?: InputMaybe<OrderDirection>;
   agent_records_where?: InputMaybe<LocalRecord_Filter>;
+  agent_states_skip?: InputMaybe<Scalars['Int']['input']>;
+  agent_states_first?: InputMaybe<Scalars['Int']['input']>;
+  agent_states_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  agent_states_orderDirection?: InputMaybe<OrderDirection>;
+  agent_states_where?: InputMaybe<StateAgent_Filter>;
+  agent_states_states_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  agent_states_states_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  agent_states_states_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  agent_states_states_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  agent_states_states_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
 }>;
 
 
-export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: string, records: Array<{ __typename?: 'LocalRecord', id: string, geohash: string, localRecordERC721: string }> } | null };
+export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } | null };
 
 export type AgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1689,34 +1844,74 @@ export type AgentsQueryVariables = Exact<{
   agents_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
   agents_records_orderDirection?: InputMaybe<OrderDirection>;
   agents_records_where?: InputMaybe<LocalRecord_Filter>;
+  agents_states_skip?: InputMaybe<Scalars['Int']['input']>;
+  agents_states_first?: InputMaybe<Scalars['Int']['input']>;
+  agents_states_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  agents_states_orderDirection?: InputMaybe<OrderDirection>;
+  agents_states_where?: InputMaybe<StateAgent_Filter>;
+  agents_states_states_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  agents_states_states_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  agents_states_states_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  agents_states_states_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  agents_states_states_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
 }>;
 
 
-export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: string, records: Array<{ __typename?: 'LocalRecord', id: string, geohash: string, localRecordERC721: string }> }> };
+export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> }> };
 
-export type LocalRecordQueryVariables = Exact<{
+export type StateAgentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height>;
+  stateAgent_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  stateAgent_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  stateAgent_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  stateAgent_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  stateAgent_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
+  stateAgent_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  stateAgent_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  stateAgent_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  stateAgent_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  stateAgent_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
 }>;
 
 
-export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: string, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: string } } | null };
+export type StateAgentQuery = { __typename?: 'Query', stateAgent?: { __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } } | null };
 
-export type LocalRecordsQueryVariables = Exact<{
+export type StateAgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  orderBy?: InputMaybe<StateAgent_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<LocalRecord_Filter>;
+  where?: InputMaybe<StateAgent_Filter>;
   block?: InputMaybe<Block_Height>;
+  stateAgents_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  stateAgents_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  stateAgents_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  stateAgents_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  stateAgents_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
+  stateAgents_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  stateAgents_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  stateAgents_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  stateAgents_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  stateAgents_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
 }>;
 
 
-export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: string, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: string } }> };
+export type StateAgentsQuery = { __typename?: 'Query', stateAgents: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> };
 
 export type NetworkStateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height>;
+  networkState_agents_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkState_agents_first?: InputMaybe<Scalars['Int']['input']>;
+  networkState_agents_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  networkState_agents_orderDirection?: InputMaybe<OrderDirection>;
+  networkState_agents_where?: InputMaybe<StateAgent_Filter>;
+  networkState_agents_agents_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkState_agents_agents_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  networkState_agents_agents_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  networkState_agents_agents_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  networkState_agents_agents_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
   networkState_travels_skip?: InputMaybe<Scalars['Int']['input']>;
   networkState_travels_first?: InputMaybe<Scalars['Int']['input']>;
   networkState_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
@@ -1725,7 +1920,7 @@ export type NetworkStateQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: string, verifier: any, creator: any, baseURI: string, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, geohash: string }> } | null };
+export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } | null };
 
 export type NetworkStatesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1734,6 +1929,16 @@ export type NetworkStatesQueryVariables = Exact<{
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<NetworkState_Filter>;
   block?: InputMaybe<Block_Height>;
+  networkStates_agents_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStates_agents_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStates_agents_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  networkStates_agents_orderDirection?: InputMaybe<OrderDirection>;
+  networkStates_agents_where?: InputMaybe<StateAgent_Filter>;
+  networkStates_agents_agents_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStates_agents_agents_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStates_agents_agents_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  networkStates_agents_agents_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  networkStates_agents_agents_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
   networkStates_travels_skip?: InputMaybe<Scalars['Int']['input']>;
   networkStates_travels_first?: InputMaybe<Scalars['Int']['input']>;
   networkStates_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
@@ -1742,7 +1947,7 @@ export type NetworkStatesQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: string, verifier: any, creator: any, baseURI: string, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, geohash: string }> }> };
+export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }> };
 
 export type NetworkStateMetadataQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1759,10 +1964,20 @@ export type NetworkStateMetadataQuery = { __typename?: 'Query', networkStateMeta
 export type NetworkStateTravelQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height>;
+  networkStateTravel_state_state_agents_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravel_state_state_agents_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravel_state_state_agents_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  networkStateTravel_state_state_agents_orderDirection?: InputMaybe<OrderDirection>;
+  networkStateTravel_state_state_agents_where?: InputMaybe<StateAgent_Filter>;
+  networkStateTravel_state_state_agents_agents_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravel_state_state_agents_agents_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravel_state_state_agents_agents_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  networkStateTravel_state_state_agents_agents_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  networkStateTravel_state_state_agents_agents_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
 }>;
 
 
-export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, geohash: string, state: { __typename?: 'NetworkState', id: string, verifier: any, creator: any, baseURI: string, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null } } | null };
+export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> } } | null };
 
 export type NetworkStateTravelsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1771,10 +1986,60 @@ export type NetworkStateTravelsQueryVariables = Exact<{
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<NetworkStateTravel_Filter>;
   block?: InputMaybe<Block_Height>;
+  networkStateTravels_state_state_agents_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravels_state_state_agents_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravels_state_state_agents_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  networkStateTravels_state_state_agents_orderDirection?: InputMaybe<OrderDirection>;
+  networkStateTravels_state_state_agents_where?: InputMaybe<StateAgent_Filter>;
+  networkStateTravels_state_state_agents_agents_agent_agent_records_skip?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravels_state_state_agents_agents_agent_agent_records_first?: InputMaybe<Scalars['Int']['input']>;
+  networkStateTravels_state_state_agents_agents_agent_agent_records_orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  networkStateTravels_state_state_agents_agents_agent_agent_records_orderDirection?: InputMaybe<OrderDirection>;
+  networkStateTravels_state_state_agents_agents_agent_agent_records_where?: InputMaybe<LocalRecord_Filter>;
 }>;
 
 
-export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, geohash: string, state: { __typename?: 'NetworkState', id: string, verifier: any, creator: any, baseURI: string, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null } }> };
+export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> } }> };
+
+export type LocalRecordQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_Height>;
+  localRecord_owner_owner_states_skip?: InputMaybe<Scalars['Int']['input']>;
+  localRecord_owner_owner_states_first?: InputMaybe<Scalars['Int']['input']>;
+  localRecord_owner_owner_states_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  localRecord_owner_owner_states_orderDirection?: InputMaybe<OrderDirection>;
+  localRecord_owner_owner_states_where?: InputMaybe<StateAgent_Filter>;
+  localRecord_owner_owner_states_states_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  localRecord_owner_owner_states_states_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  localRecord_owner_owner_states_states_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  localRecord_owner_owner_states_states_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  localRecord_owner_owner_states_states_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
+}>;
+
+
+export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: any, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } } | null };
+
+export type LocalRecordsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalRecord_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<LocalRecord_Filter>;
+  block?: InputMaybe<Block_Height>;
+  localRecords_owner_owner_states_skip?: InputMaybe<Scalars['Int']['input']>;
+  localRecords_owner_owner_states_first?: InputMaybe<Scalars['Int']['input']>;
+  localRecords_owner_owner_states_orderBy?: InputMaybe<StateAgent_OrderBy>;
+  localRecords_owner_owner_states_orderDirection?: InputMaybe<OrderDirection>;
+  localRecords_owner_owner_states_where?: InputMaybe<StateAgent_Filter>;
+  localRecords_owner_owner_states_states_state_state_travels_skip?: InputMaybe<Scalars['Int']['input']>;
+  localRecords_owner_owner_states_states_state_state_travels_first?: InputMaybe<Scalars['Int']['input']>;
+  localRecords_owner_owner_states_states_state_state_travels_orderBy?: InputMaybe<NetworkStateTravel_OrderBy>;
+  localRecords_owner_owner_states_states_state_state_travels_orderDirection?: InputMaybe<OrderDirection>;
+  localRecords_owner_owner_states_states_state_state_travels_where?: InputMaybe<NetworkStateTravel_Filter>;
+}>;
+
+
+export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: any, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } }> };
 
 export type RecordTileCreatedQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1898,7 +2163,7 @@ export type RoleRevokedsQuery = { __typename?: 'Query', roleRevokeds: Array<{ __
 
 
 export const AgentDocument = `
-    query agent($id: ID!, $block: Block_height, $agent_records_skip: Int, $agent_records_first: Int, $agent_records_orderBy: LocalRecord_orderBy, $agent_records_orderDirection: OrderDirection, $agent_records_where: LocalRecord_filter) {
+    query agent($id: ID!, $block: Block_height, $agent_records_skip: Int, $agent_records_first: Int, $agent_records_orderBy: LocalRecord_orderBy, $agent_records_orderDirection: OrderDirection, $agent_records_where: LocalRecord_filter, $agent_states_skip: Int, $agent_states_first: Int, $agent_states_orderBy: StateAgent_orderBy, $agent_states_orderDirection: OrderDirection, $agent_states_where: StateAgent_filter, $agent_states_states_state_state_travels_skip: Int, $agent_states_states_state_state_travels_first: Int, $agent_states_states_state_state_travels_orderBy: NetworkStateTravel_orderBy, $agent_states_states_state_state_travels_orderDirection: OrderDirection, $agent_states_states_state_state_travels_where: NetworkStateTravel_filter) {
   agent(id: $id, block: $block) {
     id
     records(
@@ -1912,11 +2177,48 @@ export const AgentDocument = `
       geohash
       localRecordERC721
     }
+    states(
+      skip: $agent_states_skip
+      first: $agent_states_first
+      orderBy: $agent_states_orderBy
+      orderDirection: $agent_states_orderDirection
+      where: $agent_states_where
+    ) {
+      id
+      state {
+        id
+        verifier
+        creator
+        baseURI
+        metadata {
+          id
+          name
+          description
+          image
+          imageGateway
+          manifesto
+          manifestoGateway
+        }
+        population
+        travels(
+          skip: $agent_states_states_state_state_travels_skip
+          first: $agent_states_states_state_state_travels_first
+          orderBy: $agent_states_states_state_state_travels_orderBy
+          orderDirection: $agent_states_states_state_state_travels_orderDirection
+          where: $agent_states_states_state_state_travels_where
+        ) {
+          id
+          account
+          previousGeohash
+          nextGeohash
+        }
+      }
+    }
   }
 }
     `;
 export const AgentsDocument = `
-    query agents($skip: Int, $first: Int, $orderBy: Agent_orderBy, $orderDirection: OrderDirection, $where: Agent_filter, $block: Block_height, $agents_records_skip: Int, $agents_records_first: Int, $agents_records_orderBy: LocalRecord_orderBy, $agents_records_orderDirection: OrderDirection, $agents_records_where: LocalRecord_filter) {
+    query agents($skip: Int, $first: Int, $orderBy: Agent_orderBy, $orderDirection: OrderDirection, $where: Agent_filter, $block: Block_height, $agents_records_skip: Int, $agents_records_first: Int, $agents_records_orderBy: LocalRecord_orderBy, $agents_records_orderDirection: OrderDirection, $agents_records_where: LocalRecord_filter, $agents_states_skip: Int, $agents_states_first: Int, $agents_states_orderBy: StateAgent_orderBy, $agents_states_orderDirection: OrderDirection, $agents_states_where: StateAgent_filter, $agents_states_states_state_state_travels_skip: Int, $agents_states_states_state_state_travels_first: Int, $agents_states_states_state_state_travels_orderBy: NetworkStateTravel_orderBy, $agents_states_states_state_state_travels_orderDirection: OrderDirection, $agents_states_states_state_state_travels_where: NetworkStateTravel_filter) {
   agents(
     skip: $skip
     first: $first
@@ -1937,24 +2239,98 @@ export const AgentsDocument = `
       geohash
       localRecordERC721
     }
-  }
-}
-    `;
-export const LocalRecordDocument = `
-    query localRecord($id: ID!, $block: Block_height) {
-  localRecord(id: $id, block: $block) {
-    id
-    owner {
+    states(
+      skip: $agents_states_skip
+      first: $agents_states_first
+      orderBy: $agents_states_orderBy
+      orderDirection: $agents_states_orderDirection
+      where: $agents_states_where
+    ) {
       id
+      state {
+        id
+        verifier
+        creator
+        baseURI
+        metadata {
+          id
+          name
+          description
+          image
+          imageGateway
+          manifesto
+          manifestoGateway
+        }
+        population
+        travels(
+          skip: $agents_states_states_state_state_travels_skip
+          first: $agents_states_states_state_state_travels_first
+          orderBy: $agents_states_states_state_state_travels_orderBy
+          orderDirection: $agents_states_states_state_state_travels_orderDirection
+          where: $agents_states_states_state_state_travels_where
+        ) {
+          id
+          account
+          previousGeohash
+          nextGeohash
+        }
+      }
     }
-    geohash
-    localRecordERC721
   }
 }
     `;
-export const LocalRecordsDocument = `
-    query localRecords($skip: Int, $first: Int, $orderBy: LocalRecord_orderBy, $orderDirection: OrderDirection, $where: LocalRecord_filter, $block: Block_height) {
-  localRecords(
+export const StateAgentDocument = `
+    query stateAgent($id: ID!, $block: Block_height, $stateAgent_state_state_travels_skip: Int, $stateAgent_state_state_travels_first: Int, $stateAgent_state_state_travels_orderBy: NetworkStateTravel_orderBy, $stateAgent_state_state_travels_orderDirection: OrderDirection, $stateAgent_state_state_travels_where: NetworkStateTravel_filter, $stateAgent_agent_agent_records_skip: Int, $stateAgent_agent_agent_records_first: Int, $stateAgent_agent_agent_records_orderBy: LocalRecord_orderBy, $stateAgent_agent_agent_records_orderDirection: OrderDirection, $stateAgent_agent_agent_records_where: LocalRecord_filter) {
+  stateAgent(id: $id, block: $block) {
+    id
+    state {
+      id
+      verifier
+      creator
+      baseURI
+      metadata {
+        id
+        name
+        description
+        image
+        imageGateway
+        manifesto
+        manifestoGateway
+      }
+      population
+      travels(
+        skip: $stateAgent_state_state_travels_skip
+        first: $stateAgent_state_state_travels_first
+        orderBy: $stateAgent_state_state_travels_orderBy
+        orderDirection: $stateAgent_state_state_travels_orderDirection
+        where: $stateAgent_state_state_travels_where
+      ) {
+        id
+        account
+        previousGeohash
+        nextGeohash
+      }
+    }
+    agent {
+      id
+      records(
+        skip: $stateAgent_agent_agent_records_skip
+        first: $stateAgent_agent_agent_records_first
+        orderBy: $stateAgent_agent_agent_records_orderBy
+        orderDirection: $stateAgent_agent_agent_records_orderDirection
+        where: $stateAgent_agent_agent_records_where
+      ) {
+        id
+        geohash
+        localRecordERC721
+      }
+    }
+  }
+}
+    `;
+export const StateAgentsDocument = `
+    query stateAgents($skip: Int, $first: Int, $orderBy: StateAgent_orderBy, $orderDirection: OrderDirection, $where: StateAgent_filter, $block: Block_height, $stateAgents_state_state_travels_skip: Int, $stateAgents_state_state_travels_first: Int, $stateAgents_state_state_travels_orderBy: NetworkStateTravel_orderBy, $stateAgents_state_state_travels_orderDirection: OrderDirection, $stateAgents_state_state_travels_where: NetworkStateTravel_filter, $stateAgents_agent_agent_records_skip: Int, $stateAgents_agent_agent_records_first: Int, $stateAgents_agent_agent_records_orderBy: LocalRecord_orderBy, $stateAgents_agent_agent_records_orderDirection: OrderDirection, $stateAgents_agent_agent_records_where: LocalRecord_filter) {
+  stateAgents(
     skip: $skip
     first: $first
     orderBy: $orderBy
@@ -1963,16 +2339,53 @@ export const LocalRecordsDocument = `
     block: $block
   ) {
     id
-    owner {
+    state {
       id
+      verifier
+      creator
+      baseURI
+      metadata {
+        id
+        name
+        description
+        image
+        imageGateway
+        manifesto
+        manifestoGateway
+      }
+      population
+      travels(
+        skip: $stateAgents_state_state_travels_skip
+        first: $stateAgents_state_state_travels_first
+        orderBy: $stateAgents_state_state_travels_orderBy
+        orderDirection: $stateAgents_state_state_travels_orderDirection
+        where: $stateAgents_state_state_travels_where
+      ) {
+        id
+        account
+        previousGeohash
+        nextGeohash
+      }
     }
-    geohash
-    localRecordERC721
+    agent {
+      id
+      records(
+        skip: $stateAgents_agent_agent_records_skip
+        first: $stateAgents_agent_agent_records_first
+        orderBy: $stateAgents_agent_agent_records_orderBy
+        orderDirection: $stateAgents_agent_agent_records_orderDirection
+        where: $stateAgents_agent_agent_records_where
+      ) {
+        id
+        geohash
+        localRecordERC721
+      }
+    }
   }
 }
     `;
 export const NetworkStateDocument = `
-    query networkState($id: ID!, $block: Block_height, $networkState_travels_skip: Int, $networkState_travels_first: Int, $networkState_travels_orderBy: NetworkStateTravel_orderBy, $networkState_travels_orderDirection: OrderDirection, $networkState_travels_where: NetworkStateTravel_filter) {
+    query networkState($id: ID!, $block: Block_height, $networkState_agents_skip: Int, $networkState_agents_first: Int, $networkState_agents_orderBy: StateAgent_orderBy, $networkState_agents_orderDirection: OrderDirection, $networkState_agents_where: StateAgent_filter, $networkState_agents_agents_agent_agent_records_skip: Int, $networkState_agents_agents_agent_agent_records_first: Int, $networkState_agents_agents_agent_agent_records_orderBy: LocalRecord_orderBy, $networkState_agents_agents_agent_agent_records_orderDirection: OrderDirection, $networkState_agents_agents_agent_agent_records_where: LocalRecord_filter, $networkState_travels_skip: Int, $networkState_travels_first: Int, $networkState_travels_orderBy: NetworkStateTravel_orderBy, $networkState_travels_orderDirection: OrderDirection, $networkState_travels_where: NetworkStateTravel_filter) {
   networkState(id: $id, block: $block) {
     id
     verifier
@@ -1987,6 +2400,30 @@ export const NetworkStateDocument = `
       manifesto
       manifestoGateway
     }
+    population
+    agents(
+      skip: $networkState_agents_skip
+      first: $networkState_agents_first
+      orderBy: $networkState_agents_orderBy
+      orderDirection: $networkState_agents_orderDirection
+      where: $networkState_agents_where
+    ) {
+      id
+      agent {
+        id
+        records(
+          skip: $networkState_agents_agents_agent_agent_records_skip
+          first: $networkState_agents_agents_agent_agent_records_first
+          orderBy: $networkState_agents_agents_agent_agent_records_orderBy
+          orderDirection: $networkState_agents_agents_agent_agent_records_orderDirection
+          where: $networkState_agents_agents_agent_agent_records_where
+        ) {
+          id
+          geohash
+          localRecordERC721
+        }
+      }
+    }
     travels(
       skip: $networkState_travels_skip
       first: $networkState_travels_first
@@ -1996,13 +2433,14 @@ export const NetworkStateDocument = `
     ) {
       id
       account
-      geohash
+      previousGeohash
+      nextGeohash
     }
   }
 }
     `;
 export const NetworkStatesDocument = `
-    query networkStates($skip: Int, $first: Int, $orderBy: NetworkState_orderBy, $orderDirection: OrderDirection, $where: NetworkState_filter, $block: Block_height, $networkStates_travels_skip: Int, $networkStates_travels_first: Int, $networkStates_travels_orderBy: NetworkStateTravel_orderBy, $networkStates_travels_orderDirection: OrderDirection, $networkStates_travels_where: NetworkStateTravel_filter) {
+    query networkStates($skip: Int, $first: Int, $orderBy: NetworkState_orderBy, $orderDirection: OrderDirection, $where: NetworkState_filter, $block: Block_height, $networkStates_agents_skip: Int, $networkStates_agents_first: Int, $networkStates_agents_orderBy: StateAgent_orderBy, $networkStates_agents_orderDirection: OrderDirection, $networkStates_agents_where: StateAgent_filter, $networkStates_agents_agents_agent_agent_records_skip: Int, $networkStates_agents_agents_agent_agent_records_first: Int, $networkStates_agents_agents_agent_agent_records_orderBy: LocalRecord_orderBy, $networkStates_agents_agents_agent_agent_records_orderDirection: OrderDirection, $networkStates_agents_agents_agent_agent_records_where: LocalRecord_filter, $networkStates_travels_skip: Int, $networkStates_travels_first: Int, $networkStates_travels_orderBy: NetworkStateTravel_orderBy, $networkStates_travels_orderDirection: OrderDirection, $networkStates_travels_where: NetworkStateTravel_filter) {
   networkStates(
     skip: $skip
     first: $first
@@ -2024,6 +2462,30 @@ export const NetworkStatesDocument = `
       manifesto
       manifestoGateway
     }
+    population
+    agents(
+      skip: $networkStates_agents_skip
+      first: $networkStates_agents_first
+      orderBy: $networkStates_agents_orderBy
+      orderDirection: $networkStates_agents_orderDirection
+      where: $networkStates_agents_where
+    ) {
+      id
+      agent {
+        id
+        records(
+          skip: $networkStates_agents_agents_agent_agent_records_skip
+          first: $networkStates_agents_agents_agent_agent_records_first
+          orderBy: $networkStates_agents_agents_agent_agent_records_orderBy
+          orderDirection: $networkStates_agents_agents_agent_agent_records_orderDirection
+          where: $networkStates_agents_agents_agent_agent_records_where
+        ) {
+          id
+          geohash
+          localRecordERC721
+        }
+      }
+    }
     travels(
       skip: $networkStates_travels_skip
       first: $networkStates_travels_first
@@ -2033,7 +2495,8 @@ export const NetworkStatesDocument = `
     ) {
       id
       account
-      geohash
+      previousGeohash
+      nextGeohash
     }
   }
 }
@@ -2059,7 +2522,7 @@ export const NetworkStateMetadataDocument = `
 }
     `;
 export const NetworkStateTravelDocument = `
-    query networkStateTravel($id: ID!, $block: Block_height) {
+    query networkStateTravel($id: ID!, $block: Block_height, $networkStateTravel_state_state_agents_skip: Int, $networkStateTravel_state_state_agents_first: Int, $networkStateTravel_state_state_agents_orderBy: StateAgent_orderBy, $networkStateTravel_state_state_agents_orderDirection: OrderDirection, $networkStateTravel_state_state_agents_where: StateAgent_filter, $networkStateTravel_state_state_agents_agents_agent_agent_records_skip: Int, $networkStateTravel_state_state_agents_agents_agent_agent_records_first: Int, $networkStateTravel_state_state_agents_agents_agent_agent_records_orderBy: LocalRecord_orderBy, $networkStateTravel_state_state_agents_agents_agent_agent_records_orderDirection: OrderDirection, $networkStateTravel_state_state_agents_agents_agent_agent_records_where: LocalRecord_filter) {
   networkStateTravel(id: $id, block: $block) {
     id
     state {
@@ -2076,14 +2539,39 @@ export const NetworkStateTravelDocument = `
         manifesto
         manifestoGateway
       }
+      population
+      agents(
+        skip: $networkStateTravel_state_state_agents_skip
+        first: $networkStateTravel_state_state_agents_first
+        orderBy: $networkStateTravel_state_state_agents_orderBy
+        orderDirection: $networkStateTravel_state_state_agents_orderDirection
+        where: $networkStateTravel_state_state_agents_where
+      ) {
+        id
+        agent {
+          id
+          records(
+            skip: $networkStateTravel_state_state_agents_agents_agent_agent_records_skip
+            first: $networkStateTravel_state_state_agents_agents_agent_agent_records_first
+            orderBy: $networkStateTravel_state_state_agents_agents_agent_agent_records_orderBy
+            orderDirection: $networkStateTravel_state_state_agents_agents_agent_agent_records_orderDirection
+            where: $networkStateTravel_state_state_agents_agents_agent_agent_records_where
+          ) {
+            id
+            geohash
+            localRecordERC721
+          }
+        }
+      }
     }
     account
-    geohash
+    previousGeohash
+    nextGeohash
   }
 }
     `;
 export const NetworkStateTravelsDocument = `
-    query networkStateTravels($skip: Int, $first: Int, $orderBy: NetworkStateTravel_orderBy, $orderDirection: OrderDirection, $where: NetworkStateTravel_filter, $block: Block_height) {
+    query networkStateTravels($skip: Int, $first: Int, $orderBy: NetworkStateTravel_orderBy, $orderDirection: OrderDirection, $where: NetworkStateTravel_filter, $block: Block_height, $networkStateTravels_state_state_agents_skip: Int, $networkStateTravels_state_state_agents_first: Int, $networkStateTravels_state_state_agents_orderBy: StateAgent_orderBy, $networkStateTravels_state_state_agents_orderDirection: OrderDirection, $networkStateTravels_state_state_agents_where: StateAgent_filter, $networkStateTravels_state_state_agents_agents_agent_agent_records_skip: Int, $networkStateTravels_state_state_agents_agents_agent_agent_records_first: Int, $networkStateTravels_state_state_agents_agents_agent_agent_records_orderBy: LocalRecord_orderBy, $networkStateTravels_state_state_agents_agents_agent_agent_records_orderDirection: OrderDirection, $networkStateTravels_state_state_agents_agents_agent_agent_records_where: LocalRecord_filter) {
   networkStateTravels(
     skip: $skip
     first: $first
@@ -2107,9 +2595,139 @@ export const NetworkStateTravelsDocument = `
         manifesto
         manifestoGateway
       }
+      population
+      agents(
+        skip: $networkStateTravels_state_state_agents_skip
+        first: $networkStateTravels_state_state_agents_first
+        orderBy: $networkStateTravels_state_state_agents_orderBy
+        orderDirection: $networkStateTravels_state_state_agents_orderDirection
+        where: $networkStateTravels_state_state_agents_where
+      ) {
+        id
+        agent {
+          id
+          records(
+            skip: $networkStateTravels_state_state_agents_agents_agent_agent_records_skip
+            first: $networkStateTravels_state_state_agents_agents_agent_agent_records_first
+            orderBy: $networkStateTravels_state_state_agents_agents_agent_agent_records_orderBy
+            orderDirection: $networkStateTravels_state_state_agents_agents_agent_agent_records_orderDirection
+            where: $networkStateTravels_state_state_agents_agents_agent_agent_records_where
+          ) {
+            id
+            geohash
+            localRecordERC721
+          }
+        }
+      }
     }
     account
+    previousGeohash
+    nextGeohash
+  }
+}
+    `;
+export const LocalRecordDocument = `
+    query localRecord($id: ID!, $block: Block_height, $localRecord_owner_owner_states_skip: Int, $localRecord_owner_owner_states_first: Int, $localRecord_owner_owner_states_orderBy: StateAgent_orderBy, $localRecord_owner_owner_states_orderDirection: OrderDirection, $localRecord_owner_owner_states_where: StateAgent_filter, $localRecord_owner_owner_states_states_state_state_travels_skip: Int, $localRecord_owner_owner_states_states_state_state_travels_first: Int, $localRecord_owner_owner_states_states_state_state_travels_orderBy: NetworkStateTravel_orderBy, $localRecord_owner_owner_states_states_state_state_travels_orderDirection: OrderDirection, $localRecord_owner_owner_states_states_state_state_travels_where: NetworkStateTravel_filter) {
+  localRecord(id: $id, block: $block) {
+    id
+    owner {
+      id
+      states(
+        skip: $localRecord_owner_owner_states_skip
+        first: $localRecord_owner_owner_states_first
+        orderBy: $localRecord_owner_owner_states_orderBy
+        orderDirection: $localRecord_owner_owner_states_orderDirection
+        where: $localRecord_owner_owner_states_where
+      ) {
+        id
+        state {
+          id
+          verifier
+          creator
+          baseURI
+          metadata {
+            id
+            name
+            description
+            image
+            imageGateway
+            manifesto
+            manifestoGateway
+          }
+          population
+          travels(
+            skip: $localRecord_owner_owner_states_states_state_state_travels_skip
+            first: $localRecord_owner_owner_states_states_state_state_travels_first
+            orderBy: $localRecord_owner_owner_states_states_state_state_travels_orderBy
+            orderDirection: $localRecord_owner_owner_states_states_state_state_travels_orderDirection
+            where: $localRecord_owner_owner_states_states_state_state_travels_where
+          ) {
+            id
+            account
+            previousGeohash
+            nextGeohash
+          }
+        }
+      }
+    }
     geohash
+    localRecordERC721
+  }
+}
+    `;
+export const LocalRecordsDocument = `
+    query localRecords($skip: Int, $first: Int, $orderBy: LocalRecord_orderBy, $orderDirection: OrderDirection, $where: LocalRecord_filter, $block: Block_height, $localRecords_owner_owner_states_skip: Int, $localRecords_owner_owner_states_first: Int, $localRecords_owner_owner_states_orderBy: StateAgent_orderBy, $localRecords_owner_owner_states_orderDirection: OrderDirection, $localRecords_owner_owner_states_where: StateAgent_filter, $localRecords_owner_owner_states_states_state_state_travels_skip: Int, $localRecords_owner_owner_states_states_state_state_travels_first: Int, $localRecords_owner_owner_states_states_state_state_travels_orderBy: NetworkStateTravel_orderBy, $localRecords_owner_owner_states_states_state_state_travels_orderDirection: OrderDirection, $localRecords_owner_owner_states_states_state_state_travels_where: NetworkStateTravel_filter) {
+  localRecords(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    owner {
+      id
+      states(
+        skip: $localRecords_owner_owner_states_skip
+        first: $localRecords_owner_owner_states_first
+        orderBy: $localRecords_owner_owner_states_orderBy
+        orderDirection: $localRecords_owner_owner_states_orderDirection
+        where: $localRecords_owner_owner_states_where
+      ) {
+        id
+        state {
+          id
+          verifier
+          creator
+          baseURI
+          metadata {
+            id
+            name
+            description
+            image
+            imageGateway
+            manifesto
+            manifestoGateway
+          }
+          population
+          travels(
+            skip: $localRecords_owner_owner_states_states_state_state_travels_skip
+            first: $localRecords_owner_owner_states_states_state_state_travels_first
+            orderBy: $localRecords_owner_owner_states_states_state_state_travels_orderBy
+            orderDirection: $localRecords_owner_owner_states_states_state_state_travels_orderDirection
+            where: $localRecords_owner_owner_states_states_state_state_travels_where
+          ) {
+            id
+            account
+            previousGeohash
+            nextGeohash
+          }
+        }
+      }
+    }
+    geohash
+    localRecordERC721
   }
 }
     `;
@@ -2324,11 +2942,11 @@ const injectedRtkApi = subgraphAPI.injectEndpoints({
     agents: build.query<AgentsQuery, {variables: AgentsQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: AgentsDocument, variables, chainId })
     }),
-    localRecord: build.query<LocalRecordQuery, {variables: LocalRecordQueryVariables; chainId?: number;}>({
-      query: ({variables, chainId = 1337}) => ({ document: LocalRecordDocument, variables, chainId })
+    stateAgent: build.query<StateAgentQuery, {variables: StateAgentQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: StateAgentDocument, variables, chainId })
     }),
-    localRecords: build.query<LocalRecordsQuery, {variables: LocalRecordsQueryVariables; chainId?: number;}>({
-      query: ({variables, chainId = 1337}) => ({ document: LocalRecordsDocument, variables, chainId })
+    stateAgents: build.query<StateAgentsQuery, {variables: StateAgentsQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: StateAgentsDocument, variables, chainId })
     }),
     networkState: build.query<NetworkStateQuery, {variables: NetworkStateQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: NetworkStateDocument, variables, chainId })
@@ -2344,6 +2962,12 @@ const injectedRtkApi = subgraphAPI.injectEndpoints({
     }),
     networkStateTravels: build.query<NetworkStateTravelsQuery, {variables: NetworkStateTravelsQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: NetworkStateTravelsDocument, variables, chainId })
+    }),
+    localRecord: build.query<LocalRecordQuery, {variables: LocalRecordQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: LocalRecordDocument, variables, chainId })
+    }),
+    localRecords: build.query<LocalRecordsQuery, {variables: LocalRecordsQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: LocalRecordsDocument, variables, chainId })
     }),
     recordTileCreated: build.query<RecordTileCreatedQuery, {variables: RecordTileCreatedQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: RecordTileCreatedDocument, variables, chainId })
@@ -2385,5 +3009,5 @@ const injectedRtkApi = subgraphAPI.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAgentQuery, useLazyAgentQuery, useAgentsQuery, useLazyAgentsQuery, useLocalRecordQuery, useLazyLocalRecordQuery, useLocalRecordsQuery, useLazyLocalRecordsQuery, useNetworkStateQuery, useLazyNetworkStateQuery, useNetworkStatesQuery, useLazyNetworkStatesQuery, useNetworkStateMetadataQuery, useLazyNetworkStateMetadataQuery, useNetworkStateTravelQuery, useLazyNetworkStateTravelQuery, useNetworkStateTravelsQuery, useLazyNetworkStateTravelsQuery, useRecordTileCreatedQuery, useLazyRecordTileCreatedQuery, useRecordTileCreatedsQuery, useLazyRecordTileCreatedsQuery, useRecordTileEnteredQuery, useLazyRecordTileEnteredQuery, useRecordTileEnteredsQuery, useLazyRecordTileEnteredsQuery, useTileCreatedQuery, useLazyTileCreatedQuery, useTileCreatedsQuery, useLazyTileCreatedsQuery, useRoleAdminChangedQuery, useLazyRoleAdminChangedQuery, useRoleAdminChangedsQuery, useLazyRoleAdminChangedsQuery, useRoleGrantedQuery, useLazyRoleGrantedQuery, useRoleGrantedsQuery, useLazyRoleGrantedsQuery, useRoleRevokedQuery, useLazyRoleRevokedQuery, useRoleRevokedsQuery, useLazyRoleRevokedsQuery } = injectedRtkApi;
+export const { useAgentQuery, useLazyAgentQuery, useAgentsQuery, useLazyAgentsQuery, useStateAgentQuery, useLazyStateAgentQuery, useStateAgentsQuery, useLazyStateAgentsQuery, useNetworkStateQuery, useLazyNetworkStateQuery, useNetworkStatesQuery, useLazyNetworkStatesQuery, useNetworkStateMetadataQuery, useLazyNetworkStateMetadataQuery, useNetworkStateTravelQuery, useLazyNetworkStateTravelQuery, useNetworkStateTravelsQuery, useLazyNetworkStateTravelsQuery, useLocalRecordQuery, useLazyLocalRecordQuery, useLocalRecordsQuery, useLazyLocalRecordsQuery, useRecordTileCreatedQuery, useLazyRecordTileCreatedQuery, useRecordTileCreatedsQuery, useLazyRecordTileCreatedsQuery, useRecordTileEnteredQuery, useLazyRecordTileEnteredQuery, useRecordTileEnteredsQuery, useLazyRecordTileEnteredsQuery, useTileCreatedQuery, useLazyTileCreatedQuery, useTileCreatedsQuery, useLazyTileCreatedsQuery, useRoleAdminChangedQuery, useLazyRoleAdminChangedQuery, useRoleAdminChangedsQuery, useLazyRoleAdminChangedsQuery, useRoleGrantedQuery, useLazyRoleGrantedQuery, useRoleGrantedsQuery, useLazyRoleGrantedsQuery, useRoleRevokedQuery, useLazyRoleRevokedQuery, useRoleRevokedsQuery, useLazyRoleRevokedsQuery } = injectedRtkApi;
 
