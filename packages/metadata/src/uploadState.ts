@@ -10,7 +10,8 @@ export const uploadState = async (client: Client, stateFolderPath: string) => {
     `${stateFolderPath}/image.jpg`,
   ]);
 
-  const filesCID = await client.uploadDirectory(files);
+  let imageCID = await client.uploadFile(files[0]);
+  let manifestoCID = await client.uploadFile(files[1]);
 
   const other = JSON.parse(
     await fs.readFile(`${stateFolderPath}/other.json`, "utf-8")
@@ -19,8 +20,8 @@ export const uploadState = async (client: Client, stateFolderPath: string) => {
   const metadata = {
     name,
     ...other,
-    image: `ipfs://${filesCID}/image.jpg`,
-    manifesto: `ipfs://${filesCID}/manifesto.pdf`,
+    image: `ipfs://${imageCID}`,
+    manifesto: `ipfs://${manifestoCID}`,
   };
 
   const metadataFile = new File([JSON.stringify(metadata)], "metadata.json");

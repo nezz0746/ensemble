@@ -5,11 +5,13 @@
   "main": "index.ts",
   "description": "A metadata library Instate Protocol",
   "scripts": {
-    "upload": "npx tsx index.ts"
+    "upload": "npx tsx index.ts",
+    "upload:local": "npx tsx index.local.ts"
   },
   "dependencies": {
     "@web3-storage/w3up-client": "^11.0.2",
     "files-from-path": "^1.0.2",
+    "kubo-rpc-client": "^3.0.1",
     "zod": "^3.22.4"
   }
 }

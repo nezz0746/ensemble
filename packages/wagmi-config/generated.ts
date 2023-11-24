@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+  1337: '0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  1337: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
 } as const
 
 /**
@@ -869,7 +869,7 @@ export const mapABI = [
  */
 export const mapAddress = {
   5: '0xB0afc8408C0e27081CbBd0B00d63fFc2039AC5fB',
-  1337: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+  1337: '0x68B1D87F95878fE05B998F19b66F4baba5De1aed',
 } as const
 
 /**
@@ -1128,7 +1128,7 @@ export const stateTileABI = [
  */
 export const stateTileAddress = {
   5: '0xB2ddAE3746E85c79cEa3aC1ff695De09dB645E47',
-  1337: '0xcF05D5292cc98955609b1dEf8b20cC90dD14111E',
+  1337: '0xD2dA70b7505f08e9bd31a409bF775128Ed5Ba312',
 } as const
 
 /**
