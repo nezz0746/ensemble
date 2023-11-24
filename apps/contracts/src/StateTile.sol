@@ -12,7 +12,12 @@ contract StateTile is ERC1155 {
 
     mapping(address => uint256) public accountPosition;
 
-    event StateMove(address state, address indexed account, string geohash);
+    event StateMove(
+        address state,
+        address indexed account,
+        string previousGeohash,
+        string nextGeohash
+    );
 
     error accountNotSender();
     error movingToSameLocation();
@@ -63,7 +68,12 @@ contract StateTile is ERC1155 {
 
         accountPosition[account] = geohashId;
 
-        emit StateMove(address(this), account, geohash);
+        emit StateMove(
+            address(this),
+            account,
+            GeohashLogic.uint256ToGeohash(previousGeohashId),
+            geohash
+        );
     }
 
     function _beforeTokenTransfer(
@@ -74,6 +84,7 @@ contract StateTile is ERC1155 {
         uint256[] memory,
         bytes memory
     ) internal virtual override {
+        //
         if (from != address(0) && to != address(0)) revert nonTransferable();
     }
 
