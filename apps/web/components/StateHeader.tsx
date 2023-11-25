@@ -1,9 +1,9 @@
-import { NetworkStateQuery, StateAgent } from '@/rtk/generated'
+import { NetworkStateQuery } from '@/rtk/generated'
 import { truncateAddress } from '@/services/utils'
 import { DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 
 type StateHeaderProps = {
-  currentNetworkState?: NetworkStateQuery['networkState'] | StateAgent['state']
+  currentNetworkState?: NetworkStateQuery['networkState']
 }
 
 const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
