@@ -25,7 +25,7 @@ const Home: NextPage = () => {
               <div className="w-full overflow-scroll">
                 {agent?.states.map((stateAgent) => {
                   const state = stateAgent?.state as NetworkState
-                  console.log({ state })
+
                   return (
                     <StateHeader key={state.id} currentNetworkState={state} />
                   )

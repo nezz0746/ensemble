@@ -4,9 +4,11 @@ import { useEffect, useMemo } from 'react'
 import { geohashToFeature } from '@/services/map_utils'
 import useChain from './useChain'
 import useMapUtils from './useMapUtils'
+import { usePosition } from './usePosition'
 
 const useAppAgent = () => {
   const { flyToGeohash } = useMapUtils()
+  const { updatePositionWithGeohash } = usePosition()
   const { chainId } = useChain()
   const { address } = useAccount()
 
@@ -24,7 +26,9 @@ const useAppAgent = () => {
   useEffect(() => {
     if (data?.agent) {
       const currentGeohash = data.agent.currentGeohash
+
       flyToGeohash(currentGeohash)
+      updatePositionWithGeohash(currentGeohash)
     }
   }, [flyToGeohash, data?.agent])
 

@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
 import { commonLocations } from '@/services/constants'
-import { useEffect } from 'react'
 import {
   InstateTilePolygon,
   encodeGeohash,
   geohashToFeature,
 } from '@/services/map_utils'
+import { center as centerOfFeature } from '@turf/turf'
 
 export type Positon = {
   latitude: number
@@ -23,10 +23,11 @@ type PositionStore = {
     longitude: number,
     precision?: number
   ) => void
+  updatePositionWithGeohash: (geohash: string) => void
   setPrecision: (precision: number) => void
 }
 
-const usePositionStore = create<PositionStore>((set) => ({
+export const usePosition = create<PositionStore>((set) => ({
   position: {
     latitude: commonLocations.paris.latitude,
     longitude: commonLocations.paris.longitude,
@@ -72,10 +73,18 @@ const usePositionStore = create<PositionStore>((set) => ({
       })
     )
   },
+  updatePositionWithGeohash: (geohash) => {
+    set(
+      produce((state) => {
+        const feature = geohashToFeature(geohash)
+        const center = centerOfFeature(feature).geometry
+
+        state.position.precision = geohash.length
+        state.position.latitude = center.coordinates[1]
+        state.position.longitude = center.coordinates[0]
+        state.position.geohash = geohash
+        state.position.feature = feature
+      })
+    )
+  },
 }))
-
-export const usePosition: () => PositionStore = () => {
-  const store = usePositionStore()
-
-  return store
-}
