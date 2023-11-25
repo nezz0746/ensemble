@@ -54,6 +54,22 @@ contract BaseScript is Script {
         }
     }
 
+    modifier broadcastForLocalTestData() {
+        if (_cycle != Cycle.Local) {
+            revert();
+        }
+
+        for (uint256 i = 1; i < 10; i++) {
+            (, uint256 accountPrivateKey) = deriveRememberKey({
+                mnemonic: TEST_MNEMONIC,
+                index: uint32(i)
+            });
+            vm.startBroadcast(accountPrivateKey);
+            _;
+            vm.stopBroadcast();
+        }
+    }
+
     modifier setEnvDeploy(Cycle cycle) {
         _cycle = cycle;
         if (cycle == Cycle.Local) {
