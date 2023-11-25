@@ -1,4 +1,4 @@
-import ConnectButton from "./ConnectButton";
+import ConnectButton from './ConnectButton'
 
 const Navbar = () => {
   return (
@@ -12,7 +12,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

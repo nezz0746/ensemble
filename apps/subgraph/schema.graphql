@@ -1,5 +1,6 @@
 type Agent @entity(immutable: false) {
   id: Bytes! # address
+  currentGeohash: String! # string
   records: [LocalRecord!]! @derivedFrom(field: "owner")
   states: [StateAgent!]! @derivedFrom(field: "agent")
 }

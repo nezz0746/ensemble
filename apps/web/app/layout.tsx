@@ -14,9 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <Provider store={store}>
           <DappProvider>
-            <div className="flex flex-col min-h-screen">
-              <main className="flex-grow">{children}</main>
-            </div>
+            <main className="">{children}</main>
           </DappProvider>
         </Provider>
         <Analytics />

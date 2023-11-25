@@ -7,6 +7,8 @@ import AccountMarker from '@/components/Map/AccountMarker'
 import FogLayer from '@/components/Map/Fog'
 import AppNavigationBar from '@/components/AppNavigationBar'
 import AppMapControls from '@/components/AppMapControls'
+import usePath from '@/hooks/usePath'
+import NetworkStateLayers from '@/components/Map/NetworkStateLayers'
 
 const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
@@ -15,10 +17,12 @@ type HomeProps = {
 }
 
 const Home = ({ children }: HomeProps) => {
+  const { isProfile, isTile } = usePath()
+
   return (
     <MapProvider>
       <div className="h-screen flex flex-row gap-2">
-        <div className="w-2/3 relative">
+        <div className="w-[60%] relative">
           <Map
             id="mainMap"
             mapboxAccessToken={token}
@@ -34,15 +38,18 @@ const Home = ({ children }: HomeProps) => {
               <AppNavigationBar />
             </div>
             <AccountMarker />
-            <FogLayer />
+            {isProfile && <FogLayer />}
+            {isTile && <NetworkStateLayers />}
             <div className="absolute w-full bottom-0 p-3">
               <AppMapControls />
             </div>
           </Map>
         </div>
-        <div className="w-1/3 p-4 flex flex-col">
-          <ConnectButton />
-          <div className="py-3 overflow-scroll">{children}</div>
+        <div className="w-[40%]">
+          <div className="h-full flex py-6 px-2 flex-col gap-4">
+            <ConnectButton />
+            {children}
+          </div>
         </div>
       </div>
     </MapProvider>

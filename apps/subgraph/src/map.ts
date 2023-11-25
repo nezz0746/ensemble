@@ -53,6 +53,7 @@ export function handleLocalRecordDeployed(
 
   if (agent == null) {
     agent = new Agent(event.params.recipient);
+    agent.currentGeohash = event.params.geohash;
 
     agent.save();
   }

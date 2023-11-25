@@ -1,4 +1,5 @@
 import { Feature, MultiLineString, Polygon, Properties } from '@turf/turf'
+import { InstateTilePolygon } from './map_utils'
 
 export const subgraphUrls: Record<number, string> = {
   1337: 'http://localhost:8000/subgraphs/name/nezz0746/ns-framework',
@@ -23,9 +24,9 @@ export const commonLocations = {
   },
 }
 
-export const emptyFeature = {
+export const emptyFeature: InstateTilePolygon = {
   type: 'Feature',
-  properties: {},
+  properties: { geohash: '' },
   geometry: {
     type: 'Polygon',
     coordinates: [],

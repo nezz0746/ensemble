@@ -3,40 +3,40 @@ import { truncateAddress } from '@/services/utils'
 import { DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 
 type StateHeaderProps = {
-  currentNetworkState?: NetworkStateQuery
+  currentNetworkState?: NetworkStateQuery['networkState']
 }
 
 const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
+  if (!currentNetworkState) return null
+
   return (
     <div className="flex flex-row gap-4">
       <div className="flex-shrink-0">
         <img
           className="w-16 h-16 aspect-square mt-1"
-          src={currentNetworkState?.networkState?.metadata?.imageGateway}
+          src={currentNetworkState?.metadata?.imageGateway}
         />
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex justify-between flex-row">
           <div>
             <p className="text-xl font-bold">
-              {currentNetworkState?.networkState?.metadata?.name}
+              {currentNetworkState?.metadata?.name}
             </p>
             <p className="font-thin">
               founded by{' '}
-              <span>
-                {truncateAddress(currentNetworkState?.networkState?.creator, 5)}
-              </span>
+              <span>{truncateAddress(currentNetworkState?.creator, 5)}</span>
             </p>
           </div>
           <div>
             <div className="border border-primary flex flex-row items-center justify-center gap-2 p-1">
               <UserGroupIcon className="w-5 h-5" />
-              {currentNetworkState?.networkState?.population}
+              {currentNetworkState?.population}
             </div>
           </div>
         </div>
         <p className="text-sm text-justify">
-          {currentNetworkState?.networkState?.metadata?.description}
+          {currentNetworkState?.metadata?.description}
         </p>
         <div className="flex flex-row justify-end gap-2">
           <button disabled className="btn btn-outline btn-sm">
@@ -58,7 +58,7 @@ const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
             className="btn btn-outline btn-sm"
             onClick={() => {
               window.open(
-                currentNetworkState?.networkState?.metadata?.manifestoGateway,
+                currentNetworkState?.metadata?.manifestoGateway,
                 '_blank'
               )
             }}
