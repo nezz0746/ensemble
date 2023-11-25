@@ -1,17 +1,17 @@
-import { usePosition } from "@/hooks/usePosition";
-import classNames from "classnames";
-import MoveButton from "./MoveButton";
-import { useAccount } from "wagmi";
-import useAppAgent from "@/hooks/useAppAgent";
-import useAppAddresses from "@/hooks/useAppAddresses";
-import { usePathname } from "next/navigation";
-import AccountZoomEffects from "./Map/AccountZoomEffects";
+import { usePosition } from '@/hooks/usePosition'
+import classNames from 'classnames'
+import MoveButton from './MoveButton'
+import { useAccount } from 'wagmi'
+import useAppAgent from '@/hooks/useAppAgent'
+import useAppAddresses from '@/hooks/useAppAddresses'
+import { usePathname } from 'next/navigation'
+import AccountZoomEffects from './Map/AccountZoomEffects'
 
 const AppMapControls = () => {
-  const { stateTile } = useAppAddresses();
-  const { address } = useAccount();
-  const { setPrecision, position } = usePosition();
-  const { geohashes, refetch } = useAppAgent();
+  const { stateTile } = useAppAddresses()
+  const { address } = useAccount()
+  const { setPrecision, position } = usePosition()
+  const { geohashes, refetch } = useAppAgent()
 
   return (
     <div className="flex flex-row justify-between gap-4 items-center bg-opacity-90 p-3 bg-neutral rounded-lg">
@@ -29,11 +29,11 @@ const AppMapControls = () => {
             max={6}
             value={position.precision}
             onChange={(e) => {
-              setPrecision(parseInt(e.target.value));
+              setPrecision(parseInt(e.target.value))
             }}
-            className={classNames("range range-xs", {
-              "range-success": position.precision < 5,
-              "range-warning": position.precision >= 5,
+            className={classNames('range range-xs', {
+              'range-success': position.precision < 5,
+              'range-warning': position.precision >= 5,
             })}
             step={1}
           />
@@ -53,22 +53,22 @@ const AppMapControls = () => {
           geohash={position.geohash}
           disabled={geohashes.includes(position.geohash)}
           onMoveSuccess={() => {
-            refetch();
+            refetch()
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 /**
  * NOTE: Could move to vite app, NextJS slot routing is a hellhole
  * @returns
  */
 const AppMapControlsRouted = () => {
-  const pathName = usePathname();
+  const pathName = usePathname()
 
-  return pathName.includes("/profile") ? <AppMapControls /> : null;
-};
+  return pathName.includes('/profile') ? <AppMapControls /> : null
+}
 
-export default AppMapControlsRouted;
+export default AppMapControlsRouted

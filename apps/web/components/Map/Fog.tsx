@@ -5,32 +5,15 @@ import { center, difference, union } from '@turf/turf'
 import { emptyFeature, globeFeature } from '@/services/constants'
 import { useMemo } from 'react'
 import useAppAgent from '@/hooks/useAppAgent'
-import { usePathname } from 'next/navigation'
 
-const FogLayer = () => {
-  const pathName = usePathname()
-
-  const isProfile = pathName.includes('/profile')
-
+const ProfileFogLayer = () => {
+  // Position of active agent (draggable)
   const {
     position: { feature },
   } = usePosition()
-  const { features } = useAppAgent()
 
-  const agentFeatures = isProfile ? features : []
-
-  const visibleFeatures = isProfile ? [feature, ...agentFeatures] : [feature]
-
-  const fog = useMemo(() => {
-    return difference(
-      globeFeature,
-      // TODO: Fix this any & remove
-      visibleFeatures.reduce((acc: any, feature) => {
-        const newAcc = union(acc, feature)
-        return newAcc !== null ? newAcc : emptyFeature
-      }, emptyFeature)
-    )
-  }, [visibleFeatures])
+  // Features fo active agent
+  const { features: agentFeatures } = useAppAgent()
 
   const points = useMemo(() => {
     return agentFeatures.map((f) => {
@@ -38,13 +21,25 @@ const FogLayer = () => {
     })
   }, [agentFeatures])
 
+  const computed_fog = useMemo(() => {
+    const visibleFeatures = [feature, ...agentFeatures]
+
+    return difference(
+      globeFeature,
+      visibleFeatures.reduce((acc, feature) => {
+        const newAcc = union(acc, feature, { properties: feature.properties })
+        return newAcc !== null ? newAcc : emptyFeature
+      }, emptyFeature)
+    )
+  }, [feature, agentFeatures])
+
   return (
     <>
       {points.map((point) => {
         return (
           <Source
-            key={point?.properties.geohash}
-            id={point?.properties.geohash}
+            key={point?.properties?.geohash}
+            id={`profile-point-${point?.properties?.geohash}`}
             type="geojson"
             data={point}
           >
@@ -52,8 +47,8 @@ const FogLayer = () => {
           </Source>
         )
       })}
-      {fog && (
-        <Source id="fog" type="geojson" data={fog}>
+      {computed_fog && (
+        <Source id="fog" type="geojson" data={computed_fog}>
           <Layer {...fogLayerStyle} />
         </Source>
       )}
@@ -61,4 +56,4 @@ const FogLayer = () => {
   )
 }
 
-export default FogLayer
+export default ProfileFogLayer

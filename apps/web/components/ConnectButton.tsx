@@ -1,5 +1,5 @@
-import { emojiAvatarForAddress } from "@/services/rainbow";
-import { ConnectButton as RainbowKitConnectButton } from "@rainbow-me/rainbowkit";
+import { emojiAvatarForAddress } from '@/services/rainbow'
+import { ConnectButton as RainbowKitConnectButton } from '@rainbow-me/rainbowkit'
 
 const ConnectButton = () => {
   return (
@@ -15,20 +15,20 @@ const ConnectButton = () => {
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== "loading";
+        const ready = mounted && authenticationStatus !== 'loading'
         const connected =
           ready &&
           account &&
           chain &&
-          (!authenticationStatus || authenticationStatus === "authenticated");
+          (!authenticationStatus || authenticationStatus === 'authenticated')
         return (
           <div
             {...(!ready && {
-              "aria-hidden": true,
+              'aria-hidden': true,
               style: {
                 opacity: 0,
-                pointerEvents: "none",
-                userSelect: "none",
+                pointerEvents: 'none',
+                userSelect: 'none',
               },
             })}
             className="flex flex-row gap-2"
@@ -43,7 +43,7 @@ const ConnectButton = () => {
                   >
                     Connect
                   </button>
-                );
+                )
               }
               if (chain.unsupported) {
                 return (
@@ -54,7 +54,7 @@ const ConnectButton = () => {
                   >
                     Wrong network
                   </button>
-                );
+                )
               }
               return (
                 <div className="flex flex-col-reverse md:flex-row w-full gap-2">
@@ -70,13 +70,13 @@ const ConnectButton = () => {
                           width: 12,
                           height: 12,
                           borderRadius: 999,
-                          overflow: "hidden",
+                          overflow: 'hidden',
                           marginRight: 4,
                         }}
                       >
                         {chain.iconUrl && (
                           <img
-                            alt={chain.name ?? "Chain icon"}
+                            alt={chain.name ?? 'Chain icon'}
                             src={chain.iconUrl}
                             style={{ width: 12, height: 12 }}
                           />
@@ -96,16 +96,16 @@ const ConnectButton = () => {
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
-                      : ""}
+                      : ''}
                   </button>
                 </div>
-              );
+              )
             })()}
           </div>
-        );
+        )
       }}
     </RainbowKitConnectButton.Custom>
-  );
-};
+  )
+}
 
-export default ConnectButton;
+export default ConnectButton

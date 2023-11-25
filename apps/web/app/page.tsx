@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { content } from "@/services/content";
-import Link from "next/link";
-import Image from "next/image";
-import ConnectButton from "@/components/ConnectButton";
+import { content } from '@/services/content'
+import Link from 'next/link'
+import Image from 'next/image'
+import ConnectButton from '@/components/ConnectButton'
 
 const Page = () => {
   return (
@@ -11,7 +11,7 @@ const Page = () => {
       <div className="p-3 flex flex-col">
         <nav className="navbar z-10 bg-white bg-opacity-30">
           <div className="bg-opacity-100 flex flex-row justify-between w-full">
-            <Link href={"/"}>
+            <Link href={'/'}>
               <button className="btn">Home</button>
             </Link>
             <ConnectButton />
@@ -30,7 +30,7 @@ const Page = () => {
               <p className="mb-5 text-white">{content.description}</p>
               <div className="flex flex-row gap-2 justify-center">
                 <Link
-                  href={"https://github.com/nezz0746/ensemble"}
+                  href={'https://github.com/nezz0746/ensemble'}
                   target="_blank"
                 >
                   <button className="btn btn-neutral">
@@ -43,7 +43,7 @@ const Page = () => {
                     Github
                   </button>
                 </Link>
-                <Link href={"/map"}>
+                <Link href={'/map'}>
                   <button className="btn btn-secondary">Launch App</button>
                 </Link>
               </div>
@@ -77,7 +77,7 @@ const Page = () => {
         </footer>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page
