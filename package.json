@@ -7,7 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "deploy:local": "yarn workspace contracts run deploy:local && yarn workspace wagmi-config run generate && yarn workspace subgraph run deploy:local",
+    "deploy:local": "yarn workspace contracts run deploy:local && yarn workspace wagmi-config run generate && yarn workspace metadata upload:local && yarn workspace subgraph run deploy:local",
     "deploy:testnets": "yarn workspace contracts run deploy:testnets && yarn workspace wagmi-config run generate && yarn workspace subgraph run deploy:testnets",
     "lint": "turbo run lint",
     "test": "turbo run test",
