@@ -1,13 +1,12 @@
 import { useAccount } from 'wagmi'
 import { useAgentQuery } from '@/rtk/generated'
 import { useEffect, useMemo } from 'react'
-import { geohashToFeature, precisionToZoom } from '@/services/map_utils'
+import { geohashToFeature } from '@/services/map_utils'
 import useChain from './useChain'
-import { useMap } from 'react-map-gl'
-import { center } from '@turf/turf'
+import useMapUtils from './useMapUtils'
 
 const useAppAgent = () => {
-  const { mainMap } = useMap()
+  const { flyToGeohash } = useMapUtils()
   const { chainId } = useChain()
   const { address } = useAccount()
 
@@ -25,18 +24,9 @@ const useAppAgent = () => {
   useEffect(() => {
     if (data?.agent) {
       const currentGeohash = data.agent.currentGeohash
-      const agentLocationCenter = center(geohashToFeature(currentGeohash))
-      const agenCenter: [number, number] = [
-        agentLocationCenter.geometry.coordinates[0],
-        agentLocationCenter.geometry.coordinates[1],
-      ]
-      mainMap?.flyTo({
-        center: agenCenter,
-        zoom: precisionToZoom[currentGeohash.length],
-        speed: 10,
-      })
+      flyToGeohash(currentGeohash)
     }
-  }, [mainMap, data?.agent])
+  }, [flyToGeohash, data?.agent])
 
   return useMemo(() => {
     const geohashes = data?.agent?.records.map((record) => record.geohash) ?? []
