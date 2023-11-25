@@ -1,5 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
+  Agent,
   NetworkState,
   NetworkStateTravel,
   StateAgent,
@@ -15,6 +16,15 @@ export function handleNetworkStateTravel(event: StateMoveEvent): void {
   travel.account = event.params.account;
   travel.previousGeohash = event.params.previousGeohash;
   travel.nextGeohash = event.params.nextGeohash;
+
+  let agent = Agent.load(event.params.account);
+
+  if (agent == null) {
+    agent = new Agent(event.params.account);
+  }
+
+  agent.currentGeohash = event.params.nextGeohash;
+  agent.save();
 
   let stateAgentId = event.params.state.concat(event.params.account);
 
