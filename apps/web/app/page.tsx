@@ -17,23 +17,28 @@ const Page = () => {
             <Link href={'/'}>
               <button className="btn">Home</button>
             </Link>
-            <ConnectButton />
+            <div className="hidden md:flex">
+              <ConnectButton />
+            </div>
           </div>
         </nav>
       </div>
-      <div className="bg-transparent flex flex-col text-center min-h-[90vh] p-4">
+      <div className="bg-transparent flex flex-col text-center min-h-[90vh] p-3 md:p-4">
         <div className="relative flex-grow flex flex-row gap-4 mb-4">
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             {/* INSTATE PROTOCOL */}
-            <div className="w-full h-full flex flex-col justify-center items-center bg-base-100 rounded-lg">
-              <div className=" flex flex-col gap-10">
-                <h1 className="text-6xl font-sans-display font-bold">
+            <div className="w-full h-full p-4 flex flex-col justify-center items-center bg-base-100 rounded-lg">
+              <div className="flex flex-col gap-10">
+                <h1 className="text-4xl md:text-6xl font-sans-display font-bold">
                   Instate Protocol
                 </h1>
-                <h2 className="font-sans">
+                <h1 className="text-2xl md:text-4xl font-sans-display">
+                  Localized web3
+                </h1>
+                <h3 className="font-sans">
                   Build with local accounts or our network state toolbox{' '}
-                </h2>
-                <div className="flex flex-row gap-2 justify-between">
+                </h3>
+                <div className="flex flex-col md:flex-row gap-2 justify-between">
                   <button
                     className="btn btn-primary flex-grow"
                     onClick={() => {
@@ -77,10 +82,16 @@ const Page = () => {
                     Telegram
                   </button>
                 </div>
+                <div className="md:hidden">
+                  <p className="text-xs">
+                    Connect on desktop to browse 🌐 InstateScan, our local
+                    account & NS explorer
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="w-1/2 hidden md:flex">
             <div className="w-full h-full flex flex-col justify-center items-center bg-base-300 rounded-lg">
               <div className=" flex flex-col gap-10">
                 <h1 className="text-6xl font-sans-mono">🌐 InstateScan</h1>
