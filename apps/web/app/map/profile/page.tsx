@@ -4,35 +4,14 @@ import type { NextPage } from 'next'
 
 import useAppAgent from '@/hooks/useAppAgent'
 import { truncateAddress } from '@/services/utils'
-import { useMap } from 'react-map-gl'
-import { useCallback } from 'react'
-import { center as centerOfFeature } from '@turf/turf'
-import { geohashToFeature, precisionToZoom } from '@/services/map_utils'
 import StateHeader from '@/components/StateHeader'
 import Tabs from '@/components/Tabs'
 import { NetworkState } from '@/rtk/generated'
+import useMapUtils from '@/hooks/useMapUtils'
 
 const Home: NextPage = () => {
-  const { mainMap } = useMap()
+  const { flyToGeohash } = useMapUtils()
   const { agent } = useAppAgent()
-
-  const zoomTo = useCallback(
-    (geohash: string) => {
-      const center = centerOfFeature(geohashToFeature(geohash)).geometry
-        .coordinates as [number, number]
-
-      if (center.length === 2) {
-        mainMap?.flyTo({
-          center,
-          zoom: precisionToZoom[geohash.length],
-          speed: 4,
-        })
-      }
-    },
-    [mainMap]
-  )
-
-  console.log({ agent })
 
   return (
     <>
@@ -46,7 +25,7 @@ const Home: NextPage = () => {
               <div className="w-full overflow-scroll">
                 {agent?.states.map((stateAgent) => {
                   const state = stateAgent?.state as NetworkState
-                  console.log({ state })
+
                   return (
                     <StateHeader key={state.id} currentNetworkState={state} />
                   )
@@ -64,7 +43,7 @@ const Home: NextPage = () => {
                   return (
                     <div
                       onClick={() => {
-                        zoomTo(geohash)
+                        flyToGeohash(geohash)
                       }}
                       key={geohash}
                       className="border border-primary bg-neutral p-2 hover:bg-primary hover:cursor-pointer hover:text-neutral hover:border-black select-none"

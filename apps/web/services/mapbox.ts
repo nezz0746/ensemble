@@ -32,8 +32,8 @@ export const getNetworkStateLayerStyle = (
   type: 'fill-extrusion',
   paint: {
     'fill-extrusion-color': 'blue',
-    'fill-extrusion-height': 10000,
-    'fill-extrusion-opacity': 0.8,
+    'fill-extrusion-height': 100000,
+    'fill-extrusion-opacity': 0.7,
     'fill-extrusion-vertical-gradient': true,
   },
 })
