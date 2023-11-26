@@ -1,10 +1,18 @@
 const AppHomePage = () => {
   return (
-    <div>
-      <h1 className="text-xl">
-        Welcome to the <span className="font-bold">Network State Explorer</span>{' '}
-        !
-      </h1>
+    <div className="h-full">
+      <div className="bg-base-200 h-full flex flex-col gap-8  p-4 rounded-md">
+        <h1 className="text-xl">🌐 InstateScan</h1>
+        <p>Welcome to the InstateScan</p>
+        Here you can:
+        <ul className="list-disc list-inside">
+          <li>
+            View you Instate profile & check you{' '}
+            <span className="font-bold">local accounts</span>
+          </li>
+          <li>Explore existing network states</li>
+        </ul>
+      </div>
     </div>
   )
 }

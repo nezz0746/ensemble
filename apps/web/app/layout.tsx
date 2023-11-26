@@ -11,7 +11,7 @@ import { store } from '@/rtk/store'
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html>
-      <body>
+      <body className="bg-gradient-to-br from-blue-200 to-green-600">
         <Provider store={store}>
           <DappProvider>
             <main className="">{children}</main>
