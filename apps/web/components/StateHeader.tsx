@@ -10,7 +10,7 @@ const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
   if (!currentNetworkState) return null
 
   return (
-    <div className="flex flex-row gap-4">
+    <div className="flex flex-row gap-4 bg-base-200 p-4 rounded-lg">
       <div className="flex-shrink-0">
         <img
           className="w-16 h-16 aspect-square mt-1"
@@ -20,7 +20,7 @@ const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between flex-row">
           <div>
-            <p className="text-xl font-bold">
+            <p className="text-xl font-sans-display font-bold ">
               {currentNetworkState?.metadata?.name}
             </p>
             <p className="font-thin">

@@ -28,7 +28,7 @@ const TilePage: NextPage<TilePageProps> = ({ params: { address } }) => {
                 {currentNetworkState?.networkState?.agents?.map(({ agent }) => {
                   return (
                     <div
-                      className="w-full border flex flex-row items-center justify-between p-2"
+                      className="w-full bg-base-300 rounded-md flex flex-row items-center justify-between p-2"
                       key={agent?.id}
                     >
                       <div className="flex flex-row items-center">
@@ -49,7 +49,7 @@ const TilePage: NextPage<TilePageProps> = ({ params: { address } }) => {
                 {regions?.map((value) => (
                   <div
                     key={value}
-                    className="w-full border flex flex-row items-center p-2"
+                    className="w-full bg-base-300 rounded-md flex flex-row items-center p-2"
                   >
                     <MapPinIcon className="w-6 h-6 mr-2" />
                     {value}

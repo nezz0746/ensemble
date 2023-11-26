@@ -32,7 +32,7 @@ const AppMapControls = () => {
               setPrecision(parseInt(e.target.value))
             }}
             className={classNames('range range-xs', {
-              'range-success': position.precision < 5,
+              'range-primary': position.precision < 5,
               'range-warning': position.precision >= 5,
             })}
             step={1}

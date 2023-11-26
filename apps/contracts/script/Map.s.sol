@@ -19,9 +19,7 @@ contract MapScript is BaseScript {
     function deployMapLocal() public setEnvDeploy(Cycle.Local) {
         _deploymentChains.push(DeployementChain.Anvil);
 
-        (Map map, address state) = _deployMap(_deploymentChains);
-
-        _deployTestTravelers(map, state);
+        _deployMap(_deploymentChains);
     }
 
     function deployMapTestnets() public setEnvDeploy(Cycle.Testnet) {
@@ -59,31 +57,5 @@ contract MapScript is BaseScript {
 
         _saveImplementations(address(map), "Map");
         _saveImplementations(state, "StateTile");
-    }
-
-    function _deployTestTravelers(
-        Map map,
-        address state
-    ) internal broadcastForLocalTestData {
-        (, address sender, ) = vm.readCallers();
-
-        string[] memory geohashes = new string[](5);
-
-        geohashes[0] = "sp";
-        geohashes[1] = "s0";
-        geohashes[2] = "gbr";
-        geohashes[3] = "uo";
-        geohashes[4] = "u2";
-
-        map.move(
-            sender,
-            state,
-            geohashes[random() % geohashes.length],
-            abi.encodePacked("Hello World!")
-        );
-    }
-
-    function random() private view returns (uint256) {
-        return uint(keccak256(abi.encodePacked(block.prevrandao)));
     }
 }
