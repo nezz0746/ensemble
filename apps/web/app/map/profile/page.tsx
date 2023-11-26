@@ -35,7 +35,7 @@ const Home: NextPage = () => {
           },
           {
             name:
-              'Local Records' +
+              'Local Accounts' +
               (agent?.records.length ? ` (${agent?.records.length})` : ''),
             content: (
               <div className="grid grid-cols-2 gap-2 mt-2 w-full overflow-scroll">
@@ -46,10 +46,12 @@ const Home: NextPage = () => {
                         flyToGeohash(geohash)
                       }}
                       key={geohash}
-                      className="border border-primary bg-neutral p-2 hover:bg-primary hover:cursor-pointer hover:text-neutral hover:border-black select-none"
+                      className="bg-base-300 p-2 text-base-content rounded-md hover:bg-primary hover:cursor-pointer hover:text-primary-content hover:border-black select-none"
                     >
-                      <p className="font-bold">{geohash}</p>
-                      <p>{truncateAddress(id, 6)}</p>
+                      <p className="font-bold text-lg font-sans-display">
+                        {geohash}
+                      </p>
+                      <p className="font-thin">{truncateAddress(id, 6)}</p>
                     </div>
                   )
                 })}

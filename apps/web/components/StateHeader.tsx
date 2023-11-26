@@ -20,7 +20,7 @@ const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between flex-row">
           <div>
-            <p className="text-xl font-bold">
+            <p className="text-xl font-sans-display font-bold ">
               {currentNetworkState?.metadata?.name}
             </p>
             <p className="font-thin">

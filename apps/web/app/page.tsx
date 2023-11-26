@@ -1,6 +1,5 @@
 'use client'
 
-import { content } from '@/services/content'
 import Link from 'next/link'
 import Image from 'next/image'
 import ConnectButton from '@/components/ConnectButton'
@@ -28,10 +27,15 @@ const Page = () => {
             {/* INSTATE PROTOCOL */}
             <div className="w-full h-full flex flex-col justify-center items-center bg-base-100 rounded-lg">
               <div className=" flex flex-col gap-10">
-                <h1 className="text-6xl">Instate Protocol</h1>
+                <h1 className="text-6xl font-sans-display font-bold">
+                  Instate Protocol
+                </h1>
+                <h2 className="font-sans">
+                  Build with local accounts or our network state toolbox{' '}
+                </h2>
                 <div className="flex flex-row gap-2 justify-between">
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary flex-grow"
                     onClick={() => {
                       linkTo(githubLink)
                     }}
@@ -45,7 +49,7 @@ const Page = () => {
                     Github
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary flex-grow"
                     onClick={() => {
                       linkTo(notionDocLink)
                     }}
@@ -59,7 +63,7 @@ const Page = () => {
                     Docs
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary flex-grow"
                     onClick={() => {
                       linkTo(telegramLink)
                     }}
@@ -79,7 +83,10 @@ const Page = () => {
           <div className="w-1/2">
             <div className="w-full h-full flex flex-col justify-center items-center bg-base-300 rounded-lg">
               <div className=" flex flex-col gap-10">
-                <h1 className="text-6xl">🌐 InstateScan</h1>
+                <h1 className="text-6xl font-sans-mono">🌐 InstateScan</h1>
+                <h2 className="font-sans">
+                  Manage your local accounts & browse existing network states
+                </h2>
                 <Link href={'/map'}>
                   <button className="btn btn-secondary w-full">
                     Launch App
