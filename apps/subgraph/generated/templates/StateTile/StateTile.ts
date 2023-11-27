@@ -36,6 +36,24 @@ export class ApprovalForAll__Params {
   }
 }
 
+export class Initialized extends ethereum.Event {
+  get params(): Initialized__Params {
+    return new Initialized__Params(this);
+  }
+}
+
+export class Initialized__Params {
+  _event: Initialized;
+
+  constructor(event: Initialized) {
+    this._event = event;
+  }
+
+  get version(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+}
+
 export class StateMove extends ethereum.Event {
   get params(): StateMove__Params {
     return new StateMove__Params(this);
@@ -366,6 +384,32 @@ export class ConstructorCall__Inputs {
   constructor(call: ConstructorCall) {
     this._call = call;
   }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+}
+
+export class InitializeCall extends ethereum.Call {
+  get inputs(): InitializeCall__Inputs {
+    return new InitializeCall__Inputs(this);
+  }
+
+  get outputs(): InitializeCall__Outputs {
+    return new InitializeCall__Outputs(this);
+  }
+}
+
+export class InitializeCall__Inputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
 
   get _map(): Address {
     return this._call.inputValues[0].value.toAddress();
@@ -380,10 +424,10 @@ export class ConstructorCall__Inputs {
   }
 }
 
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
+export class InitializeCall__Outputs {
+  _call: InitializeCall;
 
-  constructor(call: ConstructorCall) {
+  constructor(call: InitializeCall) {
     this._call = call;
   }
 }

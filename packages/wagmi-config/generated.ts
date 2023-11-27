@@ -104,7 +104,7 @@ export const accountProxyABI = [
  */
 export const accountProxyAddress = {
   5: '0x55266d75D1a14E4572138116aF39863Ed6596E7F',
-  1337: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0',
+  1337: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
 } as const
 
 /**
@@ -324,7 +324,7 @@ export const erc6551RegistryABI = [
  */
 export const erc6551RegistryAddress = {
   5: '0x000000006551c19487814612e58FE06813775758',
-  1337: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6',
+  1337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 } as const
 
 /**
@@ -586,25 +586,48 @@ export const ierc6551RegistryABI = [
  * -
  */
 export const mapABI = [
+  { stateMutability: 'nonpayable', type: 'constructor', inputs: [] },
+  { type: 'error', inputs: [], name: 'accountNotSender' },
   {
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    type: 'event',
+    anonymous: false,
     inputs: [
       {
-        name: 'recordTileConfiguration',
-        internalType: 'struct RecordTileFactoryConfig',
-        type: 'tuple',
-        components: [
-          { name: 'registry', internalType: 'address', type: 'address' },
-          { name: 'accountProxy', internalType: 'address', type: 'address' },
-          { name: 'implementation', internalType: 'address', type: 'address' },
-        ],
+        name: 'previousAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
       },
-      { name: 'minPrecision', internalType: 'uint256', type: 'uint256' },
-      { name: 'maxPrecision', internalType: 'uint256', type: 'uint256' },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
     ],
+    name: 'AdminChanged',
   },
-  { type: 'error', inputs: [], name: 'accountNotSender' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'beacon',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'BeaconUpgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
+  },
   {
     type: 'event',
     anonymous: false,
@@ -753,6 +776,19 @@ export const mapABI = [
     name: 'TileCreated',
   },
   {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  {
     stateMutability: 'view',
     type: 'function',
     inputs: [],
@@ -826,6 +862,56 @@ export const mapABI = [
     stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
+      { name: 'stateBeacon', internalType: 'address', type: 'address' },
+      {
+        name: 'recordTileConfiguration',
+        internalType: 'struct RecordTileFactoryConfig',
+        type: 'tuple',
+        components: [
+          { name: 'registry', internalType: 'address', type: 'address' },
+          { name: 'accountProxy', internalType: 'address', type: 'address' },
+          { name: 'implementation', internalType: 'address', type: 'address' },
+        ],
+      },
+      { name: 'minPrecision', internalType: 'uint256', type: 'uint256' },
+      { name: 'maxPrecision', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'initialize',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'registry', internalType: 'address', type: 'address' },
+      { name: 'accountProxy', internalType: 'address', type: 'address' },
+      { name: 'implementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'initializeERC6551AccountCreator',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      {
+        name: 'config',
+        internalType: 'struct RecordTileFactoryConfig',
+        type: 'tuple',
+        components: [
+          { name: 'registry', internalType: 'address', type: 'address' },
+          { name: 'accountProxy', internalType: 'address', type: 'address' },
+          { name: 'implementation', internalType: 'address', type: 'address' },
+        ],
+      },
+    ],
+    name: 'initializeRecordTileFactory',
+    outputs: [],
+  },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
       { name: 'account', internalType: 'address', type: 'address' },
       { name: 'state', internalType: 'address', type: 'address' },
       { name: 'geohash', internalType: 'string', type: 'string' },
@@ -833,6 +919,13 @@ export const mapABI = [
     ],
     name: 'move',
     outputs: [],
+  },
+  {
+    stateMutability: 'view',
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
   },
   {
     stateMutability: 'nonpayable',
@@ -861,6 +954,25 @@ export const mapABI = [
     name: 'supportsInterface',
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
   },
+  {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'upgradeTo',
+    outputs: [],
+  },
+  {
+    stateMutability: 'payable',
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+  },
 ] as const
 
 /**
@@ -869,7 +981,7 @@ export const mapABI = [
  */
 export const mapAddress = {
   5: '0x1445d43166093BA59309bdA39974161531E3285d',
-  1337: '0x9A676e781A523b5d0C0e43731313A708CB607508',
+  1337: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318',
 } as const
 
 /**
@@ -887,15 +999,7 @@ export const mapConfig = { address: mapAddress, abi: mapABI } as const
  * -
  */
 export const stateTileABI = [
-  {
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-    inputs: [
-      { name: '_map', internalType: 'address', type: 'address' },
-      { name: '_verifier', internalType: 'address', type: 'address' },
-      { name: '_baseURI', internalType: 'string', type: 'string' },
-    ],
-  },
+  { stateMutability: 'nonpayable', type: 'constructor', inputs: [] },
   { type: 'error', inputs: [], name: 'accountNotSender' },
   { type: 'error', inputs: [], name: 'movingToSameLocation' },
   { type: 'error', inputs: [], name: 'nonTransferable' },
@@ -918,6 +1022,14 @@ export const stateTileABI = [
       { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
     ],
     name: 'ApprovalForAll',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
   },
   {
     type: 'event',
@@ -1036,6 +1148,17 @@ export const stateTileABI = [
     outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
   },
   {
+    stateMutability: 'nonpayable',
+    type: 'function',
+    inputs: [
+      { name: '_map', internalType: 'address', type: 'address' },
+      { name: '_verifier', internalType: 'address', type: 'address' },
+      { name: '_baseURI', internalType: 'string', type: 'string' },
+    ],
+    name: 'initialize',
+    outputs: [],
+  },
+  {
     stateMutability: 'view',
     type: 'function',
     inputs: [
@@ -1134,7 +1257,7 @@ export const stateTileABI = [
  */
 export const stateTileAddress = {
   5: '0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf',
-  1337: '0x8755F7CaC3f1314f3ecCFdff53573E3a85b51d30',
+  1337: '0x8aCd85898458400f7Db866d53FCFF6f0D49741FF',
 } as const
 
 /**
@@ -2869,6 +2992,32 @@ export function useMapHasRole<
 }
 
 /**
+ * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"proxiableUUID"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapProxiableUuid<
+  TFunctionName extends 'proxiableUUID',
+  TSelectData = ReadContractResult<typeof mapABI, TFunctionName>,
+>(
+  config: Omit<
+    UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractRead({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'proxiableUUID',
+    ...config,
+  } as UseContractReadConfig<typeof mapABI, TFunctionName, TSelectData>)
+}
+
+/**
  * Wraps __{@link useContractRead}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"supportsInterface"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
@@ -3006,6 +3155,137 @@ export function useMapGrantRole<
 }
 
 /**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initialize"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapInitialize<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'initialize'
+        >['request']['abi'],
+        'initialize',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'initialize' }
+    : UseContractWriteConfig<typeof mapABI, 'initialize', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'initialize'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'initialize', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initialize',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initializeERC6551AccountCreator"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapInitializeErc6551AccountCreator<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'initializeERC6551AccountCreator'
+        >['request']['abi'],
+        'initializeERC6551AccountCreator',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'initializeERC6551AccountCreator'
+      }
+    : UseContractWriteConfig<
+        typeof mapABI,
+        'initializeERC6551AccountCreator',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'initializeERC6551AccountCreator'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<
+    typeof mapABI,
+    'initializeERC6551AccountCreator',
+    TMode
+  >({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initializeERC6551AccountCreator',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initializeRecordTileFactory"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapInitializeRecordTileFactory<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'initializeRecordTileFactory'
+        >['request']['abi'],
+        'initializeRecordTileFactory',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'initializeRecordTileFactory'
+      }
+    : UseContractWriteConfig<
+        typeof mapABI,
+        'initializeRecordTileFactory',
+        TMode
+      > & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'initializeRecordTileFactory'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'initializeRecordTileFactory', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initializeRecordTileFactory',
+    ...config,
+  } as any)
+}
+
+/**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"move"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
@@ -3118,6 +3398,84 @@ export function useMapRevokeRole<
 }
 
 /**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"upgradeTo"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapUpgradeTo<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'upgradeTo'
+        >['request']['abi'],
+        'upgradeTo',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'upgradeTo' }
+    : UseContractWriteConfig<typeof mapABI, 'upgradeTo', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'upgradeTo'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'upgradeTo', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'upgradeTo',
+    ...config,
+  } as any)
+}
+
+/**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"upgradeToAndCall"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapUpgradeToAndCall<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof mapAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof mapABI,
+          'upgradeToAndCall'
+        >['request']['abi'],
+        'upgradeToAndCall',
+        TMode
+      > & {
+        address?: Address
+        chainId?: TChainId
+        functionName?: 'upgradeToAndCall'
+      }
+    : UseContractWriteConfig<typeof mapABI, 'upgradeToAndCall', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'upgradeToAndCall'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof mapABI, 'upgradeToAndCall', TMode>({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'upgradeToAndCall',
+    ...config,
+  } as any)
+}
+
+/**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
@@ -3183,6 +3541,84 @@ export function usePrepareMapGrantRole(
     functionName: 'grantRole',
     ...config,
   } as UsePrepareContractWriteConfig<typeof mapABI, 'grantRole'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initialize"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function usePrepareMapInitialize(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'initialize'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initialize',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'initialize'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initializeERC6551AccountCreator"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function usePrepareMapInitializeErc6551AccountCreator(
+  config: Omit<
+    UsePrepareContractWriteConfig<
+      typeof mapABI,
+      'initializeERC6551AccountCreator'
+    >,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initializeERC6551AccountCreator',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof mapABI,
+    'initializeERC6551AccountCreator'
+  >)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"initializeRecordTileFactory"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function usePrepareMapInitializeRecordTileFactory(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'initializeRecordTileFactory'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'initializeRecordTileFactory',
+    ...config,
+  } as UsePrepareContractWriteConfig<
+    typeof mapABI,
+    'initializeRecordTileFactory'
+  >)
 }
 
 /**
@@ -3255,6 +3691,52 @@ export function usePrepareMapRevokeRole(
 }
 
 /**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"upgradeTo"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function usePrepareMapUpgradeTo(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'upgradeTo'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'upgradeTo',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'upgradeTo'>)
+}
+
+/**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link mapABI}__ and `functionName` set to `"upgradeToAndCall"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function usePrepareMapUpgradeToAndCall(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof mapABI, 'upgradeToAndCall'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    functionName: 'upgradeToAndCall',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof mapABI, 'upgradeToAndCall'>)
+}
+
+/**
  * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
@@ -3274,6 +3756,75 @@ export function useMapEvent<TEventName extends string>(
     address: mapAddress[chainId as keyof typeof mapAddress],
     ...config,
   } as UseContractEventConfig<typeof mapABI, TEventName>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"AdminChanged"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapAdminChangedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'AdminChanged'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'AdminChanged',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'AdminChanged'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"BeaconUpgraded"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapBeaconUpgradedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'BeaconUpgraded'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'BeaconUpgraded',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'BeaconUpgraded'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"Initialized"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapInitializedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'Initialized'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'Initialized',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'Initialized'>)
 }
 
 /**
@@ -3412,6 +3963,29 @@ export function useMapTileCreatedEvent(
     eventName: 'TileCreated',
     ...config,
   } as UseContractEventConfig<typeof mapABI, 'TileCreated'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link mapABI}__ and `eventName` set to `"Upgraded"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1445d43166093BA59309bdA39974161531E3285d)
+ * -
+ */
+export function useMapUpgradedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof mapABI, 'Upgraded'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof mapAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: mapABI,
+    address: mapAddress[chainId as keyof typeof mapAddress],
+    eventName: 'Upgraded',
+    ...config,
+  } as UseContractEventConfig<typeof mapABI, 'Upgraded'>)
 }
 
 /**
@@ -3684,6 +4258,43 @@ export function useStateTileWrite<
 }
 
 /**
+ * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"initialize"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf)
+ * -
+ */
+export function useStateTileInitialize<
+  TMode extends WriteContractMode = undefined,
+  TChainId extends number = keyof typeof stateTileAddress,
+>(
+  config: TMode extends 'prepared'
+    ? UseContractWriteConfig<
+        PrepareWriteContractResult<
+          typeof stateTileABI,
+          'initialize'
+        >['request']['abi'],
+        'initialize',
+        TMode
+      > & { address?: Address; chainId?: TChainId; functionName?: 'initialize' }
+    : UseContractWriteConfig<typeof stateTileABI, 'initialize', TMode> & {
+        abi?: never
+        address?: never
+        chainId?: TChainId
+        functionName?: 'initialize'
+      } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractWrite<typeof stateTileABI, 'initialize', TMode>({
+    abi: stateTileABI,
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
+    functionName: 'initialize',
+    ...config,
+  } as any)
+}
+
+/**
  * Wraps __{@link useContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf)
@@ -3874,6 +4485,29 @@ export function usePrepareStateTileWrite<TFunctionName extends string>(
 }
 
 /**
+ * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"initialize"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf)
+ * -
+ */
+export function usePrepareStateTileInitialize(
+  config: Omit<
+    UsePrepareContractWriteConfig<typeof stateTileABI, 'initialize'>,
+    'abi' | 'address' | 'functionName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return usePrepareContractWrite({
+    abi: stateTileABI,
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
+    functionName: 'initialize',
+    ...config,
+  } as UsePrepareContractWriteConfig<typeof stateTileABI, 'initialize'>)
+}
+
+/**
  * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link stateTileABI}__ and `functionName` set to `"move"`.
  *
  * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf)
@@ -4011,6 +4645,29 @@ export function useStateTileApprovalForAllEvent(
     eventName: 'ApprovalForAll',
     ...config,
   } as UseContractEventConfig<typeof stateTileABI, 'ApprovalForAll'>)
+}
+
+/**
+ * Wraps __{@link useContractEvent}__ with `abi` set to __{@link stateTileABI}__ and `eventName` set to `"Initialized"`.
+ *
+ * - [__View Contract on Goerli Etherscan__](https://goerli.etherscan.io/address/0x1c96f4765b0A0e28B843714328B8d0DFfE28fACf)
+ * -
+ */
+export function useStateTileInitializedEvent(
+  config: Omit<
+    UseContractEventConfig<typeof stateTileABI, 'Initialized'>,
+    'abi' | 'address' | 'eventName'
+  > & { chainId?: keyof typeof stateTileAddress } = {} as any,
+) {
+  const { chain } = useNetwork()
+  const defaultChainId = useChainId()
+  const chainId = config.chainId ?? chain?.id ?? defaultChainId
+  return useContractEvent({
+    abi: stateTileABI,
+    address: stateTileAddress[chainId as keyof typeof stateTileAddress],
+    eventName: 'Initialized',
+    ...config,
+  } as UseContractEventConfig<typeof stateTileABI, 'Initialized'>)
 }
 
 /**

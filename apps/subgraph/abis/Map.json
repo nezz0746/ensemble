@@ -2,45 +2,57 @@
   {
     "stateMutability": "nonpayable",
     "type": "constructor",
-    "inputs": [
-      {
-        "name": "recordTileConfiguration",
-        "internalType": "struct RecordTileFactoryConfig",
-        "type": "tuple",
-        "components": [
-          {
-            "name": "registry",
-            "internalType": "address",
-            "type": "address"
-          },
-          {
-            "name": "accountProxy",
-            "internalType": "address",
-            "type": "address"
-          },
-          {
-            "name": "implementation",
-            "internalType": "address",
-            "type": "address"
-          }
-        ]
-      },
-      {
-        "name": "minPrecision",
-        "internalType": "uint256",
-        "type": "uint256"
-      },
-      {
-        "name": "maxPrecision",
-        "internalType": "uint256",
-        "type": "uint256"
-      }
-    ]
+    "inputs": []
   },
   {
     "type": "error",
     "inputs": [],
     "name": "accountNotSender"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "previousAdmin",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "newAdmin",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      }
+    ],
+    "name": "AdminChanged"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "beacon",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "BeaconUpgraded"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "version",
+        "internalType": "uint8",
+        "type": "uint8",
+        "indexed": false
+      }
+    ],
+    "name": "Initialized"
   },
   {
     "type": "event",
@@ -205,6 +217,19 @@
     "name": "TileCreated"
   },
   {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "implementation",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "Upgraded"
+  },
+  {
     "stateMutability": "view",
     "type": "function",
     "inputs": [],
@@ -363,6 +388,104 @@
     "type": "function",
     "inputs": [
       {
+        "name": "stateBeacon",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "recordTileConfiguration",
+        "internalType": "struct RecordTileFactoryConfig",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "registry",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "accountProxy",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "implementation",
+            "internalType": "address",
+            "type": "address"
+          }
+        ]
+      },
+      {
+        "name": "minPrecision",
+        "internalType": "uint256",
+        "type": "uint256"
+      },
+      {
+        "name": "maxPrecision",
+        "internalType": "uint256",
+        "type": "uint256"
+      }
+    ],
+    "name": "initialize",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "registry",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "accountProxy",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "implementation",
+        "internalType": "address",
+        "type": "address"
+      }
+    ],
+    "name": "initializeERC6551AccountCreator",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "config",
+        "internalType": "struct RecordTileFactoryConfig",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "registry",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "accountProxy",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "implementation",
+            "internalType": "address",
+            "type": "address"
+          }
+        ]
+      }
+    ],
+    "name": "initializeRecordTileFactory",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
         "name": "account",
         "internalType": "address",
         "type": "address"
@@ -385,6 +508,19 @@
     ],
     "name": "move",
     "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "proxiableUUID",
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "bytes32",
+        "type": "bytes32"
+      }
+    ]
   },
   {
     "stateMutability": "nonpayable",
@@ -440,5 +576,36 @@
         "type": "bool"
       }
     ]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newImplementation",
+        "internalType": "address",
+        "type": "address"
+      }
+    ],
+    "name": "upgradeTo",
+    "outputs": []
+  },
+  {
+    "stateMutability": "payable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newImplementation",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "data",
+        "internalType": "bytes",
+        "type": "bytes"
+      }
+    ],
+    "name": "upgradeToAndCall",
+    "outputs": []
   }
 ]
