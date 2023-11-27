@@ -16,15 +16,15 @@ struct RecordTileFactoryConfig {
 }
 
 contract RecordTileFactory is ERC6551AccountCreator {
-    constructor(
+    function __RecordTileFactory__init(
         RecordTileFactoryConfig memory config
-    )
-        ERC6551AccountCreator(
+    ) public initializer {
+        __ERC6551AccountCreator__init(
             config.registry,
             config.accountProxy,
             config.implementation
-        )
-    {}
+        );
+    }
 
     event LocalRecordTokenDeployed(
         address indexed tileAddress,

@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import {StateTile} from "./StateTile.sol";
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
+import {BeaconProxy} from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 
 contract StateTileFactory {
     event TileCreated(
@@ -13,16 +14,20 @@ contract StateTileFactory {
     );
 
     function _createNewState(
+        address stateBeacon,
         address map,
         address verifier,
         string memory baseURI
     ) internal returns (address stateAddress) {
-        stateAddress = Create2.deploy(
-            0,
-            bytes32(""),
-            abi.encodePacked(
-                type(StateTile).creationCode,
-                abi.encode(map, verifier, baseURI)
+        stateAddress = address(
+            new BeaconProxy(
+                stateBeacon,
+                abi.encodeWithSelector(
+                    StateTile.initialize.selector,
+                    map,
+                    verifier,
+                    baseURI
+                )
             )
         );
 

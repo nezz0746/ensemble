@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.20;
 
-import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {GeohashLogic} from "./GeohashLogic.sol";
 import {IStateTileVerifier} from "./interfaces/IStateTileVerifier.sol";
+import {ERC1155Upgradeable} from "@openzeppelin-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 
-contract StateTile is ERC1155 {
+contract StateTile is ERC1155Upgradeable {
     address public map;
 
     IStateTileVerifier public verifier;
@@ -23,11 +23,16 @@ contract StateTile is ERC1155 {
     error movingToSameLocation();
     error nonTransferable();
 
-    constructor(
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(
         address _map,
         address _verifier,
         string memory _baseURI
-    ) ERC1155(_baseURI) {
+    ) public initializer {
+        __ERC1155_init(_baseURI);
         verifier = IStateTileVerifier(_verifier);
         map = _map;
     }
@@ -86,11 +91,5 @@ contract StateTile is ERC1155 {
     ) internal virtual override {
         //
         if (from != address(0) && to != address(0)) revert nonTransferable();
-    }
-
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC1155) returns (bool) {
-        return super.supportsInterface(interfaceId);
     }
 }

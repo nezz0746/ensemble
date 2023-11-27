@@ -3,17 +3,18 @@ pragma solidity ^0.8.20;
 
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {AccountProxy} from "tokenbound/AccountProxy.sol";
+import {Initializable} from "@openzeppelin-upgradeable/proxy/utils/Initializable.sol";
 
-contract ERC6551AccountCreator {
+contract ERC6551AccountCreator is Initializable {
     ERC6551Registry internal _registry;
     address internal _implementation;
     address internal _accountProxy;
 
-    constructor(
+    function __ERC6551AccountCreator__init(
         address registry,
         address accountProxy,
         address implementation
-    ) {
+    ) public initializer {
         _registry = ERC6551Registry(registry);
         _accountProxy = accountProxy;
         _implementation = implementation;

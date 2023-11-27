@@ -2,23 +2,7 @@
   {
     "stateMutability": "nonpayable",
     "type": "constructor",
-    "inputs": [
-      {
-        "name": "_map",
-        "internalType": "address",
-        "type": "address"
-      },
-      {
-        "name": "_verifier",
-        "internalType": "address",
-        "type": "address"
-      },
-      {
-        "name": "_baseURI",
-        "internalType": "string",
-        "type": "string"
-      }
-    ]
+    "inputs": []
   },
   {
     "type": "error",
@@ -59,6 +43,19 @@
       }
     ],
     "name": "ApprovalForAll"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "version",
+        "internalType": "uint8",
+        "type": "uint8",
+        "indexed": false
+      }
+    ],
+    "name": "Initialized"
   },
   {
     "type": "event",
@@ -250,6 +247,29 @@
         "type": "uint256[]"
       }
     ]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_map",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "_verifier",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "_baseURI",
+        "internalType": "string",
+        "type": "string"
+      }
+    ],
+    "name": "initialize",
+    "outputs": []
   },
   {
     "stateMutability": "view",

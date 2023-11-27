@@ -1,20 +1,15 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import {MapBaseTest, console2} from "./MapBaseTest.t.sol";
+import {MapBaseTest, Map, console2, RecordTileFactoryConfig} from "./MapBaseTest.t.sol";
 import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
 import {StateTile, GeohashLogic} from "../src/StateTile.sol";
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {AccountV3} from "tokenbound/AccountV3.sol";
 import {NestedAccountExecutor} from "tokenbound/abstract/execution/NestedAccountExecutor.sol";
-
-contract MockLocalToken is ERC721 {
-    constructor() ERC721("LOCAL", "MOCK_LOCAL_TOKEN") {}
-
-    function mint(address account, uint256 tokenId) external {
-        _safeMint(account, tokenId);
-    }
-}
+import {MockLocalToken} from "./mocks/MockLocalToken.sol";
+import {MapV2} from "./mocks/MapV2.t.sol";
+import {StateTileV2} from "./mocks/StateTileV2.t.sol";
+import {BeaconProxy} from "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 
 contract MapTest is MapBaseTest {
     address miner = label("miner");
@@ -76,5 +71,44 @@ contract MapTest is MapBaseTest {
         );
 
         assertEq(localRecord.owner(), user);
+    }
+
+    function testUpgradeMap() public {
+        MapV2 mapV2 = new MapV2();
+
+        // No upgrade
+        vm.expectRevert();
+        MapV2(address(map)).isV2();
+
+        vm.prank(vm.addr(69));
+        vm.expectRevert();
+        // Not admin
+        map.upgradeTo(address(mapV2));
+
+        // Admin
+        map.upgradeTo(address(mapV2));
+
+        assertEq(MapV2(address(map)).isV2(), true);
+    }
+
+    function testUpgradeStateBeacon() public {
+        StateTile state = StateTile(stateAddress);
+
+        StateTileV2 stateTileV2Implementation = new StateTileV2();
+
+        // No upgrade
+        vm.expectRevert();
+        StateTileV2(address(state)).isV2();
+
+        vm.prank(vm.addr(69));
+        vm.expectRevert();
+        // Not admin
+        stateBeacon.upgradeTo(address(stateTileV2Implementation));
+
+        // Admin
+        stateBeacon.upgradeTo(address(stateTileV2Implementation));
+
+        assertEq(StateTileV2(address(state)).isV2(), true);
+        assertEq(StateTileV2(address(state)).map(), address(map));
     }
 }
