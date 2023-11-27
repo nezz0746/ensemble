@@ -7,6 +7,8 @@ import {Map} from "../src/Map.sol";
 import {StateTile} from "../src/StateTile.sol";
 import {RecordTileFactoryConfig} from "../src/RecordTileFactory.sol";
 import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
+import {UUPSProxy} from "../src/UUPSProxy.sol";
+import {StateBeacon} from "../src/StateBeacon.sol";
 
 contract MapScript is BaseScript {
     DeployementChain[] internal _deploymentChains;
@@ -33,21 +35,31 @@ contract MapScript is BaseScript {
     ) internal broadcastOn(targetChains) returns (Map map, address state) {
         _deployERC6551Config();
 
-        (, address sender, ) = vm.readCallers();
-
-        console2.log("Sender: ", sender);
-        console2.log("Deploying Map contract");
-
         NoCheckVerifier verifier = new NoCheckVerifier();
 
-        map = new Map(
-            RecordTileFactoryConfig(
-                address(registry),
-                address(accountProxy),
-                address(implementation)
-            ),
-            2,
-            6
+        address stateTileImplementation = address(new StateTile());
+
+        StateBeacon stateBeacon = new StateBeacon(stateTileImplementation);
+
+        address mapImplementation = address(new Map());
+
+        map = Map(
+            address(
+                new UUPSProxy(
+                    mapImplementation,
+                    abi.encodeWithSelector(
+                        Map.initialize.selector,
+                        address(stateBeacon),
+                        RecordTileFactoryConfig(
+                            address(registry),
+                            address(accountProxy),
+                            address(implementation)
+                        ),
+                        2,
+                        6
+                    )
+                )
+            )
         );
 
         state = map.createState(

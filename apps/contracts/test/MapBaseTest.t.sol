@@ -14,6 +14,8 @@ import {RecordTileFactoryConfig} from "../src/RecordTileFactory.sol";
 import {StateTile} from "../src/StateTile.sol";
 import {IStateTileVerifier} from "../src/interfaces/IStateTileVerifier.sol";
 import {NoCheckVerifier} from "../src/verifiers/NoCheckVerifier.sol";
+import {UUPSProxy} from "../src/UUPSProxy.sol";
+import {StateBeacon} from "../src/StateBeacon.sol";
 
 contract MapBaseTest is DSTestFull {
     ERC6551Registry registry;
@@ -24,6 +26,7 @@ contract MapBaseTest is DSTestFull {
     AccountV3Upgradable upgradableImplementation;
     Map map;
     address state;
+    StateBeacon stateBeacon;
 
     constructor() {
         registry = new ERC6551Registry();
@@ -41,7 +44,7 @@ contract MapBaseTest is DSTestFull {
             address(implementation)
         );
 
-        map = new Map(
+        _deployMap(
             RecordTileFactoryConfig(
                 address(registry),
                 address(accountProxy),
@@ -54,5 +57,32 @@ contract MapBaseTest is DSTestFull {
         NoCheckVerifier verifier = new NoCheckVerifier();
 
         state = map.createState(address(verifier), "");
+    }
+
+    function _deployMap(
+        RecordTileFactoryConfig memory config,
+        uint256 min,
+        uint256 max
+    ) internal {
+        address stateTileImplementation = address(new StateTile());
+
+        stateBeacon = new StateBeacon(stateTileImplementation);
+
+        address mapImplementation = address(new Map());
+
+        map = Map(
+            address(
+                new UUPSProxy(
+                    mapImplementation,
+                    abi.encodeWithSelector(
+                        Map.initialize.selector,
+                        stateBeacon,
+                        config,
+                        min,
+                        max
+                    )
+                )
+            )
+        );
     }
 }
