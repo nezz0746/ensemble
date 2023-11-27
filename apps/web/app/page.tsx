@@ -11,7 +11,7 @@ const Page = () => {
   }
   return (
     <>
-      <div className="p-3 flex flex-col">
+      <div className="p-3 flex-col hidden md:flex">
         <nav className="navbar z-10 bg-white bg-opacity-30">
           <div className="bg-opacity-100 flex flex-row justify-between w-full">
             <Link href={'/'}>
@@ -23,8 +23,8 @@ const Page = () => {
           </div>
         </nav>
       </div>
-      <div className="bg-transparent flex flex-col text-center min-h-[90vh] p-3 md:p-4">
-        <div className="relative flex-grow flex flex-row gap-4 mb-4">
+      <div className="bg-transparent flex flex-col text-center min-h-[100vh] md:min-h-[90vh] p-3 md:p-4">
+        <div className="relative flex-grow flex flex-row gap-4 md:mb-4">
           <div className="w-full md:w-1/2">
             {/* INSTATE PROTOCOL */}
             <div className="w-full h-full p-4 flex flex-col justify-center items-center bg-base-100 rounded-lg">
