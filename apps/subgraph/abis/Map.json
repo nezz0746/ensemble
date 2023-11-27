@@ -256,6 +256,59 @@
     ]
   },
   {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "registry",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "accountProxy",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "implementation",
+        "internalType": "address",
+        "type": "address"
+      }
+    ],
+    "name": "__ERC6551AccountCreator__init",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "config",
+        "internalType": "struct RecordTileFactoryConfig",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "registry",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "accountProxy",
+            "internalType": "address",
+            "type": "address"
+          },
+          {
+            "name": "implementation",
+            "internalType": "address",
+            "type": "address"
+          }
+        ]
+      }
+    ],
+    "name": "__RecordTileFactory__init",
+    "outputs": []
+  },
+  {
     "stateMutability": "view",
     "type": "function",
     "inputs": [
@@ -426,59 +479,6 @@
       }
     ],
     "name": "initialize",
-    "outputs": []
-  },
-  {
-    "stateMutability": "nonpayable",
-    "type": "function",
-    "inputs": [
-      {
-        "name": "registry",
-        "internalType": "address",
-        "type": "address"
-      },
-      {
-        "name": "accountProxy",
-        "internalType": "address",
-        "type": "address"
-      },
-      {
-        "name": "implementation",
-        "internalType": "address",
-        "type": "address"
-      }
-    ],
-    "name": "initializeERC6551AccountCreator",
-    "outputs": []
-  },
-  {
-    "stateMutability": "nonpayable",
-    "type": "function",
-    "inputs": [
-      {
-        "name": "config",
-        "internalType": "struct RecordTileFactoryConfig",
-        "type": "tuple",
-        "components": [
-          {
-            "name": "registry",
-            "internalType": "address",
-            "type": "address"
-          },
-          {
-            "name": "accountProxy",
-            "internalType": "address",
-            "type": "address"
-          },
-          {
-            "name": "implementation",
-            "internalType": "address",
-            "type": "address"
-          }
-        ]
-      }
-    ],
-    "name": "initializeRecordTileFactory",
     "outputs": []
   },
   {

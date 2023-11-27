@@ -479,6 +479,90 @@ export class ConstructorCall__Outputs {
   }
 }
 
+export class __ERC6551AccountCreator__initCall extends ethereum.Call {
+  get inputs(): __ERC6551AccountCreator__initCall__Inputs {
+    return new __ERC6551AccountCreator__initCall__Inputs(this);
+  }
+
+  get outputs(): __ERC6551AccountCreator__initCall__Outputs {
+    return new __ERC6551AccountCreator__initCall__Outputs(this);
+  }
+}
+
+export class __ERC6551AccountCreator__initCall__Inputs {
+  _call: __ERC6551AccountCreator__initCall;
+
+  constructor(call: __ERC6551AccountCreator__initCall) {
+    this._call = call;
+  }
+
+  get registry(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get accountProxy(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get implementation(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class __ERC6551AccountCreator__initCall__Outputs {
+  _call: __ERC6551AccountCreator__initCall;
+
+  constructor(call: __ERC6551AccountCreator__initCall) {
+    this._call = call;
+  }
+}
+
+export class __RecordTileFactory__initCall extends ethereum.Call {
+  get inputs(): __RecordTileFactory__initCall__Inputs {
+    return new __RecordTileFactory__initCall__Inputs(this);
+  }
+
+  get outputs(): __RecordTileFactory__initCall__Outputs {
+    return new __RecordTileFactory__initCall__Outputs(this);
+  }
+}
+
+export class __RecordTileFactory__initCall__Inputs {
+  _call: __RecordTileFactory__initCall;
+
+  constructor(call: __RecordTileFactory__initCall) {
+    this._call = call;
+  }
+
+  get config(): __RecordTileFactory__initCallConfigStruct {
+    return changetype<__RecordTileFactory__initCallConfigStruct>(
+      this._call.inputValues[0].value.toTuple()
+    );
+  }
+}
+
+export class __RecordTileFactory__initCall__Outputs {
+  _call: __RecordTileFactory__initCall;
+
+  constructor(call: __RecordTileFactory__initCall) {
+    this._call = call;
+  }
+}
+
+export class __RecordTileFactory__initCallConfigStruct extends ethereum.Tuple {
+  get registry(): Address {
+    return this[0].toAddress();
+  }
+
+  get accountProxy(): Address {
+    return this[1].toAddress();
+  }
+
+  get implementation(): Address {
+    return this[2].toAddress();
+  }
+}
+
 export class CreateStateCall extends ethereum.Call {
   get inputs(): CreateStateCall__Inputs {
     return new CreateStateCall__Inputs(this);
@@ -596,90 +680,6 @@ export class InitializeCall__Outputs {
 }
 
 export class InitializeCallRecordTileConfigurationStruct extends ethereum.Tuple {
-  get registry(): Address {
-    return this[0].toAddress();
-  }
-
-  get accountProxy(): Address {
-    return this[1].toAddress();
-  }
-
-  get implementation(): Address {
-    return this[2].toAddress();
-  }
-}
-
-export class InitializeERC6551AccountCreatorCall extends ethereum.Call {
-  get inputs(): InitializeERC6551AccountCreatorCall__Inputs {
-    return new InitializeERC6551AccountCreatorCall__Inputs(this);
-  }
-
-  get outputs(): InitializeERC6551AccountCreatorCall__Outputs {
-    return new InitializeERC6551AccountCreatorCall__Outputs(this);
-  }
-}
-
-export class InitializeERC6551AccountCreatorCall__Inputs {
-  _call: InitializeERC6551AccountCreatorCall;
-
-  constructor(call: InitializeERC6551AccountCreatorCall) {
-    this._call = call;
-  }
-
-  get registry(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get accountProxy(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get implementation(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-}
-
-export class InitializeERC6551AccountCreatorCall__Outputs {
-  _call: InitializeERC6551AccountCreatorCall;
-
-  constructor(call: InitializeERC6551AccountCreatorCall) {
-    this._call = call;
-  }
-}
-
-export class InitializeRecordTileFactoryCall extends ethereum.Call {
-  get inputs(): InitializeRecordTileFactoryCall__Inputs {
-    return new InitializeRecordTileFactoryCall__Inputs(this);
-  }
-
-  get outputs(): InitializeRecordTileFactoryCall__Outputs {
-    return new InitializeRecordTileFactoryCall__Outputs(this);
-  }
-}
-
-export class InitializeRecordTileFactoryCall__Inputs {
-  _call: InitializeRecordTileFactoryCall;
-
-  constructor(call: InitializeRecordTileFactoryCall) {
-    this._call = call;
-  }
-
-  get config(): InitializeRecordTileFactoryCallConfigStruct {
-    return changetype<InitializeRecordTileFactoryCallConfigStruct>(
-      this._call.inputValues[0].value.toTuple()
-    );
-  }
-}
-
-export class InitializeRecordTileFactoryCall__Outputs {
-  _call: InitializeRecordTileFactoryCall;
-
-  constructor(call: InitializeRecordTileFactoryCall) {
-    this._call = call;
-  }
-}
-
-export class InitializeRecordTileFactoryCallConfigStruct extends ethereum.Tuple {
   get registry(): Address {
     return this[0].toAddress();
   }
