@@ -1,5 +1,7 @@
 # Instate - Localized Web3
 
+<img src="./InstateTempBanner.jpg">
+
 Instate is an experimental protocol created to build localized applications with local accounts. As well as a factory to create customizable network states.
 
 ## Connect Button
