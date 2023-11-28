@@ -9,7 +9,7 @@ export type InstateTilePolygon = Feature<
 >
 
 export const precisionToZoom: Record<number, number> = {
-  2: 3,
+  2: 4,
   3: 7,
   4: 9,
   5: 12,

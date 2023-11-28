@@ -1,4 +1,4 @@
-import { NetworkStateQuery } from '@/rtk/generated'
+import { NetworkStateQuery } from '@instate/kit'
 import { truncateAddress } from '@/services/utils'
 import { DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 

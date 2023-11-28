@@ -7,7 +7,7 @@ const useMapUtils = () => {
   const { mainMap } = useMap()
 
   const flyToGeohash = useCallback(
-    (geohash: string) => {
+    (geohash: string, speed: number | undefined = 5) => {
       const center = centerOfFeature(geohashToFeature(geohash)).geometry
         .coordinates as [number, number]
 
@@ -15,7 +15,7 @@ const useMapUtils = () => {
         mainMap?.flyTo({
           center,
           zoom: precisionToZoom[geohash.length],
-          speed: 8,
+          speed,
         })
       }
     },

@@ -1,16 +1,17 @@
 import { Marker } from 'react-map-gl'
 import { usePosition } from '@/hooks/usePosition'
 import { useEffect } from 'react'
-import { emojiAvatarForAddress } from '@/services/rainbow'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import { useAccount } from 'wagmi'
 import classNames from 'classnames'
-import { usePathname } from 'next/navigation'
+import { emojiAvatarForAddress, useLocalAccount } from '@instate/kit'
+import usePath from '@/hooks/usePath'
+import useMapUtils from '@/hooks/useMapUtils'
 
 const AccountMarker = () => {
-  const pathName = usePathname()
-
-  const isProfile = pathName.includes('/profile')
+  const { isProfile } = usePath()
+  const { localAccount } = useLocalAccount()
+  const { flyToGeohash } = useMapUtils()
 
   const { address } = useAccount()
   const {
@@ -21,6 +22,13 @@ const AccountMarker = () => {
   useEffect(() => {
     updatePosition(latitude, longitude)
   }, [])
+
+  useEffect(() => {
+    const { geohash } = localAccount || {}
+    if (geohash) {
+      flyToGeohash(geohash, 3)
+    }
+  }, [localAccount])
 
   if (!isProfile) return null
 

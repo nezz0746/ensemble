@@ -1,4 +1,4 @@
-import { useNetworkStateQuery } from '@/rtk/generated'
+import { useNetworkStateQuery } from '@instate/kit'
 import useChain from './useChain'
 import { useMemo } from 'react'
 import { useParams } from 'next/navigation'
