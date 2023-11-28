@@ -7,7 +7,7 @@ const config: CodegenConfig = {
   schema: [url],
   documents: ["operations.graphql"],
   generates: {
-    "../../apps/web/rtk/generated.ts": {
+    "../kit/rtk/generated.ts": {
       plugins: ["typescript", "typescript-operations", "typescript-rtk-query"],
       config: {
         importBaseApiFrom: "./subgraph",

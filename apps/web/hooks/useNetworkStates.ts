@@ -1,4 +1,4 @@
-import { useNetworkStatesQuery } from '@/rtk/generated'
+import { useNetworkStatesQuery } from '@instate/kit'
 import { useMemo } from 'react'
 import useChain from './useChain'
 

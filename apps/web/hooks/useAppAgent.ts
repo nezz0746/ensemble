@@ -1,5 +1,5 @@
 import { useAccount } from 'wagmi'
-import { useAgentQuery } from '@/rtk/generated'
+import { useAgentQuery } from '@instate/kit'
 import { useEffect, useMemo } from 'react'
 import { geohashToFeature } from '@/services/map_utils'
 import useChain from './useChain'

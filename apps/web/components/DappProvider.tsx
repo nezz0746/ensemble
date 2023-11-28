@@ -1,6 +1,7 @@
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { WagmiConfig } from 'wagmi'
-import { chains, wagmiConfig } from 'wagmi-config'
+import { wagmiConfig } from 'wagmi-config'
+import { dimTheme } from 'shared-config'
+import { InstateProvider } from '@instate/kit'
 
 type DappProviderProps = {
   children: React.ReactNode
@@ -9,7 +10,7 @@ type DappProviderProps = {
 const DappProvider = ({ children }: DappProviderProps) => {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+      <InstateProvider theme={dimTheme}>{children}</InstateProvider>
     </WagmiConfig>
   )
 }

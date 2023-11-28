@@ -1,4 +1,4 @@
-import ConnectButton from './ConnectButton'
+import { ConnectButton } from '@instate/kit'
 
 const Navbar = () => {
   return (

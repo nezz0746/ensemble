@@ -1,0 +1,104 @@
+diff --git a/node_modules/@rainbow-me/rainbowkit/dist/chunk-UF232ONA.js b/node_modules/@rainbow-me/rainbowkit/dist/chunk-UF232ONA.js
+index 1c27ca0..26d46a1 100644
+--- a/node_modules/@rainbow-me/rainbowkit/dist/chunk-UF232ONA.js
++++ b/node_modules/@rainbow-me/rainbowkit/dist/chunk-UF232ONA.js
+@@ -11289,7 +11289,7 @@ import React16 from "react";
+ 
+ // src/components/Text/Text.tsx
+ import React15 from "react";
+-var Text = React15.forwardRef(({
++export var Text = React15.forwardRef(({
+   as = "div",
+   children,
+   className,
+@@ -11763,7 +11763,7 @@ function FocusTrap(props) {
+ 
+ // src/components/Dialog/Dialog.tsx
+ var stopPropagation = (event) => event.stopPropagation();
+-function Dialog({ children, onClose, open, titleId }) {
++export function Dialog({ children, onClose, open, titleId }) {
+   useEffect11(() => {
+     const handleEscape = (event) => open && event.key === "Escape" && onClose();
+     document.addEventListener("keydown", handleEscape);
+@@ -11808,7 +11808,7 @@ var dialogContentWideDesktop = "_1ckjpok3 _1ckjpok1 ju367vb0 ju367vdl ju367vp ju
+ var dialogContentWideMobile = "_1ckjpok2 _1ckjpok1 ju367vb0 ju367vdl ju367vp ju367vt ju367vv ju367vef ju367va ju367v10 ju367v67 ju367v8m";
+ 
+ // src/components/Dialog/DialogContent.tsx
+-function DialogContent({
++export function DialogContent({
+   bottomSheetOnMobile = false,
+   children,
+   marginTop,
+diff --git a/node_modules/@rainbow-me/rainbowkit/dist/components/Dialog/Dialog.d.ts b/node_modules/@rainbow-me/rainbowkit/dist/components/Dialog/Dialog.d.ts
+index 43eefaa..7d5004f 100644
+--- a/node_modules/@rainbow-me/rainbowkit/dist/components/Dialog/Dialog.d.ts
++++ b/node_modules/@rainbow-me/rainbowkit/dist/components/Dialog/Dialog.d.ts
+@@ -1,5 +1,5 @@
+ import React, { ReactNode } from 'react';
+-interface DialogProps {
++export interface DialogProps {
+     open: boolean;
+     onClose: () => void;
+     titleId: string;
+diff --git a/node_modules/@rainbow-me/rainbowkit/dist/components/index.d.ts b/node_modules/@rainbow-me/rainbowkit/dist/components/index.d.ts
+index e6bf7a6..80debe5 100644
+--- a/node_modules/@rainbow-me/rainbowkit/dist/components/index.d.ts
++++ b/node_modules/@rainbow-me/rainbowkit/dist/components/index.d.ts
+@@ -1,2 +1,5 @@
+ export { ConnectButton } from './ConnectButton/ConnectButton';
+ export { RainbowKitProvider } from './RainbowKitProvider/RainbowKitProvider';
++export {Dialog} from './Dialog/Dialog';
++export {DialogContent} from './Dialog/DialogContent';
++export {Text} from './Text/Text';
+\ No newline at end of file
+diff --git a/node_modules/@rainbow-me/rainbowkit/dist/components/index.js b/node_modules/@rainbow-me/rainbowkit/dist/components/index.js
+index a918325..4c868aa 100644
+--- a/node_modules/@rainbow-me/rainbowkit/dist/components/index.js
++++ b/node_modules/@rainbow-me/rainbowkit/dist/components/index.js
+@@ -1,11 +1,18 @@
+ "use client";
+ import {
+   ConnectButton,
+-  RainbowKitProvider
++  RainbowKitProvider,
++  DialogContent,
++  Dialog,
++  Text
+ } from "../chunk-UF232ONA.js";
+ import "../chunk-Q4HVINFA.js";
+ import "../chunk-SWKUKXRF.js";
++console.log("Dialog",Dialog)
+ export {
+   ConnectButton,
+-  RainbowKitProvider
++  RainbowKitProvider,
++  DialogContent,
++  Dialog,
++  Text
+ };
+diff --git a/node_modules/@rainbow-me/rainbowkit/dist/index.js b/node_modules/@rainbow-me/rainbowkit/dist/index.js
+index a0a6a37..9887b93 100644
+--- a/node_modules/@rainbow-me/rainbowkit/dist/index.js
++++ b/node_modules/@rainbow-me/rainbowkit/dist/index.js
+@@ -24,7 +24,10 @@ import {
+   useChainId,
+   useChainModal,
+   useConnectModal,
+-  useTransactionStore
++  useTransactionStore,
++  Dialog,
++  DialogContent,
++  Text
+ } from "./chunk-UF232ONA.js";
+ import {
+   lightTheme
+@@ -691,6 +694,9 @@ var __private__ = {
+   MobileOptions
+ };
+ export {
++  Text,
++  Dialog,
++  DialogContent,
+   ConnectButton,
+   RainbowKitAuthenticationProvider,
+   RainbowKitProvider,

@@ -1,6 +1,4 @@
 'use client'
-
-import ConnectButton from '@/components/ConnectButton'
 import Map, { MapProvider } from 'react-map-gl'
 import { commonLocations } from '@/services/constants'
 import AccountMarker from '@/components/Map/AccountMarker'
@@ -9,6 +7,7 @@ import AppNavigationBar from '@/components/AppNavigationBar'
 import AppMapControls from '@/components/AppMapControls'
 import usePath from '@/hooks/usePath'
 import NetworkStateLayers from '@/components/Map/NetworkStateLayers'
+import { ConnectButton } from '@instate/kit'
 
 const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 

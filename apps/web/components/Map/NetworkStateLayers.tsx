@@ -5,8 +5,6 @@ import { Layer, Source } from 'react-map-gl'
 const NetworkStateLayers = () => {
   const { agentsPerGeohash } = useNetworkState()
 
-  console.log({ agentsPerGeohash })
-
   return (
     <>
       {agentsPerGeohash.map(({ feature }) => {

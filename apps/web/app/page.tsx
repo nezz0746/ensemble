@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import ConnectButton from '@/components/ConnectButton'
+import { ConnectButton } from '@instate/kit'
 import { githubLink, notionDocLink, telegramLink } from '@/services/links'
 
 const Page = () => {

@@ -1,0 +1,40 @@
+import { createApi } from "@reduxjs/toolkit/query/react";
+import request, { ClientError } from "graphql-request";
+
+const subgraphUrls: Record<number, string> = {
+  1337: "http://localhost:8000/subgraphs/name/nezz0746/ns-framework",
+  5: "https://api.thegraph.com/subgraphs/name/nezz0746/instate-goerli",
+};
+
+type SubgraphGraphQLBaseQueryParams = {
+  document: string;
+  variables: Record<string, any>;
+  chainId: number;
+};
+
+export const subgraphQuery =
+  <T>() =>
+  async ({
+    document,
+    variables,
+    chainId,
+  }: SubgraphGraphQLBaseQueryParams): Promise<{ data: T } | { error: any }> => {
+    try {
+      const baseUrl = subgraphUrls[chainId];
+
+      const result = await request(baseUrl, document, variables);
+
+      return { data: result } as { data: T };
+    } catch (error) {
+      if (error instanceof ClientError) {
+        return { error: { status: error.response.status, data: error } };
+      }
+      return { error: { status: 500, data: error } };
+    }
+  };
+
+export const subgraphAPI = createApi({
+  reducerPath: "subgraphAPI",
+  baseQuery: subgraphQuery(),
+  endpoints: (builder) => ({}),
+});
