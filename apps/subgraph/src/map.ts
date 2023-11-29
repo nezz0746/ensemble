@@ -67,6 +67,7 @@ export function handleLocalRecordDeployed(
   localRecord.owner = event.params.recipient;
   localRecord.geohash = event.params.geohash;
   localRecord.localRecordERC721 = event.params.tileAddress.toHexString();
+  localRecord.transactionHash = event.transaction.hash;
 
   localRecord.save();
 
