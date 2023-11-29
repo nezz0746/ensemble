@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ConnectButton } from '@instate/kit'
 import { githubLink, notionDocLink, telegramLink } from '@/services/links'
+import midLanscape from '@/public/mid-landscape.png'
 
 const Page = () => {
   const linkTo = (url: string) => {
@@ -27,8 +28,12 @@ const Page = () => {
         <div className="relative flex-grow flex flex-row gap-4 md:mb-4">
           <div className="w-full md:w-1/2">
             {/* INSTATE PROTOCOL */}
-            <div className="w-full h-full p-4 flex flex-col justify-center items-center bg-base-100 rounded-lg">
-              <div className="flex flex-col gap-10">
+            <div className="w-full h-full p-4 flex flex-col relative justify-center  overflow-hidden shadow-xl items-center bg-base-100 rounded-lg" style={{
+              backgroundImage: `url(${midLanscape.src})`,
+              backgroundSize: 'cover',
+            }}>
+              <div className='w-full absolute top-0 h-full bg-slate-900 bg-opacity-40' />
+              <div className="flex flex-col text-white gap-10 z-10">
                 <h1 className="text-4xl md:text-6xl font-sans-display font-bold">
                   Instate Protocol
                 </h1>
@@ -92,7 +97,7 @@ const Page = () => {
             </div>
           </div>
           <div className="w-1/2 hidden md:flex">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-base-300 rounded-lg">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-base-300 shadow-xl rounded-lg">
               <div className=" flex flex-col gap-10">
                 <h1 className="text-6xl font-sans-mono">🌐 InstateScan</h1>
                 <h2 className="font-sans">
