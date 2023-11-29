@@ -3,7 +3,6 @@ import { toHex } from 'viem'
 import { usePrepareMapMove } from 'wagmi-config'
 import classNames from 'classnames'
 import { useEffect } from 'react'
-import { usePosition } from '@/hooks/usePosition'
 
 interface MoveButtonProps {
   address?: Address
@@ -20,7 +19,6 @@ const MoveButton = ({
   disabled,
   onMoveSuccess = () => {},
 }: MoveButtonProps) => {
-  const { position } = usePosition()
   const { config, isError, isLoading } = usePrepareMapMove({
     args: [address as Address, tile, geohash, toHex('')],
     enabled: !!address,
@@ -34,7 +32,6 @@ const MoveButton = ({
 
   useEffect(() => {
     if (isSuccess) {
-      localStorage.setItem('position', JSON.stringify(position))
       onMoveSuccess()
     }
   }, [isSuccess])

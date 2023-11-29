@@ -36,8 +36,8 @@ contract MapScript is BaseScript {
     function deployLocalTokensTestnets(
         address distributor
     ) public setEnvDeploy(Cycle.Testnet) {
-        // _deploymentChains.push(DeployementChain.Goerli);
-        _deploymentChains.push(DeployementChain.BaseGoerli);
+        _deploymentChains.push(DeployementChain.Goerli);
+        // _deploymentChains.push(DeployementChain.BaseGoerli);
 
         _deployLocalTokens(_deploymentChains, LocalDistributor(distributor));
     }
@@ -91,128 +91,128 @@ contract MapScript is BaseScript {
         LocalDistributor distributor
     ) internal broadcastOn(targetChains) {
         LocalTokenConfig[]
-            memory localTokenDistribution = new LocalTokenConfig[](8);
+            memory localTokenDistribution = new LocalTokenConfig[](7);
 
+        // localTokenDistribution[0] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Barcelona",
+        //         "LCTBC",
+        //         "ipfs://bafkreiaxjhdgbdg7mekbsd4wd6z4y3ux2tto5qnqqwgepqzkjvvt7jdxei"
+        //     ),
+        //     "sp3"
+        // );
+        // localTokenDistribution[1] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Cape Town",
+        //         "LCTCT",
+        //         "ipfs://bafkreifmcmsp6qhaohapi4em3bf5wbbd7nwgsw3lte4tv45zkxn5lnph5e"
+        //     ),
+        //     "k3v"
+        // );
+        // localTokenDistribution[2] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Edinburgh",
+        //         "LCTED",
+        //         "ipfs://bafkreicloqi5w3jxnfi3frat56gnzin3ozbvyib7uczlczhkm4g7zjtu4q"
+        //     ),
+        //     "gcvw"
+        // );
+        // localTokenDistribution[3] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Mexico City",
+        //         "LCTMC",
+        //         "ipfs://bafkreiawp5pskf6zezf265ijbc75dfuj7ajzyr2jz4egltn7gkrqiip5bu"
+        //     ),
+        //     "9g3"
+        // );
+        // localTokenDistribution[4] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Milan",
+        //         "LCTMN",
+        //         "ipfs://bafkreibp5ojhp7zqe6vkqiatkukvtahqah4tgy5nw5fthsiwatlqfdxmpq"
+        //     ),
+        //     "u0n"
+        // );
+        // localTokenDistribution[5] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Moscow",
+        //         "LCTMS",
+        //         "ipfs://bafkreif7ysl4izlga5vp3illmbvsuaz6db5p3y7wec3e26mwgplmldhj5e"
+        //     ),
+        //     "ucf"
+        // );
+        // localTokenDistribution[6] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: Mumbai",
+        //         "LCTMB",
+        //         "ipfs://bafkreietcuajxjcm2yh36vnzim3ifdk35pbv62qdvnpa73uzu5pp2ppw2y"
+        //     ),
+        //     "te7"
+        // );
+        // localTokenDistribution[7] = LocalTokenConfig(
+        //     TokenConfig(
+        //         "Local Token: New Delhi",
+        //         "LCTND",
+        //         "ipfs://bafkreigsktrnvathnvk27q47fsznywwdzikbzs76qdsbm7o6yrrs6jkwze"
+        //     ),
+        //     "ttnf"
+        // );
         localTokenDistribution[0] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Barcelona",
-                "LCTBC",
-                "ipfs://bafkreiaxjhdgbdg7mekbsd4wd6z4y3ux2tto5qnqqwgepqzkjvvt7jdxei"
+                "Local Token: San Fransisco",
+                "LCTSF",
+                "ipfs://bafkreicvq7caeijnspzwuvfrureqkcfbi6cugr7yts7ukijs3y4wq73oce"
             ),
-            "sp3"
+            "9q8y"
         );
         localTokenDistribution[1] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Cape Town",
-                "LCTCT",
-                "ipfs://bafkreifmcmsp6qhaohapi4em3bf5wbbd7nwgsw3lte4tv45zkxn5lnph5e"
+                "Local Token: Sao Paulo",
+                "LCTSP",
+                "ipfs://bafkreifpunciicszzg5l7r274w4xfxxwalncceysn7rbur4d6oa2e5aw5a"
             ),
-            "k3v"
+            "6gyc"
         );
         localTokenDistribution[2] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Edinburgh",
-                "LCTED",
-                "ipfs://bafkreicloqi5w3jxnfi3frat56gnzin3ozbvyib7uczlczhkm4g7zjtu4q"
+                "Local Token: Singapore",
+                "LCTSG",
+                "ipfs://bafkreielm6rofgn7vyopwrkscxqm7bqgopzr7yudfpytcjzgm6thizdn54"
             ),
-            "gcvw"
+            "w21z"
         );
         localTokenDistribution[3] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Mexico City",
-                "LCTMC",
-                "ipfs://bafkreiawp5pskf6zezf265ijbc75dfuj7ajzyr2jz4egltn7gkrqiip5bu"
+                "Local Token: Sydney",
+                "LCTSY",
+                "ipfs://bafkreiflrfzf6xpumsxktqbwad3opygmpxxmafcnvocnbg5umaufkzxpru"
             ),
-            "9g3"
+            "r3gx"
         );
         localTokenDistribution[4] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Milan",
-                "LCTMN",
-                "ipfs://bafkreibp5ojhp7zqe6vkqiatkukvtahqah4tgy5nw5fthsiwatlqfdxmpq"
+                "Local Token: Titanic",
+                "LCTTN",
+                "ipfs://bafkreigun75442p3zdx7rxno3gwkmimkorxzmfo6rn6endyjp5rnalawda"
             ),
-            "u0n"
+            "dzkw"
         );
         localTokenDistribution[5] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Moscow",
-                "LCTMS",
-                "ipfs://bafkreif7ysl4izlga5vp3illmbvsuaz6db5p3y7wec3e26mwgplmldhj5e"
+                "Local Token: Tokyo",
+                "LCTTK",
+                "ipfs://bafkreib6dvmns2he6vtfb4ftqsicms4tmugls7ea6o4g7xuaymaxdi2rje"
             ),
-            "ucf"
+            "xn7"
         );
         localTokenDistribution[6] = LocalTokenConfig(
             TokenConfig(
-                "Local Token: Mumbai",
-                "LCTMB",
-                "ipfs://bafkreietcuajxjcm2yh36vnzim3ifdk35pbv62qdvnpa73uzu5pp2ppw2y"
+                "Local Token: Tunis",
+                "LCTTK",
+                "ipfs://bafkreigllmtmt5see77ah7rij5rrgyuz6qin6o5mdysrs3h2g3rpztwb7i"
             ),
-            "te7"
+            "snx"
         );
-        localTokenDistribution[7] = LocalTokenConfig(
-            TokenConfig(
-                "Local Token: New Delhi",
-                "LCTND",
-                "ipfs://bafkreigsktrnvathnvk27q47fsznywwdzikbzs76qdsbm7o6yrrs6jkwze"
-            ),
-            "ttnf"
-        );
-        // localTokenDistribution[8] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: San Fransisco",
-        //         "LCTSF",
-        //         "ipfs://bafkreicvq7caeijnspzwuvfrureqkcfbi6cugr7yts7ukijs3y4wq73oce"
-        //     ),
-        //     "9q8y"
-        // );
-        // localTokenDistribution[9] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Sao Paulo",
-        //         "LCTSP",
-        //         "ipfs://bafkreifpunciicszzg5l7r274w4xfxxwalncceysn7rbur4d6oa2e5aw5a"
-        //     ),
-        //     "6gyc"
-        // );
-        // localTokenDistribution[10] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Singapore",
-        //         "LCTSG",
-        //         "ipfs://bafkreielm6rofgn7vyopwrkscxqm7bqgopzr7yudfpytcjzgm6thizdn54"
-        //     ),
-        //     "w21z"
-        // );
-        // localTokenDistribution[11] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Sydney",
-        //         "LCTSY",
-        //         "ipfs://bafkreiflrfzf6xpumsxktqbwad3opygmpxxmafcnvocnbg5umaufkzxpru"
-        //     ),
-        //     "r3gx"
-        // );
-        // localTokenDistribution[12] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Titanic",
-        //         "LCTTN",
-        //         "ipfs://bafkreigun75442p3zdx7rxno3gwkmimkorxzmfo6rn6endyjp5rnalawda"
-        //     ),
-        //     "dzkw"
-        // );
-        // localTokenDistribution[13] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Tokyo",
-        //         "LCTTK",
-        //         "ipfs://bafkreib6dvmns2he6vtfb4ftqsicms4tmugls7ea6o4g7xuaymaxdi2rje"
-        //     ),
-        //     "xn7"
-        // );
-        // localTokenDistribution[14] = LocalTokenConfig(
-        //     TokenConfig(
-        //         "Local Token: Tunis",
-        //         "LCTTK",
-        //         "ipfs://bafkreigllmtmt5see77ah7rij5rrgyuz6qin6o5mdysrs3h2g3rpztwb7i"
-        //     ),
-        //     "snx"
-        // );
 
         distributor.distribute(localTokenDistribution);
     }

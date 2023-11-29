@@ -5,8 +5,9 @@ const usePath = () => {
 
   const isProfile = pathName.includes('/profile')
   const isTile = pathName.includes('/tile')
+  const isLocalDrops = pathName.includes('/local-drops')
 
-  return { isProfile, isTile }
+  return { isProfile, isTile, isLocalDrops }
 }
 
 export default usePath
