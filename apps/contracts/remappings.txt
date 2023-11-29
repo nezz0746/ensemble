@@ -8,3 +8,4 @@ multicall-authenticated/=lib/contracts/lib/multicall-authenticated/src
 prb-test/=lib/prb-test/src/
 solidity-stringutils/=lib/solidity-stringutils/
 @openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts
+ERC721A/=lib/ERC721A/contracts/

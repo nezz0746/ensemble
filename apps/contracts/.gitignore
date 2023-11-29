@@ -6,6 +6,9 @@ out/
 !/broadcast
 /broadcast/*/1337/
 /broadcast/*/5/
+/broadcast/*/84531
+/broadcast/multi
+
 /broadcast/**/dry-run/
 
 deployments/1337
