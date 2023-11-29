@@ -107,6 +107,7 @@ export type LocalRecord = {
   id: Scalars['Bytes']['output'];
   localRecordERC721: Scalars['String']['output'];
   owner: Agent;
+  transactionHash: Scalars['Bytes']['output'];
 };
 
 export type LocalRecord_Filter = {
@@ -185,6 +186,16 @@ export type LocalRecord_Filter = {
   owner_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   owner_starts_with?: InputMaybe<Scalars['String']['input']>;
   owner_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
 };
 
 export enum LocalRecord_OrderBy {
@@ -193,7 +204,230 @@ export enum LocalRecord_OrderBy {
   LocalRecordErc721 = 'localRecordERC721',
   Owner = 'owner',
   OwnerCurrentGeohash = 'owner__currentGeohash',
-  OwnerId = 'owner__id'
+  OwnerId = 'owner__id',
+  TransactionHash = 'transactionHash'
+}
+
+export type LocalToken = {
+  __typename?: 'LocalToken';
+  geohash: Scalars['String']['output'];
+  id: Scalars['Bytes']['output'];
+  metadata?: Maybe<LocalTokenMetadata>;
+  uri: Scalars['String']['output'];
+};
+
+export type LocalTokenMetadata = {
+  __typename?: 'LocalTokenMetadata';
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  image: Scalars['String']['output'];
+  imageGateway: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type LocalTokenMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<LocalTokenMetadata_Filter>>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_gt?: InputMaybe<Scalars['String']['input']>;
+  description_gte?: InputMaybe<Scalars['String']['input']>;
+  description_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_lt?: InputMaybe<Scalars['String']['input']>;
+  description_lte?: InputMaybe<Scalars['String']['input']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  imageGateway?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_ends_with?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_gt?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_gte?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  imageGateway_lt?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_lte?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  imageGateway_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_starts_with?: InputMaybe<Scalars['String']['input']>;
+  imageGateway_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_contains?: InputMaybe<Scalars['String']['input']>;
+  image_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_ends_with?: InputMaybe<Scalars['String']['input']>;
+  image_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_gt?: InputMaybe<Scalars['String']['input']>;
+  image_gte?: InputMaybe<Scalars['String']['input']>;
+  image_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  image_lt?: InputMaybe<Scalars['String']['input']>;
+  image_lte?: InputMaybe<Scalars['String']['input']>;
+  image_not?: InputMaybe<Scalars['String']['input']>;
+  image_not_contains?: InputMaybe<Scalars['String']['input']>;
+  image_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  image_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_starts_with?: InputMaybe<Scalars['String']['input']>;
+  image_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_gt?: InputMaybe<Scalars['String']['input']>;
+  name_gte?: InputMaybe<Scalars['String']['input']>;
+  name_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  name_lt?: InputMaybe<Scalars['String']['input']>;
+  name_lte?: InputMaybe<Scalars['String']['input']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<LocalTokenMetadata_Filter>>>;
+};
+
+export enum LocalTokenMetadata_OrderBy {
+  Description = 'description',
+  Id = 'id',
+  Image = 'image',
+  ImageGateway = 'imageGateway',
+  Name = 'name'
+}
+
+export type LocalToken_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<LocalToken_Filter>>>;
+  geohash?: InputMaybe<Scalars['String']['input']>;
+  geohash_contains?: InputMaybe<Scalars['String']['input']>;
+  geohash_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  geohash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  geohash_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  geohash_gt?: InputMaybe<Scalars['String']['input']>;
+  geohash_gte?: InputMaybe<Scalars['String']['input']>;
+  geohash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  geohash_lt?: InputMaybe<Scalars['String']['input']>;
+  geohash_lte?: InputMaybe<Scalars['String']['input']>;
+  geohash_not?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  geohash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  geohash_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  geohash_starts_with?: InputMaybe<Scalars['String']['input']>;
+  geohash_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Bytes']['input']>;
+  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  metadata?: InputMaybe<Scalars['String']['input']>;
+  metadata_?: InputMaybe<LocalTokenMetadata_Filter>;
+  metadata_contains?: InputMaybe<Scalars['String']['input']>;
+  metadata_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_ends_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_gt?: InputMaybe<Scalars['String']['input']>;
+  metadata_gte?: InputMaybe<Scalars['String']['input']>;
+  metadata_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  metadata_lt?: InputMaybe<Scalars['String']['input']>;
+  metadata_lte?: InputMaybe<Scalars['String']['input']>;
+  metadata_not?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_contains?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  metadata_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_starts_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<LocalToken_Filter>>>;
+  uri?: InputMaybe<Scalars['String']['input']>;
+  uri_contains?: InputMaybe<Scalars['String']['input']>;
+  uri_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  uri_ends_with?: InputMaybe<Scalars['String']['input']>;
+  uri_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  uri_gt?: InputMaybe<Scalars['String']['input']>;
+  uri_gte?: InputMaybe<Scalars['String']['input']>;
+  uri_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  uri_lt?: InputMaybe<Scalars['String']['input']>;
+  uri_lte?: InputMaybe<Scalars['String']['input']>;
+  uri_not?: InputMaybe<Scalars['String']['input']>;
+  uri_not_contains?: InputMaybe<Scalars['String']['input']>;
+  uri_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  uri_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  uri_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  uri_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  uri_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  uri_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  uri_starts_with?: InputMaybe<Scalars['String']['input']>;
+  uri_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum LocalToken_OrderBy {
+  Geohash = 'geohash',
+  Id = 'id',
+  Metadata = 'metadata',
+  MetadataDescription = 'metadata__description',
+  MetadataId = 'metadata__id',
+  MetadataImage = 'metadata__image',
+  MetadataImageGateway = 'metadata__imageGateway',
+  MetadataName = 'metadata__name',
+  Uri = 'uri'
 }
 
 export type NetworkState = {
@@ -624,6 +858,9 @@ export type Query = {
   agents: Array<Agent>;
   localRecord?: Maybe<LocalRecord>;
   localRecords: Array<LocalRecord>;
+  localToken?: Maybe<LocalToken>;
+  localTokenMetadata: Array<LocalTokenMetadata>;
+  localTokens: Array<LocalToken>;
   networkState?: Maybe<NetworkState>;
   networkStateMetadata: Array<NetworkStateMetadata>;
   networkStateTravel?: Maybe<NetworkStateTravel>;
@@ -684,6 +921,35 @@ export type QueryLocalRecordsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<LocalRecord_Filter>;
+};
+
+
+export type QueryLocalTokenArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryLocalTokenMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalTokenMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LocalTokenMetadata_Filter>;
+};
+
+
+export type QueryLocalTokensArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalToken_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LocalToken_Filter>;
 };
 
 
@@ -1448,6 +1714,9 @@ export type Subscription = {
   agents: Array<Agent>;
   localRecord?: Maybe<LocalRecord>;
   localRecords: Array<LocalRecord>;
+  localToken?: Maybe<LocalToken>;
+  localTokenMetadata: Array<LocalTokenMetadata>;
+  localTokens: Array<LocalToken>;
   networkState?: Maybe<NetworkState>;
   networkStateMetadata: Array<NetworkStateMetadata>;
   networkStateTravel?: Maybe<NetworkStateTravel>;
@@ -1508,6 +1777,35 @@ export type SubscriptionLocalRecordsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<LocalRecord_Filter>;
+};
+
+
+export type SubscriptionLocalTokenArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionLocalTokenMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalTokenMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LocalTokenMetadata_Filter>;
+};
+
+
+export type SubscriptionLocalTokensArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalToken_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LocalToken_Filter>;
 };
 
 
@@ -1854,7 +2152,7 @@ export type AgentQueryVariables = Exact<{
 }>;
 
 
-export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } | null };
+export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } | null };
 
 export type AgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1881,7 +2179,7 @@ export type AgentsQueryVariables = Exact<{
 }>;
 
 
-export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> }> };
+export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> }> };
 
 export type StateAgentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1899,7 +2197,7 @@ export type StateAgentQueryVariables = Exact<{
 }>;
 
 
-export type StateAgentQuery = { __typename?: 'Query', stateAgent?: { __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } } | null };
+export type StateAgentQuery = { __typename?: 'Query', stateAgent?: { __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } } | null };
 
 export type StateAgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1921,7 +2219,7 @@ export type StateAgentsQueryVariables = Exact<{
 }>;
 
 
-export type StateAgentsQuery = { __typename?: 'Query', stateAgents: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> };
+export type StateAgentsQuery = { __typename?: 'Query', stateAgents: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> };
 
 export type NetworkStateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1944,7 +2242,7 @@ export type NetworkStateQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } | null };
+export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } | null };
 
 export type NetworkStatesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -1971,7 +2269,7 @@ export type NetworkStatesQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }> };
+export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }> };
 
 export type NetworkStateMetadataQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2001,7 +2299,7 @@ export type NetworkStateTravelQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> } } | null };
+export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } } | null };
 
 export type NetworkStateTravelsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2023,7 +2321,7 @@ export type NetworkStateTravelsQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string }> } }> } }> };
+export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } }> };
 
 export type LocalRecordQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2041,7 +2339,7 @@ export type LocalRecordQueryVariables = Exact<{
 }>;
 
 
-export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } } | null };
+export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } } | null };
 
 export type LocalRecordsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2063,7 +2361,39 @@ export type LocalRecordsQueryVariables = Exact<{
 }>;
 
 
-export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } }> };
+export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } }> };
+
+export type LocalTokenQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type LocalTokenQuery = { __typename?: 'Query', localToken?: { __typename?: 'LocalToken', id: any, geohash: string, uri: string, metadata?: { __typename?: 'LocalTokenMetadata', id: string, name: string, description: string, image: string, imageGateway: string } | null } | null };
+
+export type LocalTokensQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalToken_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<LocalToken_Filter>;
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type LocalTokensQuery = { __typename?: 'Query', localTokens: Array<{ __typename?: 'LocalToken', id: any, geohash: string, uri: string, metadata?: { __typename?: 'LocalTokenMetadata', id: string, name: string, description: string, image: string, imageGateway: string } | null }> };
+
+export type LocalTokenMetadataQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LocalTokenMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<LocalTokenMetadata_Filter>;
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type LocalTokenMetadataQuery = { __typename?: 'Query', localTokenMetadata: Array<{ __typename?: 'LocalTokenMetadata', id: string, name: string, description: string, image: string, imageGateway: string }> };
 
 export type RecordTileCreatedQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2201,6 +2531,7 @@ export const AgentDocument = `
       id
       geohash
       localRecordERC721
+      transactionHash
     }
     states(
       skip: $agent_states_skip
@@ -2264,6 +2595,7 @@ export const AgentsDocument = `
       id
       geohash
       localRecordERC721
+      transactionHash
     }
     states(
       skip: $agents_states_skip
@@ -2350,6 +2682,7 @@ export const StateAgentDocument = `
         id
         geohash
         localRecordERC721
+        transactionHash
       }
     }
   }
@@ -2407,6 +2740,7 @@ export const StateAgentsDocument = `
         id
         geohash
         localRecordERC721
+        transactionHash
       }
     }
   }
@@ -2450,6 +2784,7 @@ export const NetworkStateDocument = `
           id
           geohash
           localRecordERC721
+          transactionHash
         }
       }
     }
@@ -2513,6 +2848,7 @@ export const NetworkStatesDocument = `
           id
           geohash
           localRecordERC721
+          transactionHash
         }
       }
     }
@@ -2591,6 +2927,7 @@ export const NetworkStateTravelDocument = `
             id
             geohash
             localRecordERC721
+            transactionHash
           }
         }
       }
@@ -2648,6 +2985,7 @@ export const NetworkStateTravelsDocument = `
             id
             geohash
             localRecordERC721
+            transactionHash
           }
         }
       }
@@ -2705,6 +3043,7 @@ export const LocalRecordDocument = `
     }
     geohash
     localRecordERC721
+    transactionHash
   }
 }
     `;
@@ -2762,6 +3101,64 @@ export const LocalRecordsDocument = `
     }
     geohash
     localRecordERC721
+    transactionHash
+  }
+}
+    `;
+export const LocalTokenDocument = `
+    query localToken($id: ID!, $block: Block_height) {
+  localToken(id: $id, block: $block) {
+    id
+    geohash
+    uri
+    metadata {
+      id
+      name
+      description
+      image
+      imageGateway
+    }
+  }
+}
+    `;
+export const LocalTokensDocument = `
+    query localTokens($skip: Int, $first: Int, $orderBy: LocalToken_orderBy, $orderDirection: OrderDirection, $where: LocalToken_filter, $block: Block_height) {
+  localTokens(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    geohash
+    uri
+    metadata {
+      id
+      name
+      description
+      image
+      imageGateway
+    }
+  }
+}
+    `;
+export const LocalTokenMetadataDocument = `
+    query localTokenMetadata($skip: Int, $first: Int, $orderBy: LocalTokenMetadata_orderBy, $orderDirection: OrderDirection, $where: LocalTokenMetadata_filter, $block: Block_height) {
+  localTokenMetadata(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    name
+    description
+    image
+    imageGateway
   }
 }
     `;
@@ -3003,6 +3400,15 @@ const injectedRtkApi = subgraphAPI.injectEndpoints({
     localRecords: build.query<LocalRecordsQuery, {variables: LocalRecordsQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: LocalRecordsDocument, variables, chainId })
     }),
+    localToken: build.query<LocalTokenQuery, {variables: LocalTokenQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: LocalTokenDocument, variables, chainId })
+    }),
+    localTokens: build.query<LocalTokensQuery, {variables: LocalTokensQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: LocalTokensDocument, variables, chainId })
+    }),
+    localTokenMetadata: build.query<LocalTokenMetadataQuery, {variables: LocalTokenMetadataQueryVariables; chainId?: number;}>({
+      query: ({variables, chainId = 1337}) => ({ document: LocalTokenMetadataDocument, variables, chainId })
+    }),
     recordTileCreated: build.query<RecordTileCreatedQuery, {variables: RecordTileCreatedQueryVariables; chainId?: number;}>({
       query: ({variables, chainId = 1337}) => ({ document: RecordTileCreatedDocument, variables, chainId })
     }),
@@ -3043,5 +3449,5 @@ const injectedRtkApi = subgraphAPI.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAgentQuery, useLazyAgentQuery, useAgentsQuery, useLazyAgentsQuery, useStateAgentQuery, useLazyStateAgentQuery, useStateAgentsQuery, useLazyStateAgentsQuery, useNetworkStateQuery, useLazyNetworkStateQuery, useNetworkStatesQuery, useLazyNetworkStatesQuery, useNetworkStateMetadataQuery, useLazyNetworkStateMetadataQuery, useNetworkStateTravelQuery, useLazyNetworkStateTravelQuery, useNetworkStateTravelsQuery, useLazyNetworkStateTravelsQuery, useLocalRecordQuery, useLazyLocalRecordQuery, useLocalRecordsQuery, useLazyLocalRecordsQuery, useRecordTileCreatedQuery, useLazyRecordTileCreatedQuery, useRecordTileCreatedsQuery, useLazyRecordTileCreatedsQuery, useRecordTileEnteredQuery, useLazyRecordTileEnteredQuery, useRecordTileEnteredsQuery, useLazyRecordTileEnteredsQuery, useTileCreatedQuery, useLazyTileCreatedQuery, useTileCreatedsQuery, useLazyTileCreatedsQuery, useRoleAdminChangedQuery, useLazyRoleAdminChangedQuery, useRoleAdminChangedsQuery, useLazyRoleAdminChangedsQuery, useRoleGrantedQuery, useLazyRoleGrantedQuery, useRoleGrantedsQuery, useLazyRoleGrantedsQuery, useRoleRevokedQuery, useLazyRoleRevokedQuery, useRoleRevokedsQuery, useLazyRoleRevokedsQuery } = injectedRtkApi;
+export const { useAgentQuery, useLazyAgentQuery, useAgentsQuery, useLazyAgentsQuery, useStateAgentQuery, useLazyStateAgentQuery, useStateAgentsQuery, useLazyStateAgentsQuery, useNetworkStateQuery, useLazyNetworkStateQuery, useNetworkStatesQuery, useLazyNetworkStatesQuery, useNetworkStateMetadataQuery, useLazyNetworkStateMetadataQuery, useNetworkStateTravelQuery, useLazyNetworkStateTravelQuery, useNetworkStateTravelsQuery, useLazyNetworkStateTravelsQuery, useLocalRecordQuery, useLazyLocalRecordQuery, useLocalRecordsQuery, useLazyLocalRecordsQuery, useLocalTokenQuery, useLazyLocalTokenQuery, useLocalTokensQuery, useLazyLocalTokensQuery, useLocalTokenMetadataQuery, useLazyLocalTokenMetadataQuery, useRecordTileCreatedQuery, useLazyRecordTileCreatedQuery, useRecordTileCreatedsQuery, useLazyRecordTileCreatedsQuery, useRecordTileEnteredQuery, useLazyRecordTileEnteredQuery, useRecordTileEnteredsQuery, useLazyRecordTileEnteredsQuery, useTileCreatedQuery, useLazyTileCreatedQuery, useTileCreatedsQuery, useLazyTileCreatedsQuery, useRoleAdminChangedQuery, useLazyRoleAdminChangedQuery, useRoleAdminChangedsQuery, useLazyRoleAdminChangedsQuery, useRoleGrantedQuery, useLazyRoleGrantedQuery, useRoleGrantedsQuery, useLazyRoleGrantedsQuery, useRoleRevokedQuery, useLazyRoleRevokedQuery, useRoleRevokedsQuery, useLazyRoleRevokedsQuery } = injectedRtkApi;
 

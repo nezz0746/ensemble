@@ -1,6 +1,6 @@
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { Chain, ChainProviderFn, configureChains, createConfig } from "wagmi";
-import { base, goerli, localhost } from "wagmi/chains";
+import { base, baseGoerli, goerli, localhost } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import {
@@ -27,7 +27,7 @@ if (localChainEnabled && !testnetChainEnabled && !mainnetChainEnabled) {
 
 if (testnetChainEnabled) {
   defaultChain = goerli;
-  appChains = [goerli];
+  appChains = [goerli, baseGoerli];
 }
 
 if (mainnetChainEnabled) {
