@@ -5,6 +5,7 @@ const main = async () => {
   const client = create({ url: "http://localhost:5001" });
 
   const statesBasePath = "./items/network-states";
+  const tokensBasePath = "./items/tokens";
 
   const statesDir = await fs.readdir(statesBasePath);
 
@@ -21,6 +22,31 @@ const main = async () => {
 
     client.pin.add(cid);
   }
+
+  const tokensDir = await fs.readdir(tokensBasePath);
+
+  const tokenCIDs = {} as Record<string, string>;
+
+  for (const token of tokensDir) {
+    const tokenMetadata = (
+      await fs
+        .readFile(`${tokensBasePath}/${token}/upload/latest.json`, "utf-8")
+        .then(JSON.parse)
+    ).metadata;
+
+    const { cid } = await client.add(JSON.stringify(tokenMetadata), {
+      cidVersion: 1,
+    });
+
+    tokenCIDs[token] = cid.toString();
+
+    client.pin.add(cid);
+  }
+
+  await fs.writeFile(
+    "./items/local-token-cids.json",
+    JSON.stringify(tokenCIDs, null, 2)
+  );
 };
 
 main();
