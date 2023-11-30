@@ -1,12 +1,15 @@
 import { NetworkStateQuery } from '@instate/kit'
 import { truncateAddress } from '@/services/utils'
 import { DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline'
+import useChain from '@/hooks/useChain'
 
 type StateHeaderProps = {
   currentNetworkState?: NetworkStateQuery['networkState']
 }
 
 const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
+  const { chain } = useChain()
+
   if (!currentNetworkState) return null
 
   return (
@@ -39,7 +42,17 @@ const StateHeader = ({ currentNetworkState }: StateHeaderProps) => {
           {currentNetworkState?.metadata?.description}
         </p>
         <div className="flex flex-row justify-end gap-2">
-          <button disabled className="btn btn-outline btn-sm">
+          <button
+            onClick={() => {
+              window.open(
+                chain?.blockExplorers?.default.url +
+                  '/address/' +
+                  currentNetworkState.verifier,
+                '_blank'
+              )
+            }}
+            className="btn btn-outline btn-sm"
+          >
             <div className="w-5 h-5 relative">
               <svg
                 width="123"
