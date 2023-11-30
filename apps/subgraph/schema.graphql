@@ -49,6 +49,26 @@ type LocalRecord @entity(immutable: false) {
   owner: Agent!
   geohash: String! # string
   localRecordERC721: String! # address
+  transactionHash: Bytes!
+}
+
+
+
+# --------------------- LOCAL TOKENS ---------------------
+
+type LocalToken @entity(immutable: false) {
+  id: Bytes! # contractAddress
+  geohash: String! # string
+  uri: String! # string
+  metadata: LocalTokenMetadata
+}
+
+type LocalTokenMetadata @entity(immutable: true) {
+  id: String! # cid
+  name: String! # string
+  description: String! # string
+  image: String! # string
+  imageGateway: String! # string
 }
 
 # GENERATED

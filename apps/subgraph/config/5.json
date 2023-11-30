@@ -1,5 +1,6 @@
 {
-  "mapAddress": "0x39Bd51dF4995C9eC14a16c15e4D832B3dd42D339",
+  "mapAddress": "0x197aE2Bb1218F4B8a68993B21B71CE4179F06ce8",
+  "localDistributorAddress": "0x104Ac7B3d7774BB726e8567415B9B8Dad46B451C",
   "startBlock": 0,
   "network": "goerli"
 }

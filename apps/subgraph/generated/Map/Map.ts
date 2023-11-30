@@ -563,6 +563,40 @@ export class __RecordTileFactory__initCallConfigStruct extends ethereum.Tuple {
   }
 }
 
+export class CreateRecordCall extends ethereum.Call {
+  get inputs(): CreateRecordCall__Inputs {
+    return new CreateRecordCall__Inputs(this);
+  }
+
+  get outputs(): CreateRecordCall__Outputs {
+    return new CreateRecordCall__Outputs(this);
+  }
+}
+
+export class CreateRecordCall__Inputs {
+  _call: CreateRecordCall;
+
+  constructor(call: CreateRecordCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get geohash(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class CreateRecordCall__Outputs {
+  _call: CreateRecordCall;
+
+  constructor(call: CreateRecordCall) {
+    this._call = call;
+  }
+}
+
 export class CreateStateCall extends ethereum.Call {
   get inputs(): CreateStateCall__Inputs {
     return new CreateStateCall__Inputs(this);

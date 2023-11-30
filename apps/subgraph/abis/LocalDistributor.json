@@ -1,0 +1,132 @@
+[
+  {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "map",
+        "internalType": "contract Map",
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "tokenAddress",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "tokenURI",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      }
+    ],
+    "name": "LocalTokenDistribution"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "previousOwner",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "newOwner",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "OwnershipTransferred"
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "localTokenDistribution",
+        "internalType": "struct LocalTokenConfig[]",
+        "type": "tuple[]",
+        "components": [
+          {
+            "name": "config",
+            "internalType": "struct TokenConfig",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "name",
+                "internalType": "string",
+                "type": "string"
+              },
+              {
+                "name": "symbol",
+                "internalType": "string",
+                "type": "string"
+              },
+              {
+                "name": "uri",
+                "internalType": "string",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "geohash",
+            "internalType": "string",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "name": "distribute",
+    "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "address",
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "newOwner",
+        "internalType": "address",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": []
+  }
+]

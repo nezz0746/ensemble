@@ -30,7 +30,8 @@ contract BaseScript is Script {
 
     enum DeployementChain {
         Anvil,
-        Goerli
+        Goerli,
+        BaseGoerli
     }
     string internal constant TEST_MNEMONIC =
         "test test test test test test test test test test test junk";

@@ -356,6 +356,24 @@
     "type": "function",
     "inputs": [
       {
+        "name": "account",
+        "internalType": "address",
+        "type": "address"
+      },
+      {
+        "name": "geohash",
+        "internalType": "string",
+        "type": "string"
+      }
+    ],
+    "name": "createRecord",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      {
         "name": "verifier",
         "internalType": "address",
         "type": "address"

@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "daisyui": "4.0.1"
+  },
+  "dependencies": {
+    "alchemy-sdk": "^3.0.0"
   }
 }

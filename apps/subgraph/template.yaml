@@ -39,6 +39,26 @@ dataSources:
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
       file: ./src/map.ts
+  - kind: ethereum
+    name: LocalDistributor
+    network: {{ network }}
+    source:
+      address: "{{ localDistributorAddress }}"
+      abi: LocalDistributor
+      startBlock: {{ startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LocalToken
+      abis:
+        - name: LocalDistributor
+          file: ./abis/LocalDistributor.json
+      eventHandlers:
+        - event: LocalTokenDistribution(string,address,string)
+          handler: handleLocalTokenDistribution
+      file: ./src/distributor.ts
 templates:
   - name: StateTile
     kind: ethereum/contract

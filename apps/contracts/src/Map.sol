@@ -48,12 +48,6 @@ contract Map is
         _stateBeacon = stateBeacon;
     }
 
-    modifier onlyValidAccount(address account) {
-        if (tx.origin != msg.sender || account != msg.sender)
-            revert accountNotSender();
-        _;
-    }
-
     function move(
         address account,
         address state,
@@ -71,6 +65,16 @@ contract Map is
 
         // Move account to new location
         StateTile(state).move(account, geohash, data);
+    }
+
+    function createRecord(address account, string memory geohash) external {
+        require(msg.sender == account, "Map: account not sender");
+        require(
+            GeohashLogic.isValidGeohash(geohash, _minPrecision, _maxPrecision),
+            "Map: invalid geohash"
+        );
+
+        _createRecord(account, geohash);
     }
 
     function createState(

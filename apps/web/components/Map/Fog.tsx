@@ -48,7 +48,7 @@ const ProfileFogLayer = () => {
         )
       })}
       {computed_fog && (
-        <Source id="fog" type="geojson" data={computed_fog}>
+        <Source id="local-fog" type="geojson" data={computed_fog}>
           <Layer {...fogLayerStyle} />
         </Source>
       )}
