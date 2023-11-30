@@ -15,21 +15,7 @@ import {
 } from "react";
 import { Address, useAccount, useNetwork } from "wagmi";
 import { useMapCreateRecord } from "wagmi-config";
-
-type LocalAccount = LocalRecord | LocalRecordsQuery["localRecords"][0];
-
-type LocalAccountStore = {
-  localAccount: LocalAccount | null;
-  localAccounts: LocalAccount[];
-  setLocalAccount: (account: LocalAccount) => void;
-  createLocalAccount: (geohash: string) => void;
-  createAccountLoading: boolean;
-  switchLocalAccount: (geohash: string) => void;
-  isHere: (geohash: string) => boolean;
-  hasBeenHere: (geohash: string) => boolean;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
+import { LocalAccount, LocalAccountStore } from "../types";
 
 export const LocalAccountContext = createContext<LocalAccountStore>({
   localAccount: null,
