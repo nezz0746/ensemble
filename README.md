@@ -2,11 +2,11 @@
 
 <img src="./InstateGrey.jpg">
 
-Instate is an experimental protocol created to build localized applications with local accounts. As well as a factory to create customizable network states.
+Instate is an conceptual protocol created to build localized applications with local accounts. As well as a factory to create customizable network states.
 
-## Connect Button
+## @instate/kit
 
-@instate/kit ConnectButton exports Rainbowkit's original ConnectButton with an additional LocalAccountButton that let user's pick the local account they would like to use for your application. Just like for networks, you can require a certain location and
+ConnectButton exports Rainbowkit's original ConnectButton with an additional LocalAccountButton that let user's pick the local account they would like to use for your application. Just like for networks, you can require a certain location and
 propose a local account switch to your user, or (soon) a move if the user doesn't have a local account in your application vicinity.
 
 <img src="./LocalAccountButton.png" />
@@ -19,6 +19,22 @@ const YourApp = () => {
   return <ConnectButton>
 }
 
+```
+
+## Localized Mint
+
+For you smart contract, you can then use a **Localized** extension in order to allow only certain local accounts to call a specific function. For the demo available in the InstateScan explorer: Localized Mint, you can only mint a specific Token like such:
+
+```solidity
+contract MyLocalNFT is ERC721, Localized {
+  string internal _geohash;
+
+  constructor(Map map, string memory geohash) Localized(map, geohash) {}
+
+  function mint(LocalCaller caller) onlyLocalAccount(caller) {
+    _safeMint(caller.account)
+  }
+}
 ```
 
 Deployments:
