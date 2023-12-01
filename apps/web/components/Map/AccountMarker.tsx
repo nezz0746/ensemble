@@ -4,14 +4,12 @@ import { useEffect } from 'react'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import { useAccount } from 'wagmi'
 import classNames from 'classnames'
-import { emojiAvatarForAddress, useLocalAccount } from '@instate/kit'
+import { emojiAvatarForAddress } from '@instate/kit'
 import usePath from '@/hooks/usePath'
-import useMapUtils from '@/hooks/useMapUtils'
+import AccountZoomEffects from './AccountZoomEffects'
 
 const AccountMarker = () => {
   const { isProfile } = usePath()
-  const { localAccount } = useLocalAccount()
-  const { flyToGeohash } = useMapUtils()
 
   const { address } = useAccount()
   const {
@@ -22,13 +20,6 @@ const AccountMarker = () => {
   useEffect(() => {
     updatePosition(latitude, longitude)
   }, [])
-
-  useEffect(() => {
-    const { geohash } = localAccount || {}
-    if (geohash) {
-      flyToGeohash(geohash, 3)
-    }
-  }, [localAccount])
 
   if (!isProfile) return null
 
@@ -57,6 +48,7 @@ const AccountMarker = () => {
           <MapPinIcon className="w-6 h-6 text-gray-800" />
         )}
       </div>
+      <AccountZoomEffects />
     </Marker>
   )
 }

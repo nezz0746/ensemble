@@ -107,10 +107,12 @@ const LocalDropButtons = ({
       <div>
         {!canMint && (
           <>
-            <p className="text-sm mb-1 text-justify">
-              You&apos;ve never visted this location, create your local account
-              now:
-            </p>
+            {localCase === 'create-account' && (
+              <p className="text-sm mb-1 text-justify">
+                You&apos;ve never visted this location, create your local
+                account now:
+              </p>
+            )}
             <button
               onClick={() => {
                 if (localCase === 'create-account') {
@@ -120,7 +122,7 @@ const LocalDropButtons = ({
                 }
               }}
               disabled={createAccountLoading}
-              className="btn btn-primary btn-sm w-full"
+              className="btn btn-primary  w-full"
             >
               {createAccountLoading && (
                 <span className="loading loading-spinner bg-primary loading-xs"></span>
@@ -192,7 +194,7 @@ const MintButton = ({
       onClick={() => {
         write && write()
       }}
-      className="btn btn-primary btn-sm w-full"
+      className="btn btn-primary  w-full"
     >
       {(pendingConfirm || pendingTx) && (
         <span className="loading loading-spinner bg-primary loading-xs"></span>

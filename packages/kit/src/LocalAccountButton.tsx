@@ -198,6 +198,7 @@ export const LocalAccountDialog = () => {
 
               return (
                 <div
+                  key={account.geohash}
                   onClick={() => {
                     setLocalAccount(account);
                     setTimeout(() => {

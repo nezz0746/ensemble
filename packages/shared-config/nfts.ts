@@ -1,5 +1,5 @@
 import { Alchemy, Network } from "alchemy-sdk";
-import { alchemy_key } from "./variables";
+import { nft_alchemy_key } from "./variables";
 
 const chainIdToNetwork: Record<number, Network> = {
   1: Network.ETH_MAINNET,
@@ -9,12 +9,12 @@ const chainIdToNetwork: Record<number, Network> = {
   137: Network.MATIC_MAINNET,
   80001: Network.MATIC_MUMBAI,
   8453: Network.BASE_MAINNET,
-  84531: Network.BASE_GOERLI
+  84531: Network.BASE_GOERLI,
 };
 
 export const getAlchemyNFT = (chainId: number) => {
   return new Alchemy({
-    apiKey: alchemy_key,
+    apiKey: nft_alchemy_key,
     network: chainIdToNetwork[chainId],
   }).nft;
 };

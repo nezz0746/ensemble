@@ -505,6 +505,19 @@ export class NetworkStateTravel extends Entity {
   set nextGeohash(value: string) {
     this.set("nextGeohash", Value.fromString(value));
   }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
 }
 
 export class LocalRecord extends Entity {

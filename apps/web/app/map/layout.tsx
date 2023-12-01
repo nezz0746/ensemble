@@ -5,7 +5,6 @@ import { commonLocations } from '@/services/constants'
 import AccountMarker from '@/components/Map/AccountMarker'
 import FogLayer from '@/components/Map/Fog'
 import AppNavigationBar from '@/components/AppNavigationBar'
-import AppMapControls from '@/components/AppMapControls'
 import usePath from '@/hooks/usePath'
 import NetworkStateLayers from '@/components/Map/NetworkStateLayers'
 import { ConnectButton } from '@instate/kit'
@@ -44,9 +43,6 @@ const Home = ({ children }: HomeProps) => {
               {isProfile && <FogLayer />}
               {isLocalDrops && <LocalDropFocusRegion />}
               {isTile && <NetworkStateLayers />}
-              <div className="absolute w-full bottom-0 p-3">
-                <AppMapControls />
-              </div>
             </Map>
           </div>
           <div className="w-[50%]">

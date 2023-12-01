@@ -635,6 +635,7 @@ export type NetworkStateTravel = {
   nextGeohash: Scalars['String']['output'];
   previousGeohash: Scalars['String']['output'];
   state: NetworkState;
+  transactionHash: Scalars['Bytes']['output'];
 };
 
 export type NetworkStateTravel_Filter = {
@@ -723,6 +724,16 @@ export type NetworkStateTravel_Filter = {
   state_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   state_starts_with?: InputMaybe<Scalars['String']['input']>;
   state_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
 };
 
 export enum NetworkStateTravel_OrderBy {
@@ -735,7 +746,8 @@ export enum NetworkStateTravel_OrderBy {
   StateCreator = 'state__creator',
   StateId = 'state__id',
   StatePopulation = 'state__population',
-  StateVerifier = 'state__verifier'
+  StateVerifier = 'state__verifier',
+  TransactionHash = 'transactionHash'
 }
 
 export type NetworkState_Filter = {
@@ -2152,7 +2164,7 @@ export type AgentQueryVariables = Exact<{
 }>;
 
 
-export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } | null };
+export type AgentQuery = { __typename?: 'Query', agent?: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> } }> } | null };
 
 export type AgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2179,7 +2191,7 @@ export type AgentsQueryVariables = Exact<{
 }>;
 
 
-export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> }> };
+export type AgentsQuery = { __typename?: 'Query', agents: Array<{ __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }>, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> } }> }> };
 
 export type StateAgentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2197,7 +2209,7 @@ export type StateAgentQueryVariables = Exact<{
 }>;
 
 
-export type StateAgentQuery = { __typename?: 'Query', stateAgent?: { __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } } | null };
+export type StateAgentQuery = { __typename?: 'Query', stateAgent?: { __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } } | null };
 
 export type StateAgentsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2219,7 +2231,7 @@ export type StateAgentsQueryVariables = Exact<{
 }>;
 
 
-export type StateAgentsQuery = { __typename?: 'Query', stateAgents: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> };
+export type StateAgentsQuery = { __typename?: 'Query', stateAgents: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> }, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> };
 
 export type NetworkStateQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2242,7 +2254,7 @@ export type NetworkStateQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } | null };
+export type NetworkStateQuery = { __typename?: 'Query', networkState?: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> } | null };
 
 export type NetworkStatesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2269,7 +2281,7 @@ export type NetworkStatesQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> }> };
+export type NetworkStatesQuery = { __typename?: 'Query', networkStates: Array<{ __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }>, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> }> };
 
 export type NetworkStateMetadataQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2299,7 +2311,7 @@ export type NetworkStateTravelQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } } | null };
+export type NetworkStateTravelQuery = { __typename?: 'Query', networkStateTravel?: { __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } } | null };
 
 export type NetworkStateTravelsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2321,7 +2333,7 @@ export type NetworkStateTravelsQueryVariables = Exact<{
 }>;
 
 
-export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } }> };
+export type NetworkStateTravelsQuery = { __typename?: 'Query', networkStateTravels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, agents: Array<{ __typename?: 'StateAgent', id: any, agent: { __typename?: 'Agent', id: any, currentGeohash: string, records: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any }> } }> } }> };
 
 export type LocalRecordQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2339,7 +2351,7 @@ export type LocalRecordQueryVariables = Exact<{
 }>;
 
 
-export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } } | null };
+export type LocalRecordQuery = { __typename?: 'Query', localRecord?: { __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> } }> } } | null };
 
 export type LocalRecordsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -2361,7 +2373,7 @@ export type LocalRecordsQueryVariables = Exact<{
 }>;
 
 
-export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string }> } }> } }> };
+export type LocalRecordsQuery = { __typename?: 'Query', localRecords: Array<{ __typename?: 'LocalRecord', id: any, geohash: string, localRecordERC721: string, transactionHash: any, owner: { __typename?: 'Agent', id: any, currentGeohash: string, states: Array<{ __typename?: 'StateAgent', id: any, state: { __typename?: 'NetworkState', id: any, verifier: any, creator: any, baseURI: string, population: any, metadata?: { __typename?: 'NetworkStateMetadata', id: string, name: string, description: string, image: string, imageGateway: string, manifesto: string, manifestoGateway: string } | null, travels: Array<{ __typename?: 'NetworkStateTravel', id: any, account: any, previousGeohash: string, nextGeohash: string, transactionHash: any }> } }> } }> };
 
 export type LocalTokenQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2567,6 +2579,7 @@ export const AgentDocument = `
           account
           previousGeohash
           nextGeohash
+          transactionHash
         }
       }
     }
@@ -2631,6 +2644,7 @@ export const AgentsDocument = `
           account
           previousGeohash
           nextGeohash
+          transactionHash
         }
       }
     }
@@ -2667,6 +2681,7 @@ export const StateAgentDocument = `
         account
         previousGeohash
         nextGeohash
+        transactionHash
       }
     }
     agent {
@@ -2725,6 +2740,7 @@ export const StateAgentsDocument = `
         account
         previousGeohash
         nextGeohash
+        transactionHash
       }
     }
     agent {
@@ -2799,6 +2815,7 @@ export const NetworkStateDocument = `
       account
       previousGeohash
       nextGeohash
+      transactionHash
     }
   }
 }
@@ -2863,6 +2880,7 @@ export const NetworkStatesDocument = `
       account
       previousGeohash
       nextGeohash
+      transactionHash
     }
   }
 }
@@ -2935,6 +2953,7 @@ export const NetworkStateTravelDocument = `
     account
     previousGeohash
     nextGeohash
+    transactionHash
   }
 }
     `;
@@ -2993,6 +3012,7 @@ export const NetworkStateTravelsDocument = `
     account
     previousGeohash
     nextGeohash
+    transactionHash
   }
 }
     `;
@@ -3037,6 +3057,7 @@ export const LocalRecordDocument = `
             account
             previousGeohash
             nextGeohash
+            transactionHash
           }
         }
       }
@@ -3095,6 +3116,7 @@ export const LocalRecordsDocument = `
             account
             previousGeohash
             nextGeohash
+            transactionHash
           }
         }
       }

@@ -3,24 +3,29 @@ import classNames from 'classnames'
 import MoveButton from './MoveButton'
 import { useAccount } from 'wagmi'
 import useAppAgent from '@/hooks/useAppAgent'
-import useAppAddresses from '@/hooks/useAppAddresses'
-import { usePathname } from 'next/navigation'
-import AccountZoomEffects from './Map/AccountZoomEffects'
+import { NetworkStateQuery } from '@instate/kit'
+import { useEffect } from 'react'
+import useMapUtils from '@/hooks/useMapUtils'
 
-const AppMapControls = () => {
-  const { stateTile } = useAppAddresses()
+type NetworkStateMotionProps = {
+  currentNetworkState: NetworkStateQuery['networkState']
+}
+
+const NetworkStateMotion = ({
+  currentNetworkState,
+}: NetworkStateMotionProps) => {
+  const { flyToGeohash } = useMapUtils()
   const { address } = useAccount()
   const { setPrecision, position } = usePosition()
   const { geohashes, refetch } = useAppAgent()
 
+  useEffect(() => {
+    flyToGeohash(position.geohash)
+  }, [position.precision])
+
   return (
-    <div className="flex flex-row justify-between gap-4 items-center bg-opacity-90 p-3 bg-neutral rounded-lg">
-      <AccountZoomEffects />
-      <div className="flex flex-row items-center w-full gap-2 justify-between font-display">
-        <div className="border border-primary p-2 rounded-md">
-          <p className="text-xl">{position.geohash}</p>
-        </div>
-      </div>
+    <div className="flex flex-row justify-between gap-4 items-center ">
+      <p className="text-xl">Motion:</p>
       <div className="font-display w-full flex flex-row items-center">
         <div className="flex-grow ml-10">
           <input
@@ -49,7 +54,7 @@ const AppMapControls = () => {
       <div className="w-full flex flex-row justify-end">
         <MoveButton
           address={address}
-          tile={stateTile}
+          tile={currentNetworkState?.id}
           geohash={position.geohash}
           disabled={geohashes.includes(position.geohash)}
           onMoveSuccess={() => {
@@ -61,14 +66,4 @@ const AppMapControls = () => {
   )
 }
 
-/**
- * NOTE: Could move to vite app, NextJS slot routing is a hellhole
- * @returns
- */
-const AppMapControlsRouted = () => {
-  const pathName = usePathname()
-
-  return pathName.includes('/profile') ? <AppMapControls /> : null
-}
-
-export default AppMapControlsRouted
+export default NetworkStateMotion
