@@ -11,6 +11,7 @@ const useChain = () => {
   return {
     isLocal: chainId === localhost.id,
     chainId,
+    chain,
   }
 }
 

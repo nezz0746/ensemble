@@ -2,14 +2,14 @@
 
 import type { NextPage } from 'next'
 import useAppAgent from '@/hooks/useAppAgent'
-import { truncateAddress } from '@/services/utils'
 import StateHeader from '@/components/StateHeader'
 import Tabs from '@/components/Tabs'
-import { NetworkState } from '@instate/kit'
-import AccountNFTs from '@/components/LocalAccountNFTs'
+import { NetworkState, useLocalAccount } from '@instate/kit'
+import ConnectedLocalAccount from '@/components/ConnectedLocalAccount'
 
 const Home: NextPage = () => {
   const { agent } = useAppAgent()
+  const { switchLocalAccount } = useLocalAccount()
 
   return (
     <>
@@ -21,25 +21,29 @@ const Home: NextPage = () => {
               (agent?.records.length ? ` (${agent?.records.length})` : ''),
             content: (
               <div className="flex flex-col gap-2 mt-2 w-full overflow-scroll">
-                {agent?.records.map(({ geohash, id }) => {
-                  return (
-                    <div
-                      key={geohash}
-                      className="bg-base-300 flex flex-col gap-2 p-2 text-base-content rounded-md select-none"
-                    >
-                      <div className="flex flex-row items-center justify-between">
-                        <p className="font-bold text-lg font-sans-display">
-                          Local Account:{' '}
-                          <span className="text-primary">{geohash}</span>
-                        </p>
-                        <p className="font-thin underline">
-                          {truncateAddress(id, 6)}
-                        </p>
+                <ConnectedLocalAccount />
+                <div className="grid grid-cols-2 gap-2">
+                  {agent?.records.map((record) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          switchLocalAccount(record.geohash)
+                        }}
+                        key={record.geohash}
+                        className="flex flex-col gap-2 p-2 text-base-content rounded-md select-none bg-neutral-900 hover:cursor-pointer hover:bg-neutral-700"
+                      >
+                        <div className="flex flex-row items-center justify-between">
+                          <p className="font-bold text-lg font-sans-display">
+                            Local Account:{' '}
+                            <span className="text-primary">
+                              {record.geohash}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                      <AccountNFTs account={id} />
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
               </div>
             ),
           },

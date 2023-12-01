@@ -1,4 +1,6 @@
 export const alchemy_key = process.env.NEXT_PUBLIC_ALCHEMY_KEY as string;
+export const nft_alchemy_key = process.env
+  .NEXT_PUBLIC_NFT_ALCHEMY_KEY as string;
 
 if (!alchemy_key) {
   throw new Error("Missing: alchemy_key");

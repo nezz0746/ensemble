@@ -6,7 +6,7 @@ Instate is an conceptual protocol created to build localized applications with l
 
 ## @instate/kit
 
-ConnectButton exports Rainbowkit's original ConnectButton with an additional LocalAccountButton that let user's pick the local account they would like to use for your application. Just like for networks, you can require a certain location and
+This kit exports Rainbowkit's original ConnectButton with an additional LocalAccountButton that let user's pick the local account they would like to use for your application. Just like for networks, you can require a certain location and
 propose a local account switch to your user, or (soon) a move if the user doesn't have a local account in your application vicinity.
 
 <img src="./LocalAccountButton.png" />

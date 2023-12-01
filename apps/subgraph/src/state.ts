@@ -16,6 +16,7 @@ export function handleNetworkStateTravel(event: StateMoveEvent): void {
   travel.account = event.params.account;
   travel.previousGeohash = event.params.previousGeohash;
   travel.nextGeohash = event.params.nextGeohash;
+  travel.transactionHash = event.transaction.hash;
 
   let agent = Agent.load(event.params.account);
 

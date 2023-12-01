@@ -3,16 +3,23 @@ import { OwnedNft } from 'alchemy-sdk'
 import { useEffect, useState } from 'react'
 import { getAlchemyNFT } from 'shared-config'
 
-const AccountNFTs = ({ account }: { account: string }) => {
+const AccountNFTs = ({ account }: { account?: string }) => {
   const { chainId } = useChain()
   const [nfts, setNfts] = useState<OwnedNft[] | null>(null)
+  const [nftsLoading, setNftsLoading] = useState(false)
 
   const fetchNFTs = async () => {
+    if (!account) return
+
+    setNftsLoading(true)
+
     const nfts = getAlchemyNFT(chainId)
 
     const { ownedNfts } = await nfts.getNftsForOwner(account)
 
     setNfts(ownedNfts)
+
+    setNftsLoading(false)
   }
 
   useEffect(() => {
@@ -36,6 +43,10 @@ const AccountNFTs = ({ account }: { account: string }) => {
             </div>
           )
         })
+      ) : nftsLoading ? (
+        <div className="w-full text-center">
+          <span className="loading loading-spinner bg-primary loading-xs"></span>
+        </div>
       ) : (
         <p>Nothing here yet</p>
       )}

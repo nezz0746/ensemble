@@ -1,5 +1,5 @@
 import { useAccount } from 'wagmi'
-import { useAgentQuery } from '@instate/kit'
+import { useAgentQuery, useLocalAccount } from '@instate/kit'
 import { useEffect, useMemo } from 'react'
 import { geohashToFeature } from '@/services/map_utils'
 import useChain from './useChain'
@@ -8,7 +8,7 @@ import { usePosition } from './usePosition'
 
 const useAppAgent = () => {
   const { flyToGeohash } = useMapUtils()
-  const { updatePositionWithGeohash } = usePosition()
+  const { localAccount } = useLocalAccount()
   const { chainId } = useChain()
   const { address } = useAccount()
 
@@ -24,13 +24,10 @@ const useAppAgent = () => {
   )
 
   useEffect(() => {
-    if (data?.agent) {
-      const currentGeohash = data.agent.currentGeohash
-
-      flyToGeohash(currentGeohash)
-      updatePositionWithGeohash(currentGeohash)
+    if (localAccount) {
+      flyToGeohash(localAccount.geohash)
     }
-  }, [flyToGeohash, data?.agent])
+  }, [localAccount])
 
   return useMemo(() => {
     const geohashes = data?.agent?.records.map((record) => record.geohash) ?? []

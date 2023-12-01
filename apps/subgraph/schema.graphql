@@ -40,6 +40,7 @@ type NetworkStateTravel @entity(immutable: true) {
   account: Bytes! # address
   previousGeohash: String! # string
   nextGeohash: String! # string
+  transactionHash: Bytes!
 }
 
 # --------------------- RECORD ---------------------
