@@ -6,10 +6,14 @@ import StateHeader from '@/components/StateHeader'
 import Tabs from '@/components/Tabs'
 import { NetworkState, useLocalAccount } from '@instate/kit'
 import ConnectedLocalAccount from '@/components/ConnectedLocalAccount'
+import useNetworkState from '@/hooks/useNetworkState'
+import useAppAddresses from '@/hooks/useAppAddresses'
 
 const Home: NextPage = () => {
+  const { stateTile: defaultNetworkState } = useAppAddresses()
   const { agent } = useAppAgent()
   const { switchLocalAccount } = useLocalAccount()
+  const { currentNetworkState } = useNetworkState(defaultNetworkState)
 
   return (
     <>
@@ -53,13 +57,20 @@ const Home: NextPage = () => {
               (agent?.states.length ? ` (${agent?.states.length})` : ''),
             content: (
               <div className="w-full overflow-scroll">
-                {agent?.states.map((stateAgent) => {
-                  const state = stateAgent?.state as NetworkState
+                {Boolean(agent?.states.length) ? (
+                  agent?.states.map((stateAgent) => {
+                    const state = stateAgent?.state as NetworkState
 
-                  return (
-                    <StateHeader key={state.id} currentNetworkState={state} />
-                  )
-                })}
+                    return (
+                      <StateHeader key={state.id} currentNetworkState={state} />
+                    )
+                  })
+                ) : (
+                  <StateHeader
+                    firstMove
+                    currentNetworkState={currentNetworkState?.networkState}
+                  />
+                )}
               </div>
             ),
           },

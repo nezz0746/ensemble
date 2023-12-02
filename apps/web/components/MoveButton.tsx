@@ -14,6 +14,7 @@ interface MoveButtonProps {
   geohash: string
   disabled?: boolean
   onMoveSuccess?: () => void
+  name?: string
 }
 
 const MoveButton = ({
@@ -22,6 +23,7 @@ const MoveButton = ({
   geohash,
   disabled,
   onMoveSuccess = () => {},
+  name = 'Move',
 }: MoveButtonProps) => {
   const { config, isError, isLoading } = usePrepareMapMove({
     args: [address as Address, tile, geohash, toHex('')],
@@ -56,7 +58,7 @@ const MoveButton = ({
       {(pendingConfirm || indexing) && (
         <span className="loading loading-spinner bg-primary loading-xs"></span>
       )}
-      Move
+      {name}
     </button>
   )
 }
