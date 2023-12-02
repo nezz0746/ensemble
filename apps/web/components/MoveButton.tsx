@@ -1,8 +1,12 @@
-import { Address, useWaitForTransaction, useContractWrite } from 'wagmi'
+import { Address, useContractWrite } from 'wagmi'
 import { toHex } from 'viem'
 import { usePrepareMapMove } from 'wagmi-config'
 import classNames from 'classnames'
-import { useEffect } from 'react'
+import {
+  NetworkStateTravelsQuery,
+  useNetworkStateTravelsQuery,
+} from '@instate/kit'
+import useIndexed from '@/hooks/useIndexed'
 
 interface MoveButtonProps {
   address?: Address
@@ -24,27 +28,32 @@ const MoveButton = ({
     enabled: !!address,
   })
 
-  const { data, write, isLoading: pendingConfirm } = useContractWrite(config)
+  const {
+    data: txData,
+    write,
+    isLoading: pendingConfirm,
+  } = useContractWrite(config)
 
-  const { isLoading: pendingTx, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  })
-
-  useEffect(() => {
-    if (isSuccess) {
+  const { indexing } = useIndexed<NetworkStateTravelsQuery>(
+    txData?.hash,
+    useNetworkStateTravelsQuery,
+    ({ networkStateTravels }) => ({
+      indexed: Boolean(networkStateTravels.length),
+    }),
+    () => {
       onMoveSuccess()
     }
-  }, [isSuccess])
+  )
 
   return (
     <button
       onClick={() => {
         write && write()
       }}
-      disabled={isError || isLoading || pendingConfirm || pendingTx || disabled}
+      disabled={isError || isLoading || pendingConfirm || indexing || disabled}
       className={classNames('btn font-display', {})}
     >
-      {(pendingConfirm || pendingTx) && (
+      {(pendingConfirm || indexing) && (
         <span className="loading loading-spinner bg-primary loading-xs"></span>
       )}
       Move
