@@ -1,30 +1,12 @@
 import useChain from '@/hooks/useChain'
-import { OwnedNft } from 'alchemy-sdk'
-import { useEffect, useState } from 'react'
-import { getAlchemyNFT } from 'shared-config'
+import { useListAccountNFTsQuery } from '@instate/kit'
 
 const AccountNFTs = ({ account }: { account?: string }) => {
   const { chainId } = useChain()
-  const [nfts, setNfts] = useState<OwnedNft[] | null>(null)
-  const [nftsLoading, setNftsLoading] = useState(false)
-
-  const fetchNFTs = async () => {
-    if (!account) return
-
-    setNftsLoading(true)
-
-    const nfts = getAlchemyNFT(chainId)
-
-    const { ownedNfts } = await nfts.getNftsForOwner(account)
-
-    setNfts(ownedNfts)
-
-    setNftsLoading(false)
-  }
-
-  useEffect(() => {
-    fetchNFTs()
-  }, [account])
+  const { data: nfts, isLoading } = useListAccountNFTsQuery({
+    chainId,
+    account,
+  })
 
   return (
     <div className="flex flex-row gap-3">
@@ -43,7 +25,7 @@ const AccountNFTs = ({ account }: { account?: string }) => {
             </div>
           )
         })
-      ) : nftsLoading ? (
+      ) : isLoading ? (
         <div className="w-full text-center">
           <span className="loading loading-spinner bg-primary loading-xs"></span>
         </div>
