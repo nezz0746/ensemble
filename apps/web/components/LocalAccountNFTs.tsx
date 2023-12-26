@@ -9,19 +9,20 @@ const AccountNFTs = ({ account }: { account?: string }) => {
   })
 
   return (
-    <div className="flex flex-row gap-3">
+    <>
       {Number(nfts?.length) > 0 ? (
         nfts?.map((nft) => {
           return (
             <div
               key={nft.contract.address + nft.tokenId}
-              className="border border-primary bg-base-100 w-44 rounded-md overflow-hidden"
+              className="border border-primary relative bg-base-100 rounded-md w-[150px] h-[150px] overflow-hidden"
             >
-              <img src={nft.image.thumbnailUrl} className="" />
-              <div className="p-2 text-xs">
-                <p className="font-bold">{nft.name}</p>
-                <p>#{parseInt(nft.tokenId) + 1}</p>
+              <div className="bottom-0 p-2 absolute left-0 bg-black bg-opacity-40 whitespace-nowrap">
+                <p className="text-xs font-bold text-primary text-ellipsis">
+                  {nft.contract.name}
+                </p>
               </div>
+              <img src={nft.image.thumbnailUrl} className="object-cover" />
             </div>
           )
         })
@@ -32,7 +33,7 @@ const AccountNFTs = ({ account }: { account?: string }) => {
       ) : (
         <p>Nothing here yet</p>
       )}
-    </div>
+    </>
   )
 }
 

@@ -24,7 +24,7 @@ const Home = ({ children }: HomeProps) => {
     <MapProvider>
       <LocalDropProvider>
         <div className="h-screen flex flex-row gap-2">
-          <div className="w-[50%] relative">
+          <div className="w-[0%] md:w-[50%] relative">
             <Map
               id="mainMap"
               mapboxAccessToken={token}
@@ -45,7 +45,7 @@ const Home = ({ children }: HomeProps) => {
               {isTile && <NetworkStateLayers />}
             </Map>
           </div>
-          <div className="w-[50%]">
+          <div className="w-full md:w-[50%]">
             <div className="h-full flex py-6 px-2 flex-col gap-4">
               <ConnectButton />
               {children}
