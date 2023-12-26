@@ -41,7 +41,9 @@ const ConnectedLocalAccount = ({}) => {
           </Link>
         )}
       </div>
-      <AccountNFTs account={localAccount?.id} />
+      <div className="relative h-60 flex flex-row flex-wrap gap-2 overflow-scroll">
+        <AccountNFTs account={localAccount?.id} />
+      </div>
     </div>
   )
 }

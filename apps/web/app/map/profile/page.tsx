@@ -24,9 +24,9 @@ const Home: NextPage = () => {
               'Local Accounts' +
               (agent?.records.length ? ` (${agent?.records.length})` : ''),
             content: (
-              <div className="flex flex-col gap-2 mt-2 w-full overflow-scroll">
+              <div className="flex flex-col gap-2 mt-2 w-full h-full">
                 <ConnectedLocalAccount />
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-2 overflow-scroll">
                   {agent?.records.map((record) => {
                     return (
                       <div
