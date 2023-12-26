@@ -12,7 +12,6 @@ interface MoveButtonProps {
   address?: Address
   tile: Address
   geohash: string
-  disabled?: boolean
   onMoveSuccess?: () => void
   name?: string
 }
@@ -21,11 +20,10 @@ const MoveButton = ({
   address,
   tile,
   geohash,
-  disabled,
   onMoveSuccess = () => {},
   name = 'Move',
 }: MoveButtonProps) => {
-  const { config, isError, isLoading } = usePrepareMapMove({
+  const { config, isError, isLoading, refetch } = usePrepareMapMove({
     args: [address as Address, tile, geohash, toHex('')],
     enabled: !!address,
   })
@@ -44,6 +42,7 @@ const MoveButton = ({
     }),
     () => {
       onMoveSuccess()
+      refetch()
     }
   )
 
@@ -52,7 +51,7 @@ const MoveButton = ({
       onClick={() => {
         write && write()
       }}
-      disabled={isError || isLoading || pendingConfirm || indexing || disabled}
+      disabled={isError || isLoading || pendingConfirm || indexing}
       className={classNames('btn font-display', {})}
     >
       {(pendingConfirm || indexing) && (

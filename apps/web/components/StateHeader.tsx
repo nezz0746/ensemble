@@ -20,7 +20,7 @@ const StateHeader = ({ currentNetworkState, firstMove }: StateHeaderProps) => {
   const { flyToGeohash } = useMapUtils()
   const { address } = useAccount()
   const { setPrecision, position } = usePosition()
-  const { geohashes, refetch } = useAppAgent()
+  const { refetch } = useAppAgent()
 
   useEffect(() => {
     flyToGeohash(position.geohash)
@@ -140,7 +140,6 @@ const StateHeader = ({ currentNetworkState, firstMove }: StateHeaderProps) => {
               address={address}
               tile={currentNetworkState?.id}
               geohash={position.geohash}
-              disabled={geohashes.includes(position.geohash)}
               onMoveSuccess={() => {
                 refetch()
               }}
